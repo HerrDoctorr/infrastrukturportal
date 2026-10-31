@@ -282,6 +282,37 @@
         transform: scaleX(1);
       }
 
+      .nav-link-portal {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .portal-label {
+        color: #0078d7;
+        background: linear-gradient(100deg, #ff5364, #ff9f36, #40c878, #48aaff, #bd75ff, #ff5364);
+        background-size: 250% 100%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 5px rgb(111 185 255 / 28%));
+        animation: portal-color-flow 6s linear infinite;
+      }
+
+      .nav-link-portal > span:last-child {
+        color: var(--muted);
+        transition: color .18s ease;
+      }
+
+      .nav-link-portal:hover > span:last-child,
+      .nav-link-portal:focus-visible > span:last-child {
+        color: var(--red);
+      }
+
+      @keyframes portal-color-flow {
+        to { background-position: 250% 0; }
+      }
+
       @media (max-width: 900px) {
         .header-inner {
           gap: 10px;
@@ -321,6 +352,12 @@
 
         .desktop-nav .nav-link:after {
           display: none;
+        }
+
+        .desktop-nav .nav-link-portal {
+          min-height: 48px;
+          justify-content: space-between;
+          margin-top: 0;
         }
 
         .network-heading {
@@ -2306,6 +2343,9 @@
           <a class="nav-link" href="#regelwerk">DI-NORM</a>
           <a class="nav-link" href="#bahnhof">Bahnhof</a>
           <a class="nav-link" href="#antrag">Anschluss beantragen</a>
+          <a class="nav-link nav-link-portal" href="shops.html" aria-label="Immobilienportal – eigenständiges Portal">
+            <span class="portal-label">Immobilienportal</span> <span aria-hidden="true">↗</span>
+          </a>
         </nav>
         <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="primary-navigation">
           <span aria-hidden="true">☰</span>
