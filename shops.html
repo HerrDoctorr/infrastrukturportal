@@ -724,6 +724,9 @@
                     <a href="index.html" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold text-xs font-mono shadow-md hover:shadow-lg transition-all flex items-center gap-2">
                         <i class="fas fa-arrow-left text-amber-400"></i> Zu Doctor Industries
                     </a>
+                    <button type="button" onclick="toggleDialect()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2.5 rounded-xl font-bold text-xs font-mono shadow-md transition-all flex items-center gap-2">
+                        <i class="fas fa-globe"></i> <span class="lang-btn-text">Sprache: Hochdeutsch</span>
+                    </button>
                 </div>
 
                 <!-- Mobile Menu Button -->
@@ -742,6 +745,9 @@
                 <a href="index.html" class="text-center w-full bg-slate-900 text-white py-2.5 rounded-xl font-semibold text-xs font-mono">
                     ← Zu Doctor Industries
                 </a>
+                <button type="button" onclick="toggleDialect()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2.5 rounded-xl font-bold text-xs font-mono shadow-md transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-globe"></i> <span class="lang-btn-text">Sprache: Hochdeutsch</span>
+                </button>
             </div>
         </div>
     </header>
@@ -752,14 +758,14 @@
             <img src="102.png" alt="">
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 estate-hero-content">
-            <div class="civic-kicker">Stadtbauamt · Spawn-Stadt</div>
+            <div id="hero-kicker" class="civic-kicker">Stadtbauamt · Spawn-Stadt</div>
             <h1 id="estate-title">Ein guter Ort für große Pläne.</h1>
-            <p>Geschäftshäuser am Marktplatz – dauerhaft, ohne Folgemieten und mit Raum für Ihr eigenes Konzept.</p>
+            <p id="hero-desc">Geschäftshäuser am Marktplatz – dauerhaft, ohne Folgemieten und mit Raum für Ihr eigenes Konzept.</p>
             <a href="#katalog" class="estate-hero-link">
-                Gewerbeimmobilien ansehen <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                <span id="hero-link-text">Gewerbeimmobilien ansehen</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
             </a>
         </div>
-        <div class="estate-hero-note">Marktplatz · Spawn &nbsp; / &nbsp; Gewerbeimmobilien</div>
+        <div id="hero-note" class="estate-hero-note">Marktplatz · Spawn / Gewerbeimmobilien</div>
     </section>
 
     <!-- 2. Immobilien-Katalog -->
@@ -767,17 +773,17 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
                 <div>
-                    <span class="text-amber-600 font-bold text-xs uppercase tracking-wider font-mono">Immobilien-Katalog</span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">Verfügbare Gewerbetypen</h2>
-                    <p class="text-slate-600 text-sm mt-1">Alle Gebäude verfügen über genau drei ausbaubare Geschosse: Erdgeschoss, Obergeschoss, Dachgeschoss. Die Planung von Treppe und Aufzügen erfolgt individuell.</p>
+                    <span id="katalog-kicker" class="text-amber-600 font-bold text-xs uppercase tracking-wider font-mono">Immobilien-Katalog</span>
+                    <h2 id="katalog-title" class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">Verfügbare Gewerbetypen</h2>
+                    <p id="katalog-sub" class="text-slate-600 text-sm mt-1">Alle Gebäude verfügen über genau drei ausbaubare Geschosse: Erdgeschoss, Obergeschoss, Dachgeschoss. Die Planung von Treppe und Aufzügen erfolgt individuell.</p>
                 </div>
             </div>
 
             <figure class="location-map">
                 <img src="map.png" alt="Lageplan der Gewerbezone mit markierten Standorten der Haustypen 101, 102 und 103" loading="lazy">
                 <figcaption>
-                    <strong>Lageplan der Gewerbezone</strong>
-                    Die Karte zeigt die Standorte der verfügbaren Immobilien. Die Markierungen entsprechen den Haustypen im Katalog.
+                    <strong id="map-title">Lageplan der Gewerbezone</strong>
+                    <span id="map-desc">Die Karte zeigt die Standorte der verfügbaren Immobilien. Die Markierungen entsprechen den Haustypen im Katalog.</span>
                 </figcaption>
             </figure>
 
@@ -794,17 +800,17 @@
                     </div>
                     <div class="property-description">
                             <div class="property-id text-xs text-amber-600 font-mono font-bold mb-1">MAP-ID: #101</div>
-                            <h3 class="font-extrabold text-slate-900 text-xl mb-1">Haus "Basis"</h3>
-                            <p>Hälfte eines Doppelhauses</p>
-                            <div class="property-availability"><span>Verfügbare Häuser</span><strong>6 Stück</strong></div>
+                            <h3 id="h101-title" class="font-extrabold text-slate-900 text-xl mb-1">Haus "Basis"</h3>
+                            <p id="h101-sub">Hälfte eines Doppelhauses</p>
+                            <div class="property-availability"><span class="availability-label">Verfügbare Häuser</span><strong>6 Stück</strong></div>
                     </div>
                     <div class="property-offer">
-                        <div class="property-price"><span>Kaufpreis</span><strong>32 Cogs</strong></div>
+                        <div class="property-price"><span class="price-label">Kaufpreis</span><strong>48 Cogs</strong></div>
                         <ul>
                             <li class="flex justify-between"><span>Geschosse</span><strong>3 (EG, OG, DG)</strong></li>
                             <li class="flex justify-between"><span>Bauart</span><strong>Doppelhaushälfte</strong></li>
                         </ul>
-                        <button onclick="openModal(101)" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
+                        <button onclick="openModal(101)" class="expose-button w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
                             Exposé ansehen
                         </button>
                     </div>
@@ -820,17 +826,17 @@
                     </div>
                     <div class="property-description">
                             <div class="property-id text-xs text-amber-600 font-mono font-bold mb-1">MAP-ID: #102</div>
-                            <h3 class="font-extrabold text-slate-900 text-xl mb-1">Haus "Standard"</h3>
-                            <p>Freistehendes Stadthaus</p>
-                            <div class="property-availability"><span>Verfügbare Häuser</span><strong>12 Stück</strong></div>
+                            <h3 id="h102-title" class="font-extrabold text-slate-900 text-xl mb-1">Haus "Standard"</h3>
+                            <p id="h102-sub">Freistehendes Stadthaus</p>
+                            <div class="property-availability"><span class="availability-label">Verfügbare Häuser</span><strong>12 Stück</strong></div>
                     </div>
                     <div class="property-offer">
-                        <div class="property-price"><span>Kaufpreis</span><strong>1 Sun</strong></div>
+                        <div class="property-price"><span class="price-label">Kaufpreis</span><strong>1 Sun</strong></div>
                         <ul>
                             <li class="flex justify-between"><span>Geschosse</span><strong>3 (EG, OG, DG)</strong></li>
                             <li class="flex justify-between"><span>Bauart</span><strong>Freistehend</strong></li>
                         </ul>
-                        <button onclick="openModal(102)" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
+                        <button onclick="openModal(102)" class="expose-button w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
                             Exposé ansehen
                         </button>
                     </div>
@@ -846,17 +852,17 @@
                     </div>
                     <div class="property-description">
                             <div class="property-id text-xs text-amber-600 font-mono font-bold mb-1">MAP-ID: #103</div>
-                            <h3 class="font-extrabold text-slate-900 text-xl mb-1">Haus "Standard Plus"</h3>
-                            <p>Großraum Gewerbeimmobilie</p>
-                            <div class="property-availability"><span>Verfügbare Häuser</span><strong>5 Stück</strong></div>
+                            <h3 id="h103-title" class="font-extrabold text-slate-900 text-xl mb-1">Haus "Standard Plus"</h3>
+                            <p id="h103-sub">Großraum Gewerbeimmobilie</p>
+                            <div class="property-availability"><span class="availability-label">Verfügbare Häuser</span><strong>5 Stück</strong></div>
                     </div>
                     <div class="property-offer">
-                        <div class="property-price"><span>Kaufpreis</span><strong>1 Sun + 32 Cogs</strong></div>
+                        <div class="property-price"><span class="price-label">Kaufpreis</span><strong>1 Sun + 32 Cogs</strong></div>
                         <ul>
                             <li class="flex justify-between"><span>Geschosse</span><strong>3 (EG, OG, DG)</strong></li>
                             <li class="flex justify-between"><span>Bauart</span><strong>Großraum</strong></li>
                         </ul>
-                        <button onclick="openModal(103)" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
+                        <button onclick="openModal(103)" class="expose-button w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
                             Exposé ansehen
                         </button>
                     </div>
@@ -870,16 +876,16 @@
     <section id="satzung" class="py-20 bg-white border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-12">
-                <span class="text-amber-600 font-bold text-xs uppercase tracking-wider font-mono">Amtliches Reglement</span>
-                <h2 class="text-3xl font-extrabold text-slate-900 mt-1">Bebauungssatzung & Erwerbsregeln</h2>
-                <p class="text-slate-600 text-sm mt-1">Maximal 2 Häuser pro Team. Die Stadtverwaltung prüft die Einhaltung.</p>
+                <span id="satzung-kicker" class="text-amber-600 font-bold text-xs uppercase tracking-wider font-mono">Amtliches Reglement</span>
+                <h2 id="satzung-title" class="text-3xl font-extrabold text-slate-900 mt-1">Bebauungssatzung & Erwerbsregeln</h2>
+                <p id="satzung-desc" class="text-slate-600 text-sm mt-1">Maximal 2 Häuser pro Team. Die Stadtverwaltung prüft die Einhaltung.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Kombinations-Matrix -->
                 <div class="rule-card bg-slate-50 p-8 rounded-2xl border border-slate-200">
                     <h3 class="font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
-                        <i class="fas fa-layer-group text-amber-500"></i> Erlaubte & Verbotene Team-Kombinationen
+                        <i class="fas fa-layer-group text-amber-500"></i> <span id="rule-matrix-title">Erlaubte & Verbotene Team-Kombinationen</span>
                     </h3>
                     <div class="space-y-2 text-xs font-mono">
                         <div class="allowed-rule p-3 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg flex justify-between items-center font-bold">
@@ -907,24 +913,24 @@
                 <div class="rule-card bg-slate-50 p-8 rounded-2xl border border-slate-200 flex flex-col justify-between">
                     <div>
                         <h3 class="font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
-                            <i class="fas fa-building-flag text-amber-500"></i> Architektur- & Bauvorschriften
+                            <i class="fas fa-building-flag text-amber-500"></i> <span id="rule-arch-title">Architektur- & Bauvorschriften</span>
                         </h3>
                         <ul class="space-y-3 text-xs text-slate-700 leading-relaxed">
                             <li class="flex items-start gap-2">
                                 <i class="fas fa-check text-amber-500 mt-0.5"></i>
-                                <span><strong>Fassaden-Schutz:</strong> Die äußere Architektur darf nicht verändert oder abgerissen werden.</span>
+                                <span id="rule-1"><strong>Fassaden-Schutz:</strong> Die äußere Architektur darf nicht verändert oder abgerissen werden.</span>
                             </li>
                             <li class="flex items-start gap-2">
                                 <i class="fas fa-check text-amber-500 mt-0.5"></i>
-                                <span><strong>Erlaubte Dekoration:</strong> Banner, Pflanzkübel, Hecken und Fotos dürfen außen platziert werden.</span>
+                                <span id="rule-2"><strong>Erlaubte Dekoration:</strong> Banner, Pflanzkübel, Hecken und Fotos dürfen außen platziert werden.</span>
                             </li>
                             <li class="flex items-start gap-2">
                                 <i class="fas fa-check text-amber-500 mt-0.5"></i>
-                                <span><strong>Vorgarten-Zone:</strong> Bis zu 3 Blöcke vor dem Gebäude dürfen als Werbefläche oder Stand genutzt werden.</span>
+                                <span id="rule-3"><strong>Vorgarten-Zone:</strong> Bis zu 3 Blöcke vor dem Gebäude dürfen als Werbefläche oder Stand genutzt werden.</span>
                             </li>
                             <li class="flex items-start gap-2">
                                 <i class="fas fa-check text-amber-500 mt-0.5"></i>
-                                <span><strong>Innenarchitektur:</strong> Der Innenraum aller 3 Geschosse ist vollständig frei gestaltbar.</span>
+                                <span id="rule-4"><strong>Innenarchitektur:</strong> Der Innenraum aller 3 Geschosse ist vollständig frei gestaltbar.</span>
                             </li>
                         </ul>
                     </div>
@@ -937,23 +943,23 @@
     <section id="antrag" class="py-20 bg-slate-50">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-10">
-                <span class="text-amber-600 font-bold text-xs uppercase tracking-wider font-mono">Formblatt ST-IMM-01</span>
-                <h2 class="text-3xl font-extrabold text-slate-900 mt-1">Immobilien-Kaufantrag</h2>
-                <p class="text-slate-600 text-sm mt-1">Generieren Sie Ihren amtlichen Antrag für die Serverleitung / Stadtverwaltung.</p>
+                <span id="antrag-kicker" class="text-amber-600 font-bold text-xs uppercase tracking-wider font-mono">Formblatt ST-IMM-01</span>
+                <h2 id="antrag-title" class="text-3xl font-extrabold text-slate-900 mt-1">Immobilien-Kaufantrag</h2>
+                <p id="antrag-desc" class="text-slate-600 text-sm mt-1">Generieren Sie Ihren amtlichen Antrag für die Serverleitung / Stadtverwaltung.</p>
             </div>
 
             <div class="application-card bg-white p-8 sm:p-10 rounded-2xl border border-slate-200 shadow-xl print-box">
                 <form id="estate-form" onsubmit="handleFormSubmit(event)">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Minecraft-Name / Team-Name *</label>
+                            <label id="label-player" class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Minecraft-Name / Team-Name *</label>
                             <input type="text" id="pName" required placeholder="z. B. Alex (Team Alpha)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 text-sm focus:outline-none focus:border-amber-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Gewünschter Haustyp *</label>
+                            <label id="label-type" class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Gewünschter Haustyp *</label>
                             <select id="hType" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 text-sm focus:outline-none focus:border-amber-500">
                                 <option value="">Bitte wählen...</option>
-                                <option value="Typ 101 - Basis (32 Cogs / 2048 Spurs)">Typ 101 · Haus "Basis" (32 Cogs)</option>
+                                <option value="Typ 101 - Basis (48 Cogs / 3072 Spurs)">Typ 101 · Haus "Basis" (48 Cogs)</option>
                                 <option value="Typ 102 - Standard (1 Sun / 4096 Spurs)">Typ 102 · Haus "Standard" (1 Sun)</option>
                                 <option value="Typ 103 - Standard Plus (1 Sun + 32 Cogs / 6144 Spurs)">Typ 103 · Haus "Standard Plus" (1 Sun + 32 Cogs)</option>
                             </select>
@@ -962,22 +968,22 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Geplanter Shop-Name / Branche *</label>
+                            <label id="label-shop" class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Geplanter Shop-Name / Branche *</label>
                             <input type="text" id="sName" required placeholder="z. B. Spawn-Bäckerei" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 text-sm focus:outline-none focus:border-amber-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Gewünschte Haus-Nr. / Standort</label>
+                            <label id="label-num" class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Gewünschte Haus-Nr. / Standort</label>
                             <input type="text" id="hNum" placeholder="z. B. Marktplatz Haus #4" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 text-sm focus:outline-none focus:border-amber-500">
                         </div>
                     </div>
 
                     <div class="mb-6">
-                        <label class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Besteht bereits ein 1. Haus im Team?</label>
+                        <label id="label-notes" class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Besteht bereits ein 1. Haus im Team?</label>
                         <input type="text" id="sNotes" placeholder="Falls ja: Welcher Haustyp wird bereits genutzt?" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 text-sm focus:outline-none focus:border-amber-500">
                     </div>
 
                     <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl text-xs font-mono uppercase tracking-wider transition-all shadow-lg no-print">
-                        Kaufantrag generieren & Drucken
+                        <span id="submit-label">Kaufantrag generieren & Drucken</span>
                     </button>
                 </form>
 
@@ -1058,16 +1064,203 @@
 
     <!-- JavaScript Logik -->
     <script>
+        let currentDialect = 0;
+
+        const translations = {
+            standard: {
+                btnText: "Sprache: Hochdeutsch",
+                kicker: "Stadtbauamt · Spawn-Stadt",
+                heroTitle: "Ein guter Ort für große Pläne.",
+                heroDesc: "Geschäftshäuser am Marktplatz – dauerhaft, ohne Folgemieten und mit Raum für Ihr eigenes Konzept.",
+                heroLink: "Gewerbeimmobilien ansehen",
+                heroNote: "Marktplatz · Spawn / Gewerbeimmobilien",
+                katKicker: "Immobilien-Katalog",
+                katTitle: "Verfügbare Gewerbetypen",
+                katDesc: "Alle Gebäude verfügen über genau drei ausbaubare Geschosse: Erdgeschoss, Obergeschoss, Dachgeschoss. Die Planung von Treppe und Aufzügen erfolgt individuell.",
+                mapTitle: "Lageplan der Gewerbezone",
+                mapDesc: "Die Karte zeigt die Standorte der verfügbaren Immobilien. Die Markierungen entsprechen den Haustypen im Katalog.",
+                h101Title: "Haus \"Basis\"",
+                h101Sub: "Hälfte eines Doppelhauses",
+                h102Title: "Haus \"Standard\"",
+                h102Sub: "Freistehendes Stadthaus",
+                h103Title: "Haus \"Standard Plus\"",
+                h103Sub: "Großraum Gewerbeimmobilie",
+                btnExpose: "Exposé ansehen",
+                labelPrice: "Kaufpreis",
+                labelAvail: "Verfügbare Häuser",
+                satzKicker: "Amtliches Reglement",
+                satzTitle: "Bebauungssatzung & Erwerbsregeln",
+                satzDesc: "Maximal 2 Häuser pro Team. Die Stadtverwaltung prüft die Einhaltung.",
+                ruleMatrixTitle: "Erlaubte & Verbotene Team-Kombinationen",
+                ruleArchTitle: "Architektur- & Bauvorschriften",
+                rule1: "<strong>Fassaden-Schutz:</strong> Die äußere Architektur darf nicht verändert oder abgerissen werden.",
+                rule2: "<strong>Erlaubte Dekoration:</strong> Banner, Pflanzkübel, Hecken und Fotos dürfen außen platziert werden.",
+                rule3: "<strong>Vorgarten-Zone:</strong> Bis zu 3 Blöcke vor dem Gebäude dürfen als Werbefläche oder Stand genutzt werden.",
+                rule4: "<strong>Innenarchitektur:</strong> Der Innenraum aller 3 Geschosse ist vollständig frei gestaltbar.",
+                antragKicker: "Formblatt ST-IMM-01",
+                antragTitle: "Immobilien-Kaufantrag",
+                antragDesc: "Generieren Sie Ihren amtlichen Antrag für die Serverleitung / Stadtverwaltung.",
+                lblPlayer: "Minecraft-Name / Team-Name *",
+                lblType: "Gewünschter Haustyp *",
+                lblShop: "Geplanter Shop-Name / Branche *",
+                lblNum: "Gewünschte Haus-Nr. / Standort",
+                lblNotes: "Besteht bereits ein 1. Haus im Team?",
+                btnSubmit: "Kaufantrag generieren & Drucken"
+            },
+            bavarian: {
+                btnText: "Sprach: Bayrisch 🍻",
+                kicker: "Stadtbauamt · Spawn-Dorf",
+                heroTitle: "Oan scheena Platz für gscheide Pländ.",
+                heroDesc: "Gschäftshäusa am Marktplatz – dauerhaft, ohne Miete-Nervkram und mit Platz für de oagne Idäe!",
+                heroLink: "Gewerbe-Hütten oangschaun",
+                heroNote: "Marktplatz · Spawn / Gewerbe-Hütten",
+                katKicker: "Häusl-Katalog",
+                katTitle: "Wos Grad do is (Gewerbe)",
+                katDesc: "Jeds Häusl hat genau drei Stockwerk: Erdgschoss, Obergschoss und Dachkammer. Treppn muaßst selber mocha.",
+                mapTitle: "Übersichts-Karten vom Revier",
+                mapDesc: "Da siehsgst wo de Hütten stehn. De Nummern passn zu de Häusl unten im Katalog.",
+                h101Title: "Häusl \"Basis\"",
+                h101Sub: "Halbe Doppel-Hütte",
+                h102Title: "Häusl \"Standard\"",
+                h102Sub: "Freistehendes Stadthäusl",
+                h103Title: "Häusl \"Standard Plus\"",
+                h103Sub: "Mächtiges Großraum-Kontor",
+                btnExpose: "Häusl-Akte oangschaun",
+                labelPrice: "Kaufpreis (Zahlts z'sam)",
+                labelAvail: "No da:",
+                satzKicker: "Amtliches Gesetzbüchle",
+                satzTitle: "Bau-Regeln & Kammerjager-Gesetz",
+                satzDesc: "Höchstens 2 Häusl pro Team! Der Stadt-Gendarm schaut ganz genau hin.",
+                ruleMatrixTitle: "Erlaubte & Verbotene Team-Kombinationen",
+                ruleArchTitle: "Architektur- & Bauvorschriften",
+                rule1: "<strong>Fassaden-Schutz:</strong> Außen nix abreißen! De Fassadn bleibt schön stehn wie sie is.",
+                rule2: "<strong>Erlaubte Deko:</strong> Blumengestecke, Banner, Büsche und Buider darfsd draußen hinbaun.",
+                rule3: "<strong>Vorgarten-Zone:</strong> Bis zu 3 Blöcke vor der Hütte darfsd dei Glump präsentieren.",
+                rule4: "<strong>Innenarchitektur:</strong> Drinnen in alle 3 Stockwerke darfsd wiedasdn wuisst umbaun.",
+                antragKicker: "Wisch ST-IMM-01",
+                antragTitle: "Häusl-Kaufantrag",
+                antragDesc: "Füll den Wisch aus fürn Bürgermeister und de Serverleitung.",
+                lblPlayer: "Dein Minecraft- / Team-Name *",
+                lblType: "Welches Häusl willst habn? *",
+                lblShop: "Geplanter Laden-Name / Gewerbe *",
+                lblNum: "Wunsch-Hausnummer / Wo solls stehn?",
+                lblNotes: "Habts ihr scho a Hütte im Team?",
+                btnSubmit: "Antrag ausdrucka & einreichen!"
+            },
+            indian: {
+                btnText: "Language: Indian Eng 🇮🇳",
+                kicker: "City Building Dept · Spawn City",
+                heroTitle: "Good place for big business, my friend!",
+                heroDesc: "Nice shops in market square, no monthly rent tension, full-to-full space for your custom setup saar!",
+                heroLink: "See available properties da",
+                heroNote: "Market Square · Spawn / Commercial Properties",
+                katKicker: "Commercial Property Catalog",
+                katTitle: "Available Shop Types, verify machan",
+                katDesc: "Full building got three floors: Ground floor, first floor, top floor. Stairs and lift setting you only do, ok?",
+                mapTitle: "Commercial Zone Blueprint Map",
+                mapDesc: "Map showing exact plot locations. Numbers are strictly matching with catalog below, please note.",
+                h101Title: "House \"Basis\"",
+                h101Sub: "Half side of duplex building",
+                h102Title: "House \"Standard\"",
+                h102Sub: "Standalone town house",
+                h103Title: "House \"Standard Plus\"",
+                h103Sub: "Very big super-size commercial house",
+                btnExpose: "Check full details (Exposé)",
+                labelPrice: "Cost Price",
+                labelAvail: "Stock left:",
+                satzKicker: "Official Govt Rules",
+                satzTitle: "Building Rules & Panchayat Regs",
+                satzDesc: "Maximum 2 houses per team strictly allowed! Administration will do strict checking.",
+                ruleMatrixTitle: "Allowed & Strictly Prohibited Combinations",
+                ruleArchTitle: "Architectural & Building Guidelines",
+                rule1: "<strong>Facade Protection:</strong> Outer wall breaking strictly prohibited, non-negotiable!",
+                rule2: "<strong>Allowed Decoration:</strong> Banners, flower pots, hedges and photos outside side full okay.",
+                rule3: "<strong>Front Yard Zone:</strong> 3 blocks in front can be used for display and advertising items.",
+                rule4: "<strong>Interior Setup:</strong> Inside all 3 floors you can do whatever fancy work you like.",
+                antragKicker: "Application Form ST-IMM-01",
+                antragTitle: "Property Buying Application form",
+                antragDesc: "Kindly generate official application for server admin / city council.",
+                lblPlayer: "Minecraft Name / Team Name *",
+                lblType: "Selected House Model *",
+                lblShop: "Planned Shop Name / Business *",
+                lblNum: "Desired Plot Number / Location",
+                lblNotes: "Already having 1st house in team?",
+                btnSubmit: "Generate Application & Print, Saar!"
+            }
+        };
+
+        function toggleDialect() {
+            currentDialect = (currentDialect + 1) % 3;
+            const keys = ["standard", "bavarian", "indian"];
+            const text = translations[keys[currentDialect]];
+            document.documentElement.lang = currentDialect === 2 ? "en-IN" : "de";
+            const setText = (id, value) => {
+                document.getElementById(id).textContent = value;
+            };
+
+            document.querySelectorAll(".lang-btn-text").forEach(buttonText => {
+                buttonText.textContent = text.btnText;
+            });
+
+            [
+                ["hero-kicker", text.kicker],
+                ["estate-title", text.heroTitle],
+                ["hero-desc", text.heroDesc],
+                ["hero-link-text", text.heroLink],
+                ["hero-note", text.heroNote],
+                ["katalog-kicker", text.katKicker],
+                ["katalog-title", text.katTitle],
+                ["katalog-sub", text.katDesc],
+                ["map-title", text.mapTitle],
+                ["map-desc", text.mapDesc],
+                ["h101-title", text.h101Title],
+                ["h101-sub", text.h101Sub],
+                ["h102-title", text.h102Title],
+                ["h102-sub", text.h102Sub],
+                ["h103-title", text.h103Title],
+                ["h103-sub", text.h103Sub],
+                ["satzung-kicker", text.satzKicker],
+                ["satzung-title", text.satzTitle],
+                ["satzung-desc", text.satzDesc],
+                ["rule-matrix-title", text.ruleMatrixTitle],
+                ["rule-arch-title", text.ruleArchTitle],
+                ["antrag-kicker", text.antragKicker],
+                ["antrag-title", text.antragTitle],
+                ["antrag-desc", text.antragDesc],
+                ["label-player", text.lblPlayer],
+                ["label-type", text.lblType],
+                ["label-shop", text.lblShop],
+                ["label-num", text.lblNum],
+                ["label-notes", text.lblNotes],
+                ["submit-label", text.btnSubmit]
+            ].forEach(([id, value]) => setText(id, value));
+
+            [text.rule1, text.rule2, text.rule3, text.rule4].forEach((value, index) => {
+                document.getElementById(`rule-${index + 1}`).innerHTML = value;
+            });
+            document.querySelectorAll(".expose-button").forEach(button => {
+                button.textContent = text.btnExpose;
+            });
+            document.querySelectorAll(".price-label").forEach(label => {
+                label.textContent = text.labelPrice;
+            });
+            document.querySelectorAll(".availability-label").forEach(label => {
+                label.textContent = text.labelAvail;
+            });
+
+            showToast(text.btnText);
+        }
+
         const houses = {
             101: {
                 id: 101,
                 mapId: "#101",
                 title: 'Haus "Basis"',
                 sub: "Hälfte eines Doppelhauses",
-                price: "32 Cogs (2048 Spurs)",
+                price: "48 Cogs (3072 Spurs)",
                 type: "Doppelhaushälfte",
                 available: 6,
-                formValue: "Typ 101 - Basis (32 Cogs / 2048 Spurs)",
+                formValue: "Typ 101 - Basis (48 Cogs / 3072 Spurs)",
                 floors: [
                     { label: "Erdgeschoss (EG)", image: "101_1.png" },
                     { label: "Obergeschoss (OG)", image: "101_2.png" },
