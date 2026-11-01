@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stadtbauamt & Immobilienkontor Spawn – Gewerbeflächen</title>
+    <title>Stadtbauamt Spawn</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -99,34 +99,6 @@
             background: var(--ink) !important;
         }
 
-        .civic-hero {
-            position: relative;
-            overflow: hidden;
-            padding: clamp(4rem, 8vw, 7.5rem) 0 !important;
-            background: var(--ink) !important;
-            color: white !important;
-        }
-        .civic-hero::before {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 42%;
-            content: "";
-            background:
-                linear-gradient(135deg, transparent 49.8%, rgba(255,255,255,.07) 50%, transparent 50.2%),
-                linear-gradient(45deg, transparent 49.8%, rgba(255,255,255,.05) 50%, transparent 50.2%);
-            background-size: 72px 72px;
-            opacity: .7;
-        }
-        .civic-hero .hero-photo { display: none; }
-        .civic-hero-inner {
-            display: grid;
-            grid-template-columns: minmax(0, 1.15fr) minmax(280px, .75fr);
-            align-items: center;
-            gap: clamp(2rem, 7vw, 7rem);
-        }
-        .civic-hero-copy { max-width: 700px !important; }
         .civic-kicker {
             display: inline-flex;
             align-items: center;
@@ -144,93 +116,6 @@
             content: "";
             background: var(--brass);
         }
-        .civic-hero h1 {
-            max-width: 720px;
-            margin-bottom: 1.5rem !important;
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: clamp(2.8rem, 5.3vw, 5rem) !important;
-            font-weight: 400 !important;
-            line-height: 1.07 !important;
-            letter-spacing: -.045em !important;
-        }
-        .civic-hero h1 span {
-            color: #d6c18f !important;
-            background: none !important;
-            -webkit-text-fill-color: currentColor;
-        }
-        .civic-hero-copy > p {
-            max-width: 620px;
-            color: #c4cfce !important;
-            font-size: 1rem !important;
-            line-height: 1.85 !important;
-        }
-        .civic-hero .hero-primary,
-        .civic-hero .hero-secondary {
-            border-radius: 2px !important;
-            box-shadow: none !important;
-            font-size: .8rem;
-            letter-spacing: .04em;
-        }
-        .civic-hero .hero-primary {
-            background: #d6c18f !important;
-            color: var(--ink) !important;
-        }
-        .civic-hero .hero-secondary {
-            background: transparent !important;
-            border: 1px solid rgba(255,255,255,.3) !important;
-        }
-        .hero-facts {
-            position: relative;
-            z-index: 1;
-            padding: 2rem;
-            border: 1px solid rgba(255,255,255,.2);
-            border-top: 3px solid var(--brass);
-            background: rgba(255,255,255,.055);
-        }
-        .hero-facts-label {
-            margin-bottom: 1.6rem;
-            color: #d6c18f;
-            font-family: "JetBrains Mono", monospace;
-            font-size: .65rem;
-            letter-spacing: .13em;
-            text-transform: uppercase;
-        }
-        .hero-fact {
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-top: 1px solid rgba(255,255,255,.15);
-            color: #c4cfce;
-            font-size: .8rem;
-        }
-        .hero-fact strong { color: white; font-weight: 600; text-align: right; }
-
-        #rechner {
-            padding: 1.2rem 0 !important;
-            background: #e9e8e1 !important;
-            border-color: var(--line) !important;
-            color: var(--ink) !important;
-        }
-        #rechner > div > div {
-            padding: .8rem 1rem !important;
-            border: 0 !important;
-            border-radius: 2px !important;
-            background: transparent !important;
-            box-shadow: none !important;
-        }
-        #rechner h3 { color: var(--ink) !important; font-size: .9rem !important; }
-        #rechner > div > div > div > div:first-child span { color: var(--green) !important; }
-        #rechner .grid > div {
-            min-width: 100px;
-            padding: .7rem .9rem !important;
-            border: 1px solid var(--line) !important;
-            border-radius: 2px !important;
-            background: #fff !important;
-        }
-        #rechner .grid span { color: var(--muted) !important; }
-        #rechner .grid strong { color: var(--ink) !important; }
-
         #katalog { background: var(--paper) !important; }
         #katalog > div > div:first-child span,
         #satzung > div > div:first-child span,
@@ -255,34 +140,6 @@
             border: 1px solid var(--line) !important;
             border-radius: 2px !important;
             box-shadow: 0 4px 18px rgba(23,42,53,.045) !important;
-        }
-        #katalog .property-card::after,
-        .location-map::after,
-        #satzung .rule-card::after {
-            position: absolute;
-            z-index: 2;
-            inset: 0;
-            padding: 2px;
-            border-radius: inherit;
-            background: linear-gradient(115deg, #ff5364, #ffb347, #43d18b, #48aaff, #bd75ff, #ff5364);
-            background-size: 250% 250%;
-            content: "";
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .2s ease;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-        }
-        #katalog .property-card:hover::after,
-        #katalog .property-card:focus-within::after,
-        .location-map:hover::after,
-        #satzung .rule-card:hover::after {
-            opacity: 1;
-            animation: property-rgb-border 4s linear infinite;
-        }
-        @keyframes property-rgb-border {
-            to { background-position: 250% 50%; }
         }
         #katalog .property-card:hover {
             transform: translateY(-4px);
@@ -376,7 +233,6 @@
             font-size: .72rem;
         }
         .property-availability strong { color: var(--green); font-weight: 700; }
-        #katalog .property-card > div:last-child { padding: 1.6rem !important; }
         #katalog .property-card h3 {
             color: var(--ink) !important;
             font-family: Georgia, "Times New Roman", serif;
@@ -448,28 +304,6 @@
             margin: 1.5rem 0;
             border: 1px solid var(--line);
             background: #f5f4ef;
-            position: relative;
-            isolation: isolate;
-        }
-        .floor-slider::after {
-            position: absolute;
-            z-index: 2;
-            inset: 0;
-            padding: 2px;
-            border-radius: inherit;
-            background: linear-gradient(115deg, #ff5364, #ffb347, #43d18b, #48aaff, #bd75ff, #ff5364);
-            background-size: 250% 250%;
-            content: "";
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .2s ease;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-        }
-        .floor-slider:hover::after {
-            opacity: 1;
-            animation: property-rgb-border 4s linear infinite;
         }
         .floor-slider-image {
             display: block;
@@ -537,32 +371,321 @@
         }
         #toast { border-radius: 2px !important; background: var(--green-dark) !important; }
 
+        .application-document { display: none; }
+
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
         @media print {
-            body, #antrag { background: white !important; color: black !important; }
+            body { background: white !important; color: black !important; }
+            body > :not(#antrag) { display: none !important; }
+            #antrag {
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+            }
+            #antrag > div {
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            #antrag > div > .text-center { display: none !important; }
             #antrag .application-card {
-                border: 2px solid black !important;
+                padding: 0 !important;
+                border: 0 !important;
+            }
+            #estate-form { display: none !important; }
+            .application-document {
+                display: block !important;
+                color: #172a35 !important;
+                font: 10pt/1.5 Georgia, "Times New Roman", serif;
+            }
+            .document-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding-bottom: 12pt;
+                border-bottom: 2px solid #355d50;
+            }
+            .document-office { font: bold 9pt/1.4 Arial, sans-serif; letter-spacing: .08em; }
+            .document-office span { display: block; color: #355d50; font-size: 8pt; }
+            .document-reference { text-align: right; font: 8pt/1.5 Arial, sans-serif; }
+            .document-title { margin: 24pt 0 4pt; font: bold 21pt/1.2 Georgia, "Times New Roman", serif; }
+            .document-subtitle { margin: 0 0 18pt; color: #355d50; font: bold 9pt Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+            .document-intro { margin: 0 0 16pt; }
+            .document-table { width: 100%; margin: 0 0 16pt; border-collapse: collapse; font-size: 9.5pt; }
+            .document-table th, .document-table td { padding: 8pt 9pt; border: 1px solid #b9c1bc; text-align: left; vertical-align: top; }
+            .document-table th { width: 32%; background: #f0f2ee; font: bold 8pt Arial, sans-serif; }
+            #antrag .document-section-title { margin: 18pt 0 7pt; font: bold 11pt/1.3 Arial, sans-serif !important; letter-spacing: 0 !important; color: #172a35 !important; }
+            .document-declaration { margin: 0 0 24pt; }
+            .document-signatures { display: flex; gap: 30pt; margin-top: 35pt; }
+            .document-signature { flex: 1; padding-top: 5pt; border-top: 1px solid #172a35; font: 8pt Arial, sans-serif; }
+            .document-footnote { margin-top: 28pt; padding-top: 7pt; border-top: 1px solid #b9c1bc; color: #53625c; font: 8pt/1.4 Arial, sans-serif; }
+            #antrag .application-card {
+                border: 0 !important;
+                border-radius: 0 !important;
                 box-shadow: none !important;
             }
             #antrag .application-card input,
-            #antrag .application-card select { background: white !important; color: black !important; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            #katalog .property-card:hover::after,
-            #katalog .property-card:focus-within::after,
-            .location-map:hover::after,
-            #satzung .rule-card:hover::after,
-            .floor-slider:hover::after { animation: none; }
+            #antrag .application-card select {
+                background: white !important;
+                color: black !important;
+            }
         }
 
         @media (max-width: 767px) {
-            .civic-hero { padding: 4rem 0 !important; }
-            .civic-hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-            .hero-facts { padding: 1.3rem; }
-            #rechner > div > div { padding: .4rem !important; }
-            #rechner .grid { width: 100%; }
             .location-map { grid-template-columns: 1fr; }
             .location-map img { max-height: 280px; }
+        }
+
+        .estate-hero {
+            position: relative;
+            display: flex;
+            min-height: min(720px, calc(100svh - 84px));
+            align-items: flex-end;
+            overflow: hidden;
+            background: #172a35;
+            color: white;
+        }
+        .estate-hero-image,
+        .estate-hero-image::after {
+            position: absolute;
+            inset: 0;
+        }
+        .estate-hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 54%;
+        }
+        .estate-hero-image::after {
+            content: "";
+            background: linear-gradient(90deg, rgba(17,29,30,.76), rgba(17,29,30,.18) 72%),
+                linear-gradient(0deg, rgba(17,29,30,.68), transparent 68%);
+        }
+        .estate-hero-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            padding-top: 7rem;
+            padding-bottom: clamp(3rem, 8vh, 6rem);
+        }
+        .estate-hero .civic-kicker { margin-bottom: 1.15rem; }
+        .estate-hero h1 {
+            max-width: 760px;
+            margin: 0 0 1rem !important;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(2.8rem, 6vw, 5.7rem) !important;
+            font-weight: 400 !important;
+            line-height: 1.02 !important;
+            letter-spacing: -.045em !important;
+        }
+        .estate-hero-content > p {
+            max-width: 590px;
+            margin-bottom: 1.5rem;
+            color: rgba(255,255,255,.86) !important;
+            font-size: clamp(.95rem, 1.2vw, 1.08rem) !important;
+            line-height: 1.75 !important;
+        }
+        .estate-hero-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .75rem;
+            padding-bottom: .45rem;
+            border-bottom: 1px solid #d6c18f;
+            color: #f0dfb5;
+            font-size: .82rem;
+            font-weight: 700;
+            letter-spacing: .035em;
+            text-decoration: none;
+        }
+        .estate-hero-link i { transition: transform .2s ease; }
+        .estate-hero-link:hover i { transform: translateX(4px); }
+        .estate-hero-note {
+            position: absolute;
+            z-index: 1;
+            right: max(24px, calc((100vw - 1280px) / 2));
+            bottom: 3rem;
+            color: rgba(255,255,255,.78);
+            font-family: "JetBrains Mono", monospace;
+            font-size: .62rem;
+            letter-spacing: .12em;
+            text-align: right;
+            text-transform: uppercase;
+        }
+
+        #katalog { padding-top: clamp(4rem, 8vw, 7rem) !important; }
+        #katalog > div > div:first-child { margin-bottom: 2.5rem !important; }
+        #katalog h2, #satzung h2, #antrag h2 {
+            font-size: clamp(2rem, 3.5vw, 3.15rem) !important;
+            line-height: 1.12 !important;
+        }
+        .property-list { display: grid; gap: .85rem; }
+        #katalog .property-card {
+            display: grid;
+            grid-template-columns: minmax(190px, .75fr) minmax(0, 1fr) minmax(190px, .72fr);
+            align-items: stretch;
+            gap: clamp(1.25rem, 3vw, 2.5rem);
+            padding: 1rem;
+            border-color: var(--line) !important;
+            background: #fff;
+            box-shadow: none !important;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+        #katalog .property-card:hover {
+            transform: none;
+            border-color: #9eaa9f !important;
+            box-shadow: 0 8px 24px rgba(23,42,53,.07) !important;
+        }
+        #katalog .property-visual {
+            position: relative;
+            width: 100%;
+            height: 100% !important;
+            min-height: 205px;
+            background: #e5e6df !important;
+        }
+        #katalog .property-visual > img { position: absolute; inset: 0; }
+        #katalog .property-visual .property-visual-overlay {
+            background: linear-gradient(0deg, rgba(23,42,53,.36), transparent 50%);
+        }
+        #katalog .property-visual > .property-type-badge {
+            top: auto;
+            bottom: 12px;
+            left: 12px;
+        }
+        #katalog .property-visual > .property-count-badge {
+            top: 12px;
+            right: 12px;
+            bottom: auto;
+        }
+        #katalog .property-description {
+            align-self: center;
+            padding: .5rem 0;
+        }
+        #katalog .property-description .property-id { margin-bottom: .7rem; }
+        #katalog .property-description h3 {
+            margin-bottom: .25rem !important;
+            font-size: clamp(1.45rem, 2vw, 1.8rem) !important;
+        }
+        #katalog .property-description > p {
+            margin-bottom: 1.25rem;
+            color: var(--muted);
+            font-size: .8rem;
+        }
+        #katalog .property-description .property-availability {
+            justify-content: flex-start;
+            gap: .6rem;
+            margin: 0;
+            font-size: .75rem;
+        }
+        #katalog .property-description .property-availability strong {
+            padding: .25rem .5rem;
+            background: #edf2ec;
+        }
+        #katalog .property-offer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: .65rem .5rem .65rem 1.5rem;
+            border-left: 1px solid var(--line);
+        }
+        #katalog .property-price {
+            display: flex;
+            flex-direction: column;
+            gap: .2rem;
+            margin-bottom: .8rem;
+        }
+        #katalog .property-price span {
+            color: var(--muted);
+            font-size: .66rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+        #katalog .property-price strong {
+            color: var(--ink);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.45rem;
+            font-weight: 400;
+        }
+        #katalog .property-offer ul {
+            padding: .7rem 0;
+            margin: 0 0 .8rem;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            color: var(--muted);
+            font-size: .68rem;
+        }
+        #katalog .property-offer ul li + li { margin-top: .35rem; }
+        #katalog .property-offer ul strong { color: var(--ink); }
+        #katalog .property-card button { width: 100%; }
+
+        .location-map {
+            margin-bottom: 2rem;
+            border-left-width: 2px;
+            box-shadow: none;
+        }
+        .location-map img { aspect-ratio: 2.2 / 1; }
+        #satzung .rule-card { transition: box-shadow .2s ease; }
+        #satzung .rule-card:hover { box-shadow: 0 8px 24px rgba(23,42,53,.06); }
+        #property-modal > div { padding: clamp(1.25rem, 4vw, 2rem); }
+
+        @media (max-width: 900px) {
+            #katalog .property-card {
+                grid-template-columns: minmax(170px, .75fr) minmax(0, 1fr);
+                gap: 1.25rem;
+            }
+            #katalog .property-visual { grid-row: span 2; }
+            #katalog .property-offer {
+                grid-column: 2;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+                gap: .5rem 1rem;
+                padding: 1rem 0 0;
+                border-top: 1px solid var(--line);
+                border-left: 0;
+            }
+            #katalog .property-price { margin: 0; }
+            #katalog .property-offer ul { margin: 0; }
+            #katalog .property-card button { grid-column: 1 / -1; }
+        }
+        @media (max-width: 600px) {
+            .estate-hero { min-height: 620px; min-height: min(700px, calc(100svh - 72px)); }
+            .estate-hero-image img { object-position: 54% center; }
+            .estate-hero-image::after {
+                background: linear-gradient(0deg, rgba(17,29,30,.82), rgba(17,29,30,.04) 92%);
+            }
+            .estate-hero-content { padding-top: 5rem; padding-bottom: 5.5rem; }
+            .estate-hero h1 { max-width: 420px; }
+            .estate-hero-content > p { max-width: 420px; font-size: .92rem !important; }
+            .estate-hero-note { right: 1.5rem; bottom: 1.35rem; font-size: .56rem; }
+            #katalog .property-card { grid-template-columns: 1fr; gap: .75rem; }
+            #katalog .property-visual { grid-row: auto; min-height: 230px; }
+            #katalog .property-description { padding: .5rem .25rem; }
+            #katalog .property-offer { grid-column: auto; }
+            #katalog .property-offer {
+                display: flex;
+                align-items: stretch;
+            }
+            #katalog .property-price {
+                flex-direction: row;
+                align-items: baseline;
+                justify-content: space-between;
+                gap: .75rem;
+            }
+            #katalog .property-price strong {
+                font-size: 1.2rem;
+                text-align: right;
+            }
+            .location-map img { aspect-ratio: 1.4 / 1; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .estate-hero-link i { transition: none; }
+            #katalog .property-card,
+            #satzung .rule-card { transition: none; }
         }
     </style>
 </head>
@@ -623,89 +746,30 @@
         </div>
     </header>
 
-    <!-- 1. Hero Section -->
-    <section class="civic-hero">
-        <div class="hero-photo absolute inset-0 z-0 opacity-25">
-            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80" alt="" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-transparent"></div>
+    <!-- 1. Immobilienauftakt -->
+    <section class="estate-hero" aria-labelledby="estate-title">
+        <div class="estate-hero-image" aria-hidden="true">
+            <img src="102.png" alt="">
         </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 civic-hero-inner">
-            <div class="civic-hero-copy">
-                <div class="civic-kicker">Stadtbauamt · Spawn-Stadt</div>
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-none mb-6">
-                    Gewerbeplätze & <br>
-                    <span>Geschäftshäuser am Spawn.</span>
-                </h1>
-                <p class="text-lg text-slate-300 mb-8 leading-relaxed font-light">
-                    Erwerben Sie eine schlüsselfertige Gewerbeimmobilie am zentralen Handelsplatz. Alle Objekte werden zum einmaligen Festpreis ohne Folgemieten durch das Stadtbauamt vergeben.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                    <a href="#katalog" class="hero-primary bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold px-7 py-4 rounded-xl shadow-lg shadow-amber-500/20 text-center transition-all flex items-center justify-center space-x-2">
-                        <span>Immobilien entdecken</span>
-                        <i class="fas fa-arrow-right text-sm"></i>
-                    </a>
-                    <a href="#satzung" class="hero-secondary glass-dark hover:bg-slate-800/80 text-white font-semibold px-7 py-4 rounded-xl border border-slate-700/60 text-center transition-all flex items-center justify-center space-x-2">
-                        <i class="fas fa-gavel text-amber-400"></i>
-                        <span>Regeln & Satzung</span>
-                    </a>
-                </div>
-            </div>
-            <aside class="hero-facts" aria-label="Wichtige Informationen zur Vergabe">
-                <div class="hero-facts-label">Auf einen Blick</div>
-                <div class="hero-fact"><span>Vergabe</span><strong>Einmaliger Festpreis</strong></div>
-                <div class="hero-fact"><span>Nutzung</span><strong>Gewerbe am Handelsplatz</strong></div>
-                <div class="hero-fact"><span>Gebäude</span><strong>3 ausbaubare Geschosse</strong></div>
-                <div class="hero-fact"><span>Voraussetzung</span><strong>Prüfung durch die Verwaltung</strong></div>
-            </aside>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 estate-hero-content">
+            <div class="civic-kicker">Stadtbauamt · Spawn-Stadt</div>
+            <h1 id="estate-title">Ein guter Ort für große Pläne.</h1>
+            <p>Geschäftshäuser am Marktplatz – dauerhaft, ohne Folgemieten und mit Raum für Ihr eigenes Konzept.</p>
+            <a href="#katalog" class="estate-hero-link">
+                Gewerbeimmobilien ansehen <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>
         </div>
+        <div class="estate-hero-note">Marktplatz · Spawn &nbsp; / &nbsp; Gewerbeimmobilien</div>
     </section>
 
-    <!-- 2. Create Numismatics Rechner / Bar -->
-    <section id="rechner" class="py-8 bg-slate-900 text-white border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-slate-800/80 border border-amber-500/30 rounded-2xl p-6 shadow-xl">
-                <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
-                    <div>
-                        <span class="text-xs font-mono uppercase tracking-widest text-amber-400 font-bold block">Währungssystem</span>
-                        <h3 class="text-xl font-extrabold text-white">Create Numismatics Münzkurs</h3>
-                    </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 font-mono text-xs w-full lg:w-auto">
-                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center">
-                            <span class="text-slate-400 block text-[10px]">1 BEVEL</span>
-                            <strong class="text-white">8 Spurs</strong>
-                        </div>
-                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center">
-                            <span class="text-slate-400 block text-[10px]">1 SPROCKET</span>
-                            <strong class="text-white">16 Spurs</strong>
-                        </div>
-                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center">
-                            <span class="text-slate-400 block text-[10px]">1 COG</span>
-                            <strong class="text-amber-400">64 Spurs</strong>
-                        </div>
-                        <div class="bg-slate-900/80 p-3 rounded-lg border border-amber-500/40 text-center">
-                            <span class="text-slate-400 block text-[10px]">1 SUN</span>
-                            <strong class="text-amber-300">4096 Spurs · 64 Cogs</strong>
-                        </div>
-                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center">
-                            <span class="text-slate-400 block text-[10px]">1 CROWN</span>
-                            <strong class="text-amber-400">8 Cogs</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. Immobilien-Katalog -->
+    <!-- 2. Immobilien-Katalog -->
     <section id="katalog" class="py-20 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
                 <div>
                     <span class="text-amber-600 font-bold text-xs uppercase tracking-wider font-mono">Immobilien-Katalog</span>
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">Verfügbare Gewerbetypen</h2>
-                    <p class="text-slate-600 text-sm mt-1">Alle Gebäude verfügen über genau 3 voll ausbaubare Geschosse (EG, OG, DG).</p>
+                    <p class="text-slate-600 text-sm mt-1">Alle Gebäude verfügen über genau drei ausbaubare Geschosse: Erdgeschoss, Obergeschoss, Dachgeschoss. Die Planung von Treppe und Aufzügen erfolgt individuell.</p>
                 </div>
             </div>
 
@@ -718,91 +782,85 @@
             </figure>
 
             <!-- Grid der 3 Haustypen -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="property-list">
                 
                 <!-- Typ 101 -->
-                <div class="property-card bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
-                    <div class="property-visual relative overflow-hidden h-64 bg-slate-200">
+                <article class="property-card">
+                    <div class="property-visual">
                         <img src="101.png" alt="Ansicht des Gewerbehauses Typ 101" loading="lazy">
                         <div class="property-visual-overlay"></div>
                         <div class="property-type-badge">TYP 101</div>
                         <div class="property-count-badge">6 verfügbar</div>
                     </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
+                    <div class="property-description">
                             <div class="property-id text-xs text-amber-600 font-mono font-bold mb-1">MAP-ID: #101</div>
                             <h3 class="font-extrabold text-slate-900 text-xl mb-1">Haus "Basis"</h3>
-                            <p class="text-xs text-slate-500 italic mb-4">Hälfte eines Doppelhauses</p>
+                            <p>Hälfte eines Doppelhauses</p>
                             <div class="property-availability"><span>Verfügbare Häuser</span><strong>6 Stück</strong></div>
-                            
-                            <ul class="space-y-2 py-3 border-y border-slate-100 text-xs text-slate-600 mb-4">
-                                <li class="flex justify-between"><span>Geschosse:</span> <strong class="text-slate-900">3 (EG, OG, DG)</strong></li>
-                                <li class="flex justify-between"><span>Bauart:</span> <strong class="text-slate-900">Doppelhaushälfte</strong></li>
-                                <li class="flex justify-between"><span>Kaufpreis:</span> <strong class="text-amber-600">32 Cogs</strong></li>
-                            </ul>
-                        </div>
-
+                    </div>
+                    <div class="property-offer">
+                        <div class="property-price"><span>Kaufpreis</span><strong>32 Cogs</strong></div>
+                        <ul>
+                            <li class="flex justify-between"><span>Geschosse</span><strong>3 (EG, OG, DG)</strong></li>
+                            <li class="flex justify-between"><span>Bauart</span><strong>Doppelhaushälfte</strong></li>
+                        </ul>
                         <button onclick="openModal(101)" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
-                            Exposé & Details ansehen
+                            Exposé ansehen
                         </button>
                     </div>
-                </div>
+                </article>
 
                 <!-- Typ 102 -->
-                <div class="property-card bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
-                    <div class="property-visual relative overflow-hidden h-64 bg-slate-200">
+                <article class="property-card">
+                    <div class="property-visual">
                         <img src="102.png" alt="Ansicht des Gewerbehauses Typ 102" loading="lazy">
                         <div class="property-visual-overlay"></div>
                         <div class="property-type-badge">TYP 102</div>
                         <div class="property-count-badge">12 verfügbar</div>
                     </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
+                    <div class="property-description">
                             <div class="property-id text-xs text-amber-600 font-mono font-bold mb-1">MAP-ID: #102</div>
                             <h3 class="font-extrabold text-slate-900 text-xl mb-1">Haus "Standard"</h3>
-                            <p class="text-xs text-slate-500 italic mb-4">Freistehendes Stadthaus</p>
+                            <p>Freistehendes Stadthaus</p>
                             <div class="property-availability"><span>Verfügbare Häuser</span><strong>12 Stück</strong></div>
-                            
-                            <ul class="space-y-2 py-3 border-y border-slate-100 text-xs text-slate-600 mb-4">
-                                <li class="flex justify-between"><span>Geschosse:</span> <strong class="text-slate-900">3 (EG, OG, DG)</strong></li>
-                                <li class="flex justify-between"><span>Bauart:</span> <strong class="text-slate-900">Freistehend</strong></li>
-                                <li class="flex justify-between"><span>Kaufpreis:</span> <strong class="text-amber-600">1 Sun</strong></li>
-                            </ul>
-                        </div>
-
+                    </div>
+                    <div class="property-offer">
+                        <div class="property-price"><span>Kaufpreis</span><strong>1 Sun</strong></div>
+                        <ul>
+                            <li class="flex justify-between"><span>Geschosse</span><strong>3 (EG, OG, DG)</strong></li>
+                            <li class="flex justify-between"><span>Bauart</span><strong>Freistehend</strong></li>
+                        </ul>
                         <button onclick="openModal(102)" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
-                            Exposé & Details ansehen
+                            Exposé ansehen
                         </button>
                     </div>
-                </div>
+                </article>
 
                 <!-- Typ 103 -->
-                <div class="property-card bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
-                    <div class="property-visual relative overflow-hidden h-64 bg-slate-200">
+                <article class="property-card">
+                    <div class="property-visual">
                         <img src="103.png" alt="Ansicht des Gewerbehauses Typ 103" loading="lazy">
                         <div class="property-visual-overlay"></div>
                         <div class="property-type-badge">TYP 103</div>
                         <div class="property-count-badge">5 verfügbar</div>
                     </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
+                    <div class="property-description">
                             <div class="property-id text-xs text-amber-600 font-mono font-bold mb-1">MAP-ID: #103</div>
                             <h3 class="font-extrabold text-slate-900 text-xl mb-1">Haus "Standard Plus"</h3>
-                            <p class="text-xs text-slate-500 italic mb-4">Großraum Gewerbeimmobilie</p>
+                            <p>Großraum Gewerbeimmobilie</p>
                             <div class="property-availability"><span>Verfügbare Häuser</span><strong>5 Stück</strong></div>
-                            
-                            <ul class="space-y-2 py-3 border-y border-slate-100 text-xs text-slate-600 mb-4">
-                                <li class="flex justify-between"><span>Geschosse:</span> <strong class="text-slate-900">3 (EG, OG, DG)</strong></li>
-                                <li class="flex justify-between"><span>Bauart:</span> <strong class="text-slate-900">Großraum-Gebäude</strong></li>
-                                <li class="flex justify-between"><span>Kaufpreis:</span> <strong class="text-amber-600">1 Sun + 32 Cogs</strong></li>
-                            </ul>
-                        </div>
-
+                    </div>
+                    <div class="property-offer">
+                        <div class="property-price"><span>Kaufpreis</span><strong>1 Sun + 32 Cogs</strong></div>
+                        <ul>
+                            <li class="flex justify-between"><span>Geschosse</span><strong>3 (EG, OG, DG)</strong></li>
+                            <li class="flex justify-between"><span>Bauart</span><strong>Großraum</strong></li>
+                        </ul>
                         <button onclick="openModal(103)" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
-                            Exposé & Details ansehen
+                            Exposé ansehen
                         </button>
                     </div>
-                </div>
+                </article>
 
             </div>
         </div>
@@ -922,6 +980,51 @@
                         Kaufantrag generieren & Drucken
                     </button>
                 </form>
+
+                <article id="application-document" class="application-document" aria-labelledby="document-title">
+                    <header class="document-header">
+                        <div class="document-office">
+                            STADTBAUAMT SPAWN
+                            <span>Gewerbe- und Immobilienkontor</span>
+                        </div>
+                        <div class="document-reference">
+                            <strong>FORMBLATT ST-IMM-01</strong><br>
+                            Kaufantrag · Gewerbeimmobilie<br>
+                            Datum: <span id="document-date"></span>
+                        </div>
+                    </header>
+                    <h1 id="document-title" class="document-title">Antrag auf Erwerb einer Gewerbeimmobilie</h1>
+                    <p class="document-subtitle">Antrag an die Serverleitung / Stadtverwaltung</p>
+                    <p class="document-intro">Hiermit beantrage ich die Berücksichtigung meines Wunsches zum Erwerb einer Gewerbeimmobilie in der Spawn-Stadt. Die Angaben zu Antragsteller, Nutzung und Wunschobjekt finden Sie nachfolgend.</p>
+
+                    <h2 class="document-section-title">1. Angaben zum Antragsteller und Vorhaben</h2>
+                    <table class="document-table">
+                        <tbody>
+                            <tr><th scope="row">Minecraft- / Team-Name</th><td id="document-applicant"></td></tr>
+                            <tr><th scope="row">Geplanter Shop / Branche</th><td id="document-shop"></td></tr>
+                            <tr><th scope="row">Bestehendes Haus im Team</th><td id="document-existing-house"></td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2 class="document-section-title">2. Gewünschte Gewerbeimmobilie</h2>
+                    <table class="document-table">
+                        <tbody>
+                            <tr><th scope="row">Haustyp</th><td id="document-house-type"></td></tr>
+                            <tr><th scope="row">Wunschstandort / Haus-Nr.</th><td id="document-location"></td></tr>
+                            <tr><th scope="row">Ausgewiesener Kaufpreis</th><td id="document-price"></td></tr>
+                            <tr><th scope="row">Bauart und Geschosse</th><td id="document-building"></td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2 class="document-section-title">Erklärung</h2>
+                    <p class="document-declaration">Ich bestätige, dass meine Angaben nach bestem Wissen vollständig und richtig sind. Mir ist bekannt, dass dieser Antrag zunächst geprüft wird und die Entscheidung über die Vergabe durch die Serverleitung / Stadtverwaltung erfolgt.</p>
+
+                    <div class="document-signatures">
+                        <div class="document-signature">Ort, Datum</div>
+                        <div class="document-signature">Unterschrift Antragsteller/in</div>
+                    </div>
+                    <p class="document-footnote">Nur von der Verwaltung auszufüllen: Eingang und Vergabe werden durch die zuständige Stelle dokumentiert.</p>
+                </article>
             </div>
         </div>
     </section>
@@ -1088,6 +1191,25 @@
 
         function handleFormSubmit(e) {
             e.preventDefault();
+            const selectedHouse = Object.values(houses).find(house => house.formValue === document.getElementById('hType').value);
+            if (!selectedHouse) {
+                throw new Error('Der ausgewählte Haustyp konnte dem Antrag nicht zugeordnet werden.');
+            }
+
+            const documentValues = {
+                'document-date': new Date().toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' }),
+                'document-applicant': document.getElementById('pName').value.trim(),
+                'document-shop': document.getElementById('sName').value.trim(),
+                'document-existing-house': document.getElementById('sNotes').value.trim() || 'Keine Angabe',
+                'document-house-type': selectedHouse.title,
+                'document-location': document.getElementById('hNum').value.trim() || 'Kein Wunschstandort angegeben',
+                'document-price': selectedHouse.price,
+                'document-building': `${selectedHouse.type}; drei Geschosse (EG, OG, DG)`
+            };
+            for (const [id, value] of Object.entries(documentValues)) {
+                document.getElementById(id).textContent = value;
+            }
+
             showToast("Antrag generiert! Druckansicht wird geöffnet...");
             setTimeout(() => { window.print(); }, 800);
         }
