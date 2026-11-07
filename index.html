@@ -411,6 +411,98 @@
         min-width: 0;
       }
 
+      .winter-sale-banner {
+        position: relative;
+        overflow: hidden;
+        margin: 0 0 26px;
+        padding: clamp(18px, 3vw, 30px);
+        border: 2px solid #fff;
+        outline: 1px solid var(--red);
+        color: #fff;
+        background: linear-gradient(120deg, var(--red-dark), var(--red) 56%, #b72b39);
+        box-shadow: 0 12px 30px rgb(116 21 34 / 22%);
+      }
+
+      .winter-sale-banner:after {
+        position: absolute;
+        top: -25px;
+        right: 12px;
+        content: "%";
+        color: rgb(255 255 255 / 12%);
+        font: 700 150px/.9 var(--display);
+        pointer-events: none;
+      }
+
+      .winter-sale-kicker {
+        margin: 0 0 8px;
+        color: #ffe8ad;
+        font: 700 11px/1.4 var(--mono);
+        letter-spacing: .13em;
+        text-transform: uppercase;
+      }
+
+      .winter-sale-banner h2 {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        color: #fff;
+        font: 700 clamp(30px, 4vw, 46px)/.98 var(--display);
+        letter-spacing: -.025em;
+        text-transform: uppercase;
+      }
+
+      .winter-sale-banner > p {
+        position: relative;
+        z-index: 1;
+        margin: 10px 0 18px;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .winter-sale-rates {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .winter-sale-rate {
+        min-width: 0;
+        padding: 10px;
+        border: 1px solid rgb(255 255 255 / 45%);
+        background: rgb(54 0 8 / 22%);
+      }
+
+      .winter-sale-rate strong,
+      .winter-sale-rate span {
+        display: block;
+      }
+
+      .winter-sale-rate strong {
+        font: 700 clamp(18px, 2.4vw, 27px)/1 var(--display);
+        white-space: nowrap;
+      }
+
+      .winter-sale-rate span {
+        margin-top: 6px;
+        color: #ffe8e8;
+        font: 10px/1.35 var(--mono);
+        text-transform: uppercase;
+      }
+
+      .winter-sale-link {
+        position: relative;
+        z-index: 1;
+        display: inline-block;
+        margin-top: 16px;
+        color: #fff;
+        font-weight: 700;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+      }
+
       .hero h1 {
         margin: 0;
         font: 700 clamp(32px, 5vw, 58px)/1.12 var(--display);
@@ -609,6 +701,26 @@
 
         .hero h1 {
           font-size: clamp(24px, 8vw, 58px);
+        }
+
+        .winter-sale-banner {
+          padding: 18px;
+        }
+
+        .winter-sale-rates {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .winter-sale-rate {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 10px;
+        }
+
+        .winter-sale-rate span {
+          margin-top: 0;
+          text-align: right;
         }
 
       }
@@ -1368,6 +1480,49 @@
         color: #fff;
       }
 
+      .station-sale-banner {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 18px;
+        margin-top: 34px;
+        padding: 19px 22px;
+        border: 2px solid #fff;
+        outline: 1px solid var(--red);
+        color: #fff;
+        background: linear-gradient(110deg, var(--red-dark), var(--red));
+        box-shadow: var(--shadow);
+      }
+
+      .station-sale-percent {
+        font: 700 40px/.9 var(--display);
+        white-space: nowrap;
+      }
+
+      .station-sale-copy strong,
+      .station-sale-copy span {
+        display: block;
+      }
+
+      .station-sale-copy strong {
+        font: 700 22px/1 var(--display);
+        text-transform: uppercase;
+      }
+
+      .station-sale-copy span {
+        margin-top: 6px;
+        color: #ffe8e8;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .station-sale-snow {
+        color: #ffe8ad;
+        font-size: 28px;
+        letter-spacing: .15em;
+        white-space: nowrap;
+      }
+
       .price-heading,
       .price-item {
         display: grid;
@@ -1394,6 +1549,20 @@
         text-transform: uppercase;
       }
 
+      .price-heading span {
+        font-weight: 700;
+      }
+
+      .price-discount {
+        display: inline-block;
+        width: fit-content;
+        margin-top: 2px;
+        padding: 3px 6px;
+        border: 1px solid rgb(255 255 255 / 70%);
+        color: #fff;
+        font: 700 11px/1.2 var(--mono);
+      }
+
       .price-item strong {
         font: 700 18px/1.1 var(--display);
         color: #fff;
@@ -1405,12 +1574,25 @@
         line-height: 1.35;
       }
 
+      .price-item .previous-price {
+        color: #fff;
+        opacity: .8;
+      }
+
       .price-surcharge {
         border: 0;
       }
 
       .price-surcharge strong {
         color: #fff;
+      }
+
+      .price-conversion-note {
+        grid-column: 1 / -1;
+        margin: 8px 0 0;
+        color: #ffe8e8;
+        font-size: 12px;
+        line-height: 1.5;
       }
 
       @media (max-width: 1000px) {
@@ -1493,6 +1675,24 @@
         .station-heading {
           grid-template-columns: minmax(0, 1fr);
           gap: 18px;
+        }
+
+        .station-sale-banner {
+          grid-template-columns: auto 1fr;
+          gap: 12px;
+          padding: 16px;
+        }
+
+        .station-sale-percent {
+          font-size: 32px;
+        }
+
+        .station-sale-copy strong {
+          font-size: 19px;
+        }
+
+        .station-sale-snow {
+          display: none;
         }
 
         .platform-comparison {
@@ -2360,6 +2560,17 @@
     <main>
       <section class="hero shell" id="start" aria-labelledby="hero-title">
         <div class="hero-copy">
+          <aside class="winter-sale-banner" aria-labelledby="winter-sale-title">
+            <p class="winter-sale-kicker">❄ DOCTOR INDUSTRIES · SAISONANGEBOT ❄</p>
+            <h2 id="winter-sale-title">Großer Wintersale!</h2>
+            <p>Günstiger ans Schienennetz – sichere dir jetzt deinen Anschluss.</p>
+            <div class="winter-sale-rates" aria-label="Wintersale-Rabatte">
+              <div class="winter-sale-rate"><strong>50 %</strong><span>DI-Bahnhof</span></div>
+              <div class="winter-sale-rate"><strong>98,44 %</strong><span>Streckenbau je 100 m</span></div>
+              <div class="winter-sale-rate"><strong>87,5 %*</strong><span>Dimensionspreis</span></div>
+            </div>
+            <a class="winter-sale-link" href="#kosten">%% Wintersale-Preise ansehen %%</a>
+          </aside>
           <p class="eyebrow">EINHEITLICH · ORGANISIERT · REGULIERT</p>
           <h1 id="hero-title"><span class="hero-line">EGAL WIE GUT DU FLIEGST.</span><span class="hero-line">ZÜGE FAHREN GÜTER.</span></h1>
           <p class="hero-intro">
@@ -2565,7 +2776,7 @@
                 <li>
                   <span class="rule-status"><strong>DI-KOS-01</strong>Baukosten</span>
                   <span class="rule-title">Leistungsbezogene Kosten</span>
-                  <p class="rule-description">DI-Bahnhof: 1 Cog, 2 Sprockets und 4 Spurs (100 Spurs). Streckenbau: 2 Crowns je 100 Meter. Für Nether- und Endanschlüsse gilt ein zusätzlicher Dimensionszuschlag von 1 Crown je 100 Meter.</p>
+                  <p class="rule-description">Wintersale: DI-Bahnhof 50 Spurs statt 100 Spurs (50 % Rabatt); Streckenbau 1 Sprocket = 16 Spurs je 100 Meter statt 2 Crowns = 1.024 Spurs (98,44 % Rabatt). Dimensionszuschlag: einmalig 1 Cog = 64 Spurs je Nether- oder Endanschluss statt 1 Crown je 100 Meter. Bei einem Vergleich über 100 Meter entspricht das 87,5 % Ersparnis. Umrechnung: 1 Sprocket = 16 Spurs, 1 Cog = 64 Spurs, 1 Crown = 8 Cogs.</p>
                 </li>
                 <li>
                   <span class="rule-status"><strong>DI-BET-01</strong>Dimensionsbindung</span>
@@ -2711,26 +2922,35 @@
             </ol>
           </div>
 
-          <div class="station-pricing" aria-label="Preise für Bahnhof und Streckenbau">
+          <div class="station-sale-banner" role="note" aria-label="Großer Wintersale: bis zu 98,44 Prozent Rabatt auf den Streckenbau">
+            <span class="station-sale-percent" aria-hidden="true">%%</span>
+            <span class="station-sale-copy"><strong>Wintersale für deinen Netzanschluss</strong><span>Bahnhof, Strecke und Dimensionsanschluss jetzt zu stark gesenkten Preisen · spare bis zu 98,44 % beim Streckenbau!</span></span>
+            <span class="station-sale-snow" aria-hidden="true">❄ ❅ ❄</span>
+          </div>
+          <div class="station-pricing" id="kosten" aria-label="Wintersale-Preise für Bahnhof und Streckenbau">
             <div class="price-heading">
-              <span>KOSTENRAHMEN</span>
-              <strong>Preise je Leistung</strong>
+              <span>❄ WINTERSALE · SONDERPREISE ❄</span>
+              <strong>Jetzt günstig ans Netz</strong>
             </div>
             <div class="price-item">
               <span>DI-Bahnhof</span>
-              <strong>1 Cog + 2 Sprockets + 4 Spurs</strong>
-              <small>entspricht 100 Spurs</small>
+              <strong>50 Spurs</strong>
+              <small>Vorher: <del>100 Spurs</del> · Ersparnis: 50 Spurs</small>
+              <span class="price-discount">50 % RABATT</span>
             </div>
             <div class="price-item">
-              <span>Streckenbau</span>
-              <strong>2 Crowns / 100 m</strong>
-              <small>je 100 Meter</small>
+              <span>Streckenbau · je 100 m</span>
+              <strong>1 Sprocket = 16 Spurs</strong>
+              <small>Vorher: <del>2 Crowns = 1.024 Spurs</del></small>
+              <span class="price-discount">98,44 % RABATT</span>
             </div>
             <div class="price-item price-surcharge">
-              <span>Nether oder End</span>
-              <strong>+1 Crown / 100 m</strong>
-              <small>zusätzlich zu den Streckenbaukosten</small>
+              <span>Dimension · einmalig je Anschluss</span>
+              <strong>1 Cog = 64 Spurs</strong>
+              <small>Vorher: <del>1 Crown / 100 m</del> · 87,5 % Ersparnis im 100-m-Vergleich</small>
+              <span class="price-discount">87,5 %* RABATT</span>
             </div>
+            <p class="price-conversion-note">* Dimensionsrabatt im Vergleich zu 100 m bisheriger Strecke. Umrechnung: 1 Sprocket = 16 Spurs · 1 Cog = 64 Spurs · 1 Crown = 8 Cogs.</p>
           </div>
         </div>
       </section>
