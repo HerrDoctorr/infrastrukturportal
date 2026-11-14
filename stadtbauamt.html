@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stadtbauamt Spawn</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        city: {
+                            50: '#fbf9f5',
+                            100: '#f4efe4',
+                            800: '#1b2327', // Deep Slate / Urban Dark
+                            900: '#11171a',
+                            gold: '#c5a059', // City Amber / Gold
+                            'gold-hover': '#aa853f',
+                            emerald: '#2d7a46',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .glass-dark {
+            background: rgba(17, 23, 26, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        @media print {
+            body { background: white !important; color: black !important; }
+            .no-print { display: none !important; }
+            .print-box { border: 2px solid black !important; background: white !important; color: black !important; }
+        }
+
+        :root {
+            --ink: #172a35;
+            --ink-soft: #314650;
+            --paper: #f5f4ef;
+            --line: #d8d8cf;
+            --green: #355d50;
+            --green-dark: #24463b;
+            --brass: #a78345;
+            --muted: #65736f;
+        }
+
+        html { scroll-padding-top: 6rem; }
+        body {
+            background: var(--paper) !important;
+            color: var(--ink) !important;
+            font-family: "Plus Jakarta Sans", sans-serif;
+        }
+        h1, h2, h3 { letter-spacing: -0.035em; }
+        #navbar {
+            background: #fff !important;
+            border-color: var(--line) !important;
+            box-shadow: 0 2px 12px rgba(23, 42, 53, .04);
+        }
+        #navbar > div:first-child > div { min-height: 84px; }
+        #navbar a[href="#"] > div:first-child {
+            border-radius: 2px !important;
+            background: var(--green) !important;
+            box-shadow: none !important;
+        }
+        #navbar a[href="#"] span:first-child { color: var(--ink) !important; }
+        #navbar a[href="#"] span:last-child { color: var(--green) !important; }
+        #navbar nav a {
+            color: var(--ink-soft) !important;
+            font-size: .78rem;
+            letter-spacing: .025em;
+        }
+        #navbar nav a:hover { color: var(--green) !important; }
+        #navbar .md\:flex.items-center.space-x-4 > a,
+        #mobile-menu > div > a {
+            border-radius: 2px !important;
+            background: var(--ink) !important;
+        }
+
+        .civic-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: .7rem;
+            margin-bottom: 1.7rem;
+            color: #d6c18f;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+        }
+        .civic-kicker::before {
+            width: 28px;
+            height: 1px;
+            content: "";
+            background: var(--brass);
+        }
+        #katalog { background: var(--paper) !important; }
+        #katalog > div > div:first-child span,
+        #satzung > div > div:first-child span,
+        #antrag > div > div:first-child span {
+            color: var(--green) !important;
+            letter-spacing: .12em;
+        }
+        #katalog h2, #satzung h2, #antrag h2 {
+            color: var(--ink) !important;
+            font-family: Georgia, "Times New Roman", serif;
+            font-weight: 400 !important;
+            letter-spacing: -.035em;
+        }
+        #katalog .property-card,
+        .location-map,
+        #satzung .rule-card {
+            position: relative;
+            isolation: isolate;
+        }
+        #katalog .property-card {
+            overflow: hidden;
+            border: 1px solid var(--line) !important;
+            border-radius: 2px !important;
+            box-shadow: 0 4px 18px rgba(23,42,53,.045) !important;
+        }
+        #katalog .property-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 28px rgba(23,42,53,.09) !important;
+        }
+        #katalog .property-visual {
+            height: 210px !important;
+            background: #e5e6df !important;
+            color: var(--ink-soft) !important;
+        }
+        #katalog .property-visual > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .35s ease;
+        }
+        #katalog .property-card:hover .property-visual > img { transform: scale(1.035); }
+        #katalog .property-visual .property-visual-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(23,42,53,.18), transparent 42%, rgba(23,42,53,.34));
+            pointer-events: none;
+        }
+        #katalog .property-visual > div:first-child { padding: 1rem !important; }
+        #katalog .property-visual > .property-type-badge {
+            position: absolute;
+            z-index: 1;
+            top: 12px;
+            left: 12px;
+            padding: .35rem .6rem;
+            background: var(--ink) !important;
+            color: white;
+            font-family: "JetBrains Mono", monospace;
+            font-size: .65rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+        }
+        #katalog .property-visual > .property-count-badge {
+            position: absolute;
+            z-index: 1;
+            right: 12px;
+            bottom: 12px;
+            padding: .45rem .65rem;
+            border-radius: 0 !important;
+            background: #d6c18f !important;
+            color: var(--ink) !important;
+            font-family: "JetBrains Mono", monospace;
+            font-size: .68rem;
+            font-weight: 700;
+            box-shadow: none !important;
+        }
+        .location-map {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(220px, .85fr);
+            align-items: center;
+            gap: clamp(1.25rem, 4vw, 3rem);
+            margin: 0 0 2.5rem;
+            padding: clamp(1rem, 3vw, 1.5rem);
+            border: 1px solid var(--line);
+            border-left: 3px solid var(--green);
+            background: #fff;
+            transition: box-shadow .2s ease;
+        }
+        .location-map:hover,
+        #satzung .rule-card:hover {
+            box-shadow: 0 10px 24px rgba(23,42,53,.08);
+        }
+        .location-map img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            object-fit: contain;
+            background: #f5f4ef;
+        }
+        .location-map figcaption { color: var(--muted); font-size: .82rem; line-height: 1.7; }
+        .location-map figcaption strong {
+            display: block;
+            margin-bottom: .45rem;
+            color: var(--ink);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.35rem;
+            font-weight: 400;
+        }
+        .property-availability {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            margin: .25rem 0 1rem;
+            color: var(--muted);
+            font-size: .72rem;
+        }
+        .property-availability strong { color: var(--green); font-weight: 700; }
+        #katalog .property-card h3 {
+            color: var(--ink) !important;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.45rem !important;
+            font-weight: 400 !important;
+        }
+        #katalog .property-card .property-id { color: var(--green) !important; }
+        #katalog .property-card button {
+            padding: .9rem 1rem !important;
+            border-radius: 2px !important;
+            background: var(--green) !important;
+            font-family: "Plus Jakarta Sans", sans-serif !important;
+            font-size: .72rem !important;
+            letter-spacing: .04em;
+        }
+        #katalog .property-card button:hover { background: var(--green-dark) !important; }
+
+        #satzung { background: #fff !important; border-color: var(--line) !important; }
+        #satzung .rule-card {
+            padding: clamp(1.3rem, 3vw, 2.2rem) !important;
+            border: 1px solid var(--line) !important;
+            border-top: 3px solid var(--green) !important;
+            border-radius: 2px !important;
+            background: #fafaf7 !important;
+        }
+        #satzung .rule-card h3 { color: var(--ink) !important; font-size: 1rem !important; }
+        #satzung .rule-card .allowed-rule {
+            border-color: #d4dfd5 !important;
+            border-radius: 2px !important;
+            background: #edf2ec !important;
+            color: #315343 !important;
+        }
+        #satzung .rule-card .blocked-rule {
+            border-color: #e2d6d1 !important;
+            border-radius: 2px !important;
+            background: #f4eeeb !important;
+            color: #704d43 !important;
+        }
+
+        #antrag { background: #eeede7 !important; }
+        #antrag .application-card {
+            border: 1px solid var(--line) !important;
+            border-radius: 2px !important;
+            box-shadow: 0 10px 35px rgba(23,42,53,.07) !important;
+        }
+        #antrag .application-card input,
+        #antrag .application-card select {
+            border-color: var(--line) !important;
+            border-radius: 2px !important;
+            background: #fafaf7 !important;
+        }
+        #antrag .application-card input:focus,
+        #antrag .application-card select:focus { border-color: var(--green) !important; }
+        #antrag .application-card button {
+            border-radius: 2px !important;
+            background: var(--green) !important;
+            font-family: "Plus Jakarta Sans", sans-serif !important;
+            letter-spacing: .04em;
+        }
+        footer { background: var(--ink) !important; border-color: #304650 !important; }
+        footer a { color: #d6c18f !important; }
+        #property-modal > div {
+            border-radius: 2px !important;
+            border-top: 3px solid var(--brass) !important;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .floor-slider {
+            margin: 1.5rem 0;
+            border: 1px solid var(--line);
+            background: #f5f4ef;
+        }
+        .floor-slider-image {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: contain;
+            background: #172a35;
+        }
+        .floor-slider-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: .65rem .75rem;
+        }
+        .floor-slider-controls button {
+            display: inline-flex;
+            min-width: 42px;
+            min-height: 40px;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--line);
+            border-radius: 2px;
+            background: white;
+            color: var(--ink);
+            cursor: pointer;
+        }
+        .floor-slider-controls button:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+        .floor-slider-caption {
+            flex: 1;
+            color: var(--ink);
+            font-size: .75rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        .floor-slider-count {
+            display: block;
+            margin-top: .15rem;
+            color: var(--muted);
+            font-family: "JetBrains Mono", monospace;
+            font-size: .65rem;
+            font-weight: 400;
+        }
+        .floor-slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: .45rem;
+            padding: 0 0 .75rem;
+        }
+        .floor-slider-dots button {
+            width: 8px;
+            height: 8px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: #aab3ae;
+            cursor: pointer;
+        }
+        .floor-slider-dots button[aria-current="true"] {
+            background: var(--green);
+            transform: scale(1.25);
+        }
+        #toast { border-radius: 2px !important; background: var(--green-dark) !important; }
+
+        .application-document { display: none; }
+
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
+        @media print {
+            body { background: white !important; color: black !important; }
+            body > :not(#antrag) { display: none !important; }
+            #antrag {
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+            }
+            #antrag > div {
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            #antrag > div > .text-center { display: none !important; }
+            #antrag .application-card {
+                padding: 0 !important;
+                border: 0 !important;
+            }
+            #estate-form { display: none !important; }
+            .application-document {
+                display: block !important;
+                color: #172a35 !important;
+                font: 10pt/1.5 Georgia, "Times New Roman", serif;
+            }
+            .document-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding-bottom: 12pt;
+                border-bottom: 2px solid #355d50;
+            }
+            .document-office { font: bold 9pt/1.4 Arial, sans-serif; letter-spacing: .08em; }
+            .document-office span { display: block; color: #355d50; font-size: 8pt; }
+            .document-reference { text-align: right; font: 8pt/1.5 Arial, sans-serif; }
+            .document-title { margin: 24pt 0 4pt; font: bold 21pt/1.2 Georgia, "Times New Roman", serif; }
+            .document-subtitle { margin: 0 0 18pt; color: #355d50; font: bold 9pt Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+            .document-intro { margin: 0 0 16pt; }
+            .document-table { width: 100%; margin: 0 0 16pt; border-collapse: collapse; font-size: 9.5pt; }
+            .document-table th, .document-table td { padding: 8pt 9pt; border: 1px solid #b9c1bc; text-align: left; vertical-align: top; }
+            .document-table th { width: 32%; background: #f0f2ee; font: bold 8pt Arial, sans-serif; }
+            #antrag .document-section-title { margin: 18pt 0 7pt; font: bold 11pt/1.3 Arial, sans-serif !important; letter-spacing: 0 !important; color: #172a35 !important; }
+            .document-declaration { margin: 0 0 24pt; }
+            .document-signatures { display: flex; gap: 30pt; margin-top: 35pt; }
+            .document-signature { flex: 1; padding-top: 5pt; border-top: 1px solid #172a35; font: 8pt Arial, sans-serif; }
+            .document-footnote { margin-top: 28pt; padding-top: 7pt; border-top: 1px solid #b9c1bc; color: #53625c; font: 8pt/1.4 Arial, sans-serif; }
+            #antrag .application-card {
+                border: 0 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+            }
+            #antrag .application-card input,
+            #antrag .application-card select {
+                background: white !important;
+                color: black !important;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .location-map { grid-template-columns: 1fr; }
+            .location-map img { max-height: 280px; }
+        }
+
+        .estate-hero {
+            position: relative;
+            display: flex;
+            min-height: min(720px, calc(100svh - 84px));
+            align-items: flex-end;
+            overflow: hidden;
+            background: #172a35;
+            color: white;
+        }
+        .estate-hero-image,
+        .estate-hero-image::after {
+            position: absolute;
+            inset: 0;
+        }
+        .estate-hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 54%;
+        }
+        .estate-hero-image::after {
+            content: "";
+            background: linear-gradient(90deg, rgba(17,29,30,.76), rgba(17,29,30,.18) 72%),
+                linear-gradient(0deg, rgba(17,29,30,.68), transparent 68%);
+        }
+        .estate-hero-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            padding-top: 7rem;
+            padding-bottom: clamp(3rem, 8vh, 6rem);
+        }
+        .estate-hero .civic-kicker { margin-bottom: 1.15rem; }
+        .preholiday-sale-banner {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: .8rem 1.2rem .8rem .9rem;
+            border: 1px solid rgba(255,255,255,.55);
+            background: #b4232f;
+            color: white;
+            box-shadow: 0 10px 30px rgba(80,0,0,.32);
+            transform: rotate(-1deg);
+        }
+        .preholiday-sale-percent {
+            font-family: "JetBrains Mono", monospace;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: .9;
+        }
+        .preholiday-sale-copy {
+            display: flex;
+            flex-direction: column;
+            gap: .25rem;
+            font-size: .75rem;
+            font-weight: 800;
+            letter-spacing: .12em;
+            line-height: 1.25;
+            text-transform: uppercase;
+        }
+        .preholiday-sale-copy strong { font-size: 1rem; }
+        #katalog .property-visual > .discount-badge {
+            position: absolute;
+            z-index: 2;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 68px;
+            height: 68px;
+            border: 2px solid white;
+            border-radius: 50%;
+            background: #b4232f;
+            color: white;
+            font-family: "JetBrains Mono", monospace;
+            font-size: .58rem;
+            font-weight: 700;
+            line-height: 1;
+            box-shadow: 0 3px 12px rgba(80,0,0,.3);
+            transform: rotate(8deg);
+        }
+        #katalog .property-visual > .discount-badge strong { font-size: 1.1rem; }
+        #katalog .property-visual > .property-count-badge {
+            top: auto;
+            right: 12px;
+            bottom: 12px;
+        }
+        #katalog > div > div:first-child .sale-kicker { color: #b4232f !important; }
+        #katalog .property-price .price-label { color: #b4232f; font-weight: 800; }
+        #katalog .property-price .sale-price { color: #b4232f; font-weight: 700; }
+        .estate-hero h1 {
+            max-width: 760px;
+            margin: 0 0 1rem !important;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(2.8rem, 6vw, 5.7rem) !important;
+            font-weight: 400 !important;
+            line-height: 1.02 !important;
+            letter-spacing: -.045em !important;
+        }
+        .estate-hero-content > p {
+            max-width: 590px;
+            margin-bottom: 1.5rem;
+            color: rgba(255,255,255,.86) !important;
+            font-size: clamp(.95rem, 1.2vw, 1.08rem) !important;
+            line-height: 1.75 !important;
+        }
+        .estate-hero-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .75rem;
+            padding-bottom: .45rem;
+            border-bottom: 1px solid #d6c18f;
+            color: #f0dfb5;
+            font-size: .82rem;
+            font-weight: 700;
+            letter-spacing: .035em;
+            text-decoration: none;
+        }
+        .estate-hero-link i { transition: transform .2s ease; }
+        .estate-hero-link:hover i { transform: translateX(4px); }
+        .estate-hero-note {
+            position: absolute;
+            z-index: 1;
+            right: max(24px, calc((100vw - 1280px) / 2));
+            bottom: 3rem;
+            color: rgba(255,255,255,.78);
+            font-family: "JetBrains Mono", monospace;
+            font-size: .62rem;
+            letter-spacing: .12em;
+            text-align: right;
+            text-transform: uppercase;
+        }
+
+        #katalog { padding-top: clamp(4rem, 8vw, 7rem) !important; }
+        #katalog > div > div:first-child { margin-bottom: 2.5rem !important; }
+        #katalog h2, #satzung h2, #antrag h2 {
+            font-size: clamp(2rem, 3.5vw, 3.15rem) !important;
+            line-height: 1.12 !important;
+        }
+        .property-list { display: grid; gap: .85rem; }
+        #katalog .property-card {
+            display: grid;
+            grid-template-columns: minmax(190px, .75fr) minmax(0, 1fr) minmax(190px, .72fr);
+            align-items: stretch;
+            gap: clamp(1.25rem, 3vw, 2.5rem);
+            padding: 1rem;
+            border-color: var(--line) !important;
+            background: #fff;
+            box-shadow: none !important;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+        #katalog .property-card:hover {
+            transform: none;
+            border-color: #9eaa9f !important;
+            box-shadow: 0 8px 24px rgba(23,42,53,.07) !important;
+        }
+        #katalog .property-visual {
+            position: relative;
+            width: 100%;
+            height: 100% !important;
+            min-height: 205px;
+            background: #e5e6df !important;
+        }
+        #katalog .property-visual > img { position: absolute; inset: 0; }
+        #katalog .property-visual .property-visual-overlay {
+            background: linear-gradient(0deg, rgba(23,42,53,.36), transparent 50%);
+        }
+        #katalog .property-visual > .property-type-badge {
+            top: auto;
+            bottom: 12px;
+            left: 12px;
+        }
+        #katalog .property-visual > .property-count-badge {
+            top: auto;
+            right: 12px;
+            bottom: 12px;
+        }
+        #katalog .property-description {
+            align-self: center;
+            padding: .5rem 0;
+        }
+        #katalog .property-description .property-id { margin-bottom: .7rem; }
+        #katalog .property-description h3 {
+            margin-bottom: .25rem !important;
+            font-size: clamp(1.45rem, 2vw, 1.8rem) !important;
+        }
+        #katalog .property-description > p {
+            margin-bottom: 1.25rem;
+            color: var(--muted);
+            font-size: .8rem;
+        }
+        #katalog .property-description .property-availability {
+            justify-content: flex-start;
+            gap: .6rem;
+            margin: 0;
+            font-size: .75rem;
+        }
+        #katalog .property-description .property-availability strong {
+            padding: .25rem .5rem;
+            background: #edf2ec;
+        }
+        #katalog .property-offer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: .65rem .5rem .65rem 1.5rem;
+            border-left: 1px solid var(--line);
+        }
+        #katalog .property-price {
+            display: flex;
+            flex-direction: column;
+            gap: .2rem;
+            margin-bottom: .8rem;
+        }
+        #katalog .property-price span {
+            color: var(--muted);
+            font-size: .66rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+        #katalog .property-price-values {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: .1rem;
+        }
+        #katalog .property-price strong {
+            color: var(--ink);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.45rem;
+            font-weight: 400;
+        }
+        #katalog .property-price .previous-price {
+            color: var(--muted);
+            font-size: .68rem;
+        }
+        #katalog .property-offer ul {
+            padding: .7rem 0;
+            margin: 0 0 .8rem;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            color: var(--muted);
+            font-size: .68rem;
+        }
+        #katalog .property-offer ul li + li { margin-top: .35rem; }
+        #katalog .property-offer ul strong { color: var(--ink); }
+        #katalog .property-card button { width: 100%; }
+
+        .location-map {
+            margin-bottom: 2rem;
+            border-left-width: 2px;
+            box-shadow: none;
+        }
+        .location-map img { aspect-ratio: 2.2 / 1; }
+        #satzung .rule-card { transition: box-shadow .2s ease; }
+        #satzung .rule-card:hover { box-shadow: 0 8px 24px rgba(23,42,53,.06); }
+        #property-modal > div { padding: clamp(1.25rem, 4vw, 2rem); }
+
+        @media (max-width: 900px) {
+            #katalog .property-card {
+                grid-template-columns: minmax(170px, .75fr) minmax(0, 1fr);
+                gap: 1.25rem;
+            }
+            #katalog .property-visual { grid-row: span 2; }
+            #katalog .property-offer {
+                grid-column: 2;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+                gap: .5rem 1rem;
+                padding: 1rem 0 0;
+                border-top: 1px solid var(--line);
+                border-left: 0;
+            }
+            #katalog .property-price { margin: 0; }
+            #katalog .property-offer ul { margin: 0; }
+            #katalog .property-card button { grid-column: 1 / -1; }
+        }
+        @media (max-width: 600px) {
+            .estate-hero { min-height: 620px; min-height: min(700px, calc(100svh - 72px)); }
+            .estate-hero-image img { object-position: 54% center; }
+            .estate-hero-image::after {
+                background: linear-gradient(0deg, rgba(17,29,30,.82), rgba(17,29,30,.04) 92%);
+            }
+            .estate-hero-content { padding-top: 5rem; padding-bottom: 5.5rem; }
+            .preholiday-sale-banner { gap: .75rem; margin-bottom: 1.2rem; padding: .7rem .85rem; }
+            .preholiday-sale-copy { font-size: .62rem; }
+            .preholiday-sale-copy strong { font-size: .82rem; }
+            .estate-hero h1 { max-width: 420px; }
+            .estate-hero-content > p { max-width: 420px; font-size: .92rem !important; }
+            .estate-hero-note { right: 1.5rem; bottom: 1.35rem; font-size: .56rem; }
+            #katalog .property-card { grid-template-columns: 1fr; gap: .75rem; }
+            #katalog .property-visual { grid-row: auto; min-height: 230px; }
+            #katalog .property-description { padding: .5rem .25rem; }
+            #katalog .property-offer { grid-column: auto; }
+            #katalog .property-offer {
+                display: flex;
+                align-items: stretch;
+            }
+            #katalog .property-price {
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: .75rem;
+            }
+            #katalog .property-price-values { align-items: flex-end; }
+            #katalog .property-price strong {
+                font-size: 1.2rem;
+                text-align: right;
+            }
+            .location-map img { aspect-ratio: 1.4 / 1; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .estate-hero-link i { transition: none; }
+            #katalog .property-card,
+            #satzung .rule-card { transition: none; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-amber-500 selection:text-white">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center space-x-3 border border-slate-700">
+        <i id="toast-icon" class="fas fa-check-circle text-amber-500 text-xl"></i>
+        <span id="toast-message" class="font-medium text-sm">Aktion erfolgreich</span>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 left-0 right-0 z-40 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-slate-200 no-print" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo / Wappen -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-700 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:scale-105 transition-transform">
+                        S
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight text-slate-900 block leading-tight">STADTBAUAMT SPAWN</span>
+                        <span class="text-[10px] tracking-widest text-amber-600 uppercase font-mono font-semibold">Gewerbe & Immobilienkontor</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8 font-medium text-sm">
+                    <a href="#katalog" class="text-slate-700 hover:text-amber-600 transition-colors">Immobilien</a>
+                    <a href="#satzung" class="text-slate-700 hover:text-amber-600 transition-colors">Bebauungssatzung</a>
+                    <a href="#antrag" class="text-slate-700 hover:text-amber-600 transition-colors">Kaufantrag</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="index.html" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold text-xs font-mono shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                        <i class="fas fa-arrow-left text-amber-400"></i> Zur Portalübersicht
+                    </a>
+                    <button type="button" onclick="toggleDialect()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2.5 rounded-xl font-bold text-xs font-mono shadow-md transition-all flex items-center gap-2">
+                        <i class="fas fa-globe"></i> <span class="lang-btn-text">Sprache: Hochdeutsch</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-slate-700 p-2 rounded-lg hover:bg-slate-100 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3">
+            <a href="#katalog" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50">Immobilien</a>
+            <a href="#satzung" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50">Bebauungssatzung</a>
+            <a href="#antrag" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50">Kaufantrag</a>
+            <div class="pt-4 border-t border-slate-100 flex flex-col space-y-2">
+                <a href="index.html" class="text-center w-full bg-slate-900 text-white py-2.5 rounded-xl font-semibold text-xs font-mono">
+                    ← Zur Portalübersicht
+                </a>
+                <button type="button" onclick="toggleDialect()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2.5 rounded-xl font-bold text-xs font-mono shadow-md transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-globe"></i> <span class="lang-btn-text">Sprache: Hochdeutsch</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1. Immobilienauftakt -->
+    <section class="estate-hero" aria-labelledby="estate-title">
+        <div class="estate-hero-image" aria-hidden="true">
+            <img src="102.png" alt="">
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 estate-hero-content">
+            <div id="hero-kicker" class="civic-kicker">VORWEIHNACHTS-SALE · 25 % RABATT!</div>
+            <div class="preholiday-sale-banner" role="note">
+                <span class="preholiday-sale-percent" aria-hidden="true">25%</span>
+                <span class="preholiday-sale-copy"><span id="sale-banner-title">GROSSER VORWEIHNACHTS-SALE</span><strong id="sale-banner-subtitle">JETZT 25 % AUF ALLE IMMOBILIEN</strong></span>
+                <span class="preholiday-sale-percent" aria-hidden="true">%</span>
+            </div>
+            <h1 id="estate-title">Ein guter Ort für große Pläne.</h1>
+            <p id="hero-desc">Nur jetzt zum Vorweihnachts-Sale: alle Geschäftshäuser am Marktplatz mit 25 % Rabatt – dauerhaft, ohne Folgemieten und mit Raum für Ihr eigenes Konzept.</p>
+            <a href="#katalog" class="estate-hero-link">
+                <span id="hero-link-text">Gewerbeimmobilien ansehen</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div id="hero-note" class="estate-hero-note">Marktplatz · Spawn / Gewerbeimmobilien</div>
+    </section>
+
+    <!-- 2. Immobilien-Katalog -->
+    <section id="katalog" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span id="katalog-kicker" class="sale-kicker text-amber-600 font-bold text-xs uppercase tracking-wider font-mono">25 % VORWEIHNACHTS-SALE · 25 % RABATT</span>
+                    <h2 id="katalog-title" class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">Verfügbare Gewerbetypen</h2>
+                    <p id="katalog-sub" class="text-slate-600 text-sm mt-1">Alle Kaufpreise sind bereits um 25 % gesenkt. Die früheren Preise sind durchgestrichen. Alle Gebäude verfügen über genau drei ausbaubare Geschosse: Erdgeschoss, Obergeschoss, Dachgeschoss. Die Planung von Treppe und Aufzügen erfolgt individuell.</p>
+                </div>
+            </div>
+
+            <figure class="location-map">
+                <img src="map.png" alt="Lageplan der Gewerbezone mit markierten Standorten der Haustypen 101, 102 und 103" loading="lazy">
+                <figcaption>
+                    <strong id="map-title">Lageplan der Gewerbezone</strong>
+                    <span id="map-desc">Die Karte zeigt die Standorte der verfügbaren Immobilien. Die Markierungen entsprechen den Haustypen im Katalog.</span>
+                </figcaption>
+            </figure>
+
+            <!-- Grid der 3 Haustypen -->
+            <div class="property-list">
+                
+                <!-- Typ 101 -->
+                <article class="property-card">
+                    <div class="property-visual">
+                        <img src="101.png" alt="Ansicht des Gewerbehauses Typ 101" loading="lazy">
+                        <div class="property-visual-overlay"></div>
+                        <div class="property-type-badge">TYP 101</div>
+                        <div class="discount-badge" aria-label="25 Prozent Rabatt"><strong>25%</strong><span class="discount-badge-label">RABATT</span></div>
+                        <div class="property-count-badge">6 verfügbar</div>
+                    </div>
+                    <div class="property-description">
+                            <div class="property-id text-xs text-amber-600 font-mono font-bold mb-1">MAP-ID: #101</div>
+                            <h3 id="h101-title" class="font-extrabold text-slate-900 text-xl mb-1">Haus "Basis"</h3>
+                            <p id="h101-sub">Hälfte eines Doppelhauses</p>
+                            <div class="property-availability"><span class="availability-label">Verfügbare Häuser</span><strong>6 Stück</strong></div>
+                    </div>
+                    <div class="property-offer">
+                        <div class="property-price">
+                            <span class="price-label">25 % RABATT · SALE-PREIS</span>
+                            <div class="property-price-values"><strong class="sale-price">36 Cogs</strong><span class="previous-price"><span class="previous-price-label">Vorher</span>: <del>48 Cogs</del></span></div>
+                        </div>
+                        <ul>
+                            <li class="flex justify-between"><span>Geschosse</span><strong>3 (EG, OG, DG)</strong></li>
+                            <li class="flex justify-between"><span>Bauart</span><strong>Doppelhaushälfte</strong></li>
+                        </ul>
+                        <button onclick="openModal(101)" class="expose-button w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
+                            Exposé ansehen
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Typ 102 -->
+                <article class="property-card">
+                    <div class="property-visual">
+                        <img src="102.png" alt="Ansicht des Gewerbehauses Typ 102" loading="lazy">
+                        <div class="property-visual-overlay"></div>
+                        <div class="property-type-badge">TYP 102</div>
+                        <div class="discount-badge" aria-label="25 Prozent Rabatt"><strong>25%</strong><span class="discount-badge-label">RABATT</span></div>
+                        <div class="property-count-badge">12 verfügbar</div>
+                    </div>
+                    <div class="property-description">
+                            <div class="property-id text-xs text-amber-600 font-mono font-bold mb-1">MAP-ID: #102</div>
+                            <h3 id="h102-title" class="font-extrabold text-slate-900 text-xl mb-1">Haus "Standard"</h3>
+                            <p id="h102-sub">Freistehendes Stadthaus</p>
+                            <div class="property-availability"><span class="availability-label">Verfügbare Häuser</span><strong>12 Stück</strong></div>
+                    </div>
+                    <div class="property-offer">
+                        <div class="property-price">
+                            <span class="price-label">25 % RABATT · SALE-PREIS</span>
+                            <div class="property-price-values"><strong class="sale-price">48 Cogs</strong><span class="previous-price"><span class="previous-price-label">Vorher</span>: <del>1 Sun</del></span></div>
+                        </div>
+                        <ul>
+                            <li class="flex justify-between"><span>Geschosse</span><strong>3 (EG, OG, DG)</strong></li>
+                            <li class="flex justify-between"><span>Bauart</span><strong>Freistehend</strong></li>
+                        </ul>
+                        <button onclick="openModal(102)" class="expose-button w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
+                            Exposé ansehen
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Typ 103 -->
+                <article class="property-card">
+                    <div class="property-visual">
+                        <img src="103.png" alt="Ansicht des Gewerbehauses Typ 103" loading="lazy">
+                        <div class="property-visual-overlay"></div>
+                        <div class="property-type-badge">TYP 103</div>
+                        <div class="discount-badge" aria-label="25 Prozent Rabatt"><strong>25%</strong><span class="discount-badge-label">RABATT</span></div>
+                        <div class="property-count-badge">5 verfügbar</div>
+                    </div>
+                    <div class="property-description">
+                            <div class="property-id text-xs text-amber-600 font-mono font-bold mb-1">MAP-ID: #103</div>
+                            <h3 id="h103-title" class="font-extrabold text-slate-900 text-xl mb-1">Haus "Standard Plus"</h3>
+                            <p id="h103-sub">Großraum Gewerbeimmobilie</p>
+                            <div class="property-availability"><span class="availability-label">Verfügbare Häuser</span><strong>5 Stück</strong></div>
+                    </div>
+                    <div class="property-offer">
+                        <div class="property-price">
+                            <span class="price-label">25 % RABATT · SALE-PREIS</span>
+                            <div class="property-price-values"><strong class="sale-price">1 Sun + 8 Cogs</strong><span class="previous-price"><span class="previous-price-label">Vorher</span>: <del>1 Sun + 32 Cogs</del></span></div>
+                        </div>
+                        <ul>
+                            <li class="flex justify-between"><span>Geschosse</span><strong>3 (EG, OG, DG)</strong></li>
+                            <li class="flex justify-between"><span>Bauart</span><strong>Großraum</strong></li>
+                        </ul>
+                        <button onclick="openModal(103)" class="expose-button w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs font-mono transition-all">
+                            Exposé ansehen
+                        </button>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Bebauungssatzung & Erwerbsregeln -->
+    <section id="satzung" class="py-20 bg-white border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <span id="satzung-kicker" class="text-amber-600 font-bold text-xs uppercase tracking-wider font-mono">Amtliches Reglement</span>
+                <h2 id="satzung-title" class="text-3xl font-extrabold text-slate-900 mt-1">Bebauungssatzung & Erwerbsregeln</h2>
+                <p id="satzung-desc" class="text-slate-600 text-sm mt-1">Maximal 2 Häuser pro Team. Die Stadtverwaltung prüft die Einhaltung.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Kombinations-Matrix -->
+                <div class="rule-card bg-slate-50 p-8 rounded-2xl border border-slate-200">
+                    <h3 class="font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-layer-group text-amber-500"></i> <span id="rule-matrix-title">Erlaubte & Verbotene Team-Kombinationen</span>
+                    </h3>
+                    <div class="space-y-2 text-xs font-mono">
+                        <div class="allowed-rule p-3 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg flex justify-between items-center font-bold">
+                            <span>Standard + Standard</span> <span>✓ ERLAUBT</span>
+                        </div>
+                        <div class="allowed-rule p-3 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg flex justify-between items-center font-bold">
+                            <span>Standard + Standard Plus</span> <span>✓ ERLAUBT</span>
+                        </div>
+                        <div class="allowed-rule p-3 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg flex justify-between items-center font-bold">
+                            <span>Doppelhaushälfte + Doppelhaushälfte (Ganzes Haus)</span> <span>✓ ERLAUBT</span>
+                        </div>
+                        <div class="allowed-rule p-3 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg flex justify-between items-center font-bold">
+                            <span>Doppelhaushälfte + Standard</span> <span>✓ ERLAUBT</span>
+                        </div>
+                        <div class="blocked-rule p-3 bg-rose-50 text-rose-800 border border-rose-200 rounded-lg flex justify-between items-center font-bold">
+                            <span>Standard Plus + Standard Plus</span> <span>✕ UNZULÄSSIG</span>
+                        </div>
+                        <div class="blocked-rule p-3 bg-rose-50 text-rose-800 border border-rose-200 rounded-lg flex justify-between items-center font-bold">
+                            <span>Doppelhaushälfte + Standard Plus</span> <span>✕ UNZULÄSSIG</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Architektur Richtlinien -->
+                <div class="rule-card bg-slate-50 p-8 rounded-2xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
+                            <i class="fas fa-building-flag text-amber-500"></i> <span id="rule-arch-title">Architektur- & Bauvorschriften</span>
+                        </h3>
+                        <ul class="space-y-3 text-xs text-slate-700 leading-relaxed">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-amber-500 mt-0.5"></i>
+                                <span id="rule-1"><strong>Fassaden-Schutz:</strong> Die äußere Architektur darf nicht verändert oder abgerissen werden.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-amber-500 mt-0.5"></i>
+                                <span id="rule-2"><strong>Erlaubte Dekoration:</strong> Banner, Pflanzkübel, Hecken und Fotos dürfen außen platziert werden.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-amber-500 mt-0.5"></i>
+                                <span id="rule-3"><strong>Vorgarten-Zone:</strong> Bis zu 3 Blöcke vor dem Gebäude dürfen als Werbefläche oder Stand genutzt werden.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check text-amber-500 mt-0.5"></i>
+                                <span id="rule-4"><strong>Innenarchitektur:</strong> Der Innenraum aller 3 Geschosse ist vollständig frei gestaltbar.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Kaufantrag Formular -->
+    <section id="antrag" class="py-20 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <span id="antrag-kicker" class="text-amber-600 font-bold text-xs uppercase tracking-wider font-mono">Formblatt ST-IMM-01</span>
+                <h2 id="antrag-title" class="text-3xl font-extrabold text-slate-900 mt-1">Immobilien-Kaufantrag</h2>
+                <p id="antrag-desc" class="text-slate-600 text-sm mt-1">Generieren Sie Ihren amtlichen Antrag für die Serverleitung / Stadtverwaltung.</p>
+            </div>
+
+            <div class="application-card bg-white p-8 sm:p-10 rounded-2xl border border-slate-200 shadow-xl print-box">
+                <form id="estate-form" onsubmit="handleFormSubmit(event)">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label id="label-player" class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Minecraft-Name / Team-Name *</label>
+                            <input type="text" id="pName" required placeholder="z. B. Alex (Team Alpha)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 text-sm focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label id="label-type" class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Gewünschter Haustyp *</label>
+                            <select id="hType" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 text-sm focus:outline-none focus:border-amber-500">
+                                <option value="">Bitte wählen...</option>
+                                <option value="Typ 101 - Basis (36 Cogs / 2304 Spurs)">Typ 101 · Haus "Basis" (36 Cogs)</option>
+                                <option value="Typ 102 - Standard (48 Cogs / 3072 Spurs)">Typ 102 · Haus "Standard" (48 Cogs)</option>
+                                <option value="Typ 103 - Standard Plus (1 Sun + 8 Cogs / 4608 Spurs)">Typ 103 · Haus "Standard Plus" (1 Sun + 8 Cogs)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label id="label-shop" class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Geplanter Shop-Name / Branche *</label>
+                            <input type="text" id="sName" required placeholder="z. B. Spawn-Bäckerei" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 text-sm focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label id="label-num" class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Gewünschte Haus-Nr. / Standort</label>
+                            <input type="text" id="hNum" placeholder="z. B. Marktplatz Haus #4" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 text-sm focus:outline-none focus:border-amber-500">
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label id="label-notes" class="block text-xs font-mono uppercase text-slate-700 mb-2 font-bold">Besteht bereits ein 1. Haus im Team?</label>
+                        <input type="text" id="sNotes" placeholder="Falls ja: Welcher Haustyp wird bereits genutzt?" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 text-sm focus:outline-none focus:border-amber-500">
+                    </div>
+
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl text-xs font-mono uppercase tracking-wider transition-all shadow-lg no-print">
+                        <span id="submit-label">Kaufantrag generieren & Drucken</span>
+                    </button>
+                </form>
+
+                <article id="application-document" class="application-document" aria-labelledby="document-title">
+                    <header class="document-header">
+                        <div class="document-office">
+                            STADTBAUAMT SPAWN
+                            <span>Gewerbe- und Immobilienkontor</span>
+                        </div>
+                        <div class="document-reference">
+                            <strong>FORMBLATT ST-IMM-01</strong><br>
+                            Kaufantrag · Gewerbeimmobilie<br>
+                            Datum: <span id="document-date"></span>
+                        </div>
+                    </header>
+                    <h1 id="document-title" class="document-title">Antrag auf Erwerb einer Gewerbeimmobilie</h1>
+                    <p class="document-subtitle">Antrag an die Serverleitung / Stadtverwaltung</p>
+                    <p class="document-intro">Hiermit beantrage ich die Berücksichtigung meines Wunsches zum Erwerb einer Gewerbeimmobilie in der Spawn-Stadt. Die Angaben zu Antragsteller, Nutzung und Wunschobjekt finden Sie nachfolgend.</p>
+
+                    <h2 class="document-section-title">1. Angaben zum Antragsteller und Vorhaben</h2>
+                    <table class="document-table">
+                        <tbody>
+                            <tr><th scope="row">Minecraft- / Team-Name</th><td id="document-applicant"></td></tr>
+                            <tr><th scope="row">Geplanter Shop / Branche</th><td id="document-shop"></td></tr>
+                            <tr><th scope="row">Bestehendes Haus im Team</th><td id="document-existing-house"></td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2 class="document-section-title">2. Gewünschte Gewerbeimmobilie</h2>
+                    <table class="document-table">
+                        <tbody>
+                            <tr><th scope="row">Haustyp</th><td id="document-house-type"></td></tr>
+                            <tr><th scope="row">Wunschstandort / Haus-Nr.</th><td id="document-location"></td></tr>
+                            <tr><th scope="row">Ausgewiesener Kaufpreis</th><td id="document-price"></td></tr>
+                            <tr><th scope="row">Bauart und Geschosse</th><td id="document-building"></td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2 class="document-section-title">Erklärung</h2>
+                    <p class="document-declaration">Ich bestätige, dass meine Angaben nach bestem Wissen vollständig und richtig sind. Mir ist bekannt, dass dieser Antrag zunächst geprüft wird und die Entscheidung über die Vergabe durch die Serverleitung / Stadtverwaltung erfolgt.</p>
+
+                    <div class="document-signatures">
+                        <div class="document-signature">Ort, Datum</div>
+                        <div class="document-signature">Unterschrift Antragsteller/in</div>
+                    </div>
+                    <p class="document-footnote">Nur von der Verwaltung auszufüllen: Eingang und Vergabe werden durch die zuständige Stelle dokumentiert.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800 text-xs no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+            <div>
+                <strong class="text-white">STADTBAUAMT & IMMOBILIENKONTOR SPAWN</strong><br>
+                <span>Ein amtlicher Service der Serverleitung · Unabhängig von Doctor Industries.</span>
+            </div>
+            <div>
+                <a href="index.html" class="text-amber-500 hover:underline font-mono font-bold">
+                    ← Zur Portalübersicht
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Exposé Modal -->
+    <div id="property-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 no-print">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-8 relative shadow-2xl border border-slate-200">
+            <button onclick="closeModal()" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="modal-content">
+                <!-- Dynamisch befüllt -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logik -->
+    <script>
+        let currentDialect = 0;
+
+        const translations = {
+            standard: {
+                btnText: "Sprache: Hochdeutsch",
+                kicker: "VORWEIHNACHTS-SALE · 25 % RABATT!",
+                saleTitle: "GROSSER VORWEIHNACHTS-SALE",
+                saleSubtitle: "JETZT 25 % AUF ALLE IMMOBILIEN",
+                saleBadge: "RABATT",
+                heroTitle: "Ein guter Ort für große Pläne.",
+                heroDesc: "Zum Vorweihnachts-Sale: alle Geschäftshäuser am Marktplatz mit 25 % Rabatt – dauerhaft, ohne Folgemieten und mit Raum für Ihr eigenes Konzept.",
+                heroLink: "Gewerbeimmobilien ansehen",
+                heroNote: "Marktplatz · Spawn / Gewerbeimmobilien",
+                katKicker: "25 % VORWEIHNACHTS-SALE · 25 % RABATT",
+                katTitle: "Verfügbare Gewerbetypen",
+                katDesc: "Alle Kaufpreise sind bereits um 25 % gesenkt. Die früheren Preise sind durchgestrichen. Alle Gebäude verfügen über genau drei ausbaubare Geschosse: Erdgeschoss, Obergeschoss, Dachgeschoss. Die Planung von Treppe und Aufzügen erfolgt individuell.",
+                mapTitle: "Lageplan der Gewerbezone",
+                mapDesc: "Die Karte zeigt die Standorte der verfügbaren Immobilien. Die Markierungen entsprechen den Haustypen im Katalog.",
+                h101Title: "Haus \"Basis\"",
+                h101Sub: "Hälfte eines Doppelhauses",
+                h102Title: "Haus \"Standard\"",
+                h102Sub: "Freistehendes Stadthaus",
+                h103Title: "Haus \"Standard Plus\"",
+                h103Sub: "Großraum Gewerbeimmobilie",
+                btnExpose: "Exposé ansehen",
+                labelPrice: "25 % RABATT · SALE-PREIS",
+                labelOriginalPrice: "Vorher",
+                labelAvail: "Verfügbare Häuser",
+                satzKicker: "Amtliches Reglement",
+                satzTitle: "Bebauungssatzung & Erwerbsregeln",
+                satzDesc: "Maximal 2 Häuser pro Team. Die Stadtverwaltung prüft die Einhaltung.",
+                ruleMatrixTitle: "Erlaubte & Verbotene Team-Kombinationen",
+                ruleArchTitle: "Architektur- & Bauvorschriften",
+                rule1: "<strong>Fassaden-Schutz:</strong> Die äußere Architektur darf nicht verändert oder abgerissen werden.",
+                rule2: "<strong>Erlaubte Dekoration:</strong> Banner, Pflanzkübel, Hecken und Fotos dürfen außen platziert werden.",
+                rule3: "<strong>Vorgarten-Zone:</strong> Bis zu 3 Blöcke vor dem Gebäude dürfen als Werbefläche oder Stand genutzt werden.",
+                rule4: "<strong>Innenarchitektur:</strong> Der Innenraum aller 3 Geschosse ist vollständig frei gestaltbar.",
+                antragKicker: "Formblatt ST-IMM-01",
+                antragTitle: "Immobilien-Kaufantrag",
+                antragDesc: "Generieren Sie Ihren amtlichen Antrag für die Serverleitung / Stadtverwaltung.",
+                lblPlayer: "Minecraft-Name / Team-Name *",
+                lblType: "Gewünschter Haustyp *",
+                lblShop: "Geplanter Shop-Name / Branche *",
+                lblNum: "Gewünschte Haus-Nr. / Standort",
+                lblNotes: "Besteht bereits ein 1. Haus im Team?",
+                btnSubmit: "Kaufantrag generieren & Drucken"
+            },
+            bavarian: {
+                btnText: "Sprach: Bayrisch 🍻",
+                kicker: "VORWEIHNACHTS-SALE · 25 % RABATT!",
+                saleTitle: "GROSSER VORWEIHNACHTS-SALE",
+                saleSubtitle: "JETZT 25 % AUF ALLE HÄUSL",
+                saleBadge: "RABATT",
+                heroTitle: "Oan scheena Platz für gscheide Pländ.",
+                heroDesc: "Zum Vorweihnachts-Sale: alle Gschäftshäusa am Marktplatz jetzt 25 % günstiger – ohne Miete-Nervkram und mit Platz für de oagne Idäe!",
+                heroLink: "Gewerbe-Hütten oangschaun",
+                heroNote: "Marktplatz · Spawn / Gewerbe-Hütten",
+                katKicker: "25 % VORWEIHNACHTS-SALE · OIS 25 % GÜNSTIGER",
+                katTitle: "Wos Grad do is (Gewerbe)",
+                katDesc: "Alle Kaufpreise san scho um 25 % gsenkt; de alten Preise san durchgstrichn. Jeds Häusl hat genau drei Stockwerk: Erdgschoss, Obergschoss und Dachkammer. Treppn muaßst selber mocha.",
+                mapTitle: "Übersichts-Karten vom Revier",
+                mapDesc: "Da siehsgst wo de Hütten stehn. De Nummern passn zu de Häusl unten im Katalog.",
+                h101Title: "Häusl \"Basis\"",
+                h101Sub: "Halbe Doppel-Hütte",
+                h102Title: "Häusl \"Standard\"",
+                h102Sub: "Freistehendes Stadthäusl",
+                h103Title: "Häusl \"Standard Plus\"",
+                h103Sub: "Mächtiges Großraum-Kontor",
+                btnExpose: "Häusl-Akte oangschaun",
+                labelPrice: "25 % RABATT · SALE-PREIS",
+                labelOriginalPrice: "Vorher",
+                labelAvail: "No da:",
+                satzKicker: "Amtliches Gesetzbüchle",
+                satzTitle: "Bau-Regeln & Kammerjager-Gesetz",
+                satzDesc: "Höchstens 2 Häusl pro Team! Der Stadt-Gendarm schaut ganz genau hin.",
+                ruleMatrixTitle: "Erlaubte & Verbotene Team-Kombinationen",
+                ruleArchTitle: "Architektur- & Bauvorschriften",
+                rule1: "<strong>Fassaden-Schutz:</strong> Außen nix abreißen! De Fassadn bleibt schön stehn wie sie is.",
+                rule2: "<strong>Erlaubte Deko:</strong> Blumengestecke, Banner, Büsche und Buider darfsd draußen hinbaun.",
+                rule3: "<strong>Vorgarten-Zone:</strong> Bis zu 3 Blöcke vor der Hütte darfsd dei Glump präsentieren.",
+                rule4: "<strong>Innenarchitektur:</strong> Drinnen in alle 3 Stockwerke darfsd wiedasdn wuisst umbaun.",
+                antragKicker: "Wisch ST-IMM-01",
+                antragTitle: "Häusl-Kaufantrag",
+                antragDesc: "Füll den Wisch aus fürn Bürgermeister und de Serverleitung.",
+                lblPlayer: "Dein Minecraft- / Team-Name *",
+                lblType: "Welches Häusl willst habn? *",
+                lblShop: "Geplanter Laden-Name / Gewerbe *",
+                lblNum: "Wunsch-Hausnummer / Wo solls stehn?",
+                lblNotes: "Habts ihr scho a Hütte im Team?",
+                btnSubmit: "Antrag ausdrucka & einreichen!"
+            },
+            indian: {
+                btnText: "Language: Indian Eng 🇮🇳",
+                kicker: "PRE-CHRISTMAS SALE · 25% OFF!",
+                saleTitle: "BIG PRE-CHRISTMAS SALE",
+                saleSubtitle: "25% OFF ALL PROPERTIES",
+                saleBadge: "OFF",
+                heroTitle: "Good place for big business, my friend!",
+                heroDesc: "Pre-Christmas Sale: all market-square properties are now 25% off, with no monthly rent and full space for your custom setup, saar!",
+                heroLink: "See available properties da",
+                heroNote: "Market Square · Spawn / Commercial Properties",
+                katKicker: "25% PRE-CHRISTMAS SALE · 25% OFF",
+                katTitle: "Available Shop Types, verify machan",
+                katDesc: "All purchase prices are already reduced by 25%; previous prices are crossed out. Full building got three floors: Ground floor, first floor, top floor. Stairs and lift setting you only do, ok?",
+                mapTitle: "Commercial Zone Blueprint Map",
+                mapDesc: "Map showing exact plot locations. Numbers are strictly matching with catalog below, please note.",
+                h101Title: "House \"Basis\"",
+                h101Sub: "Half side of duplex building",
+                h102Title: "House \"Standard\"",
+                h102Sub: "Standalone town house",
+                h103Title: "House \"Standard Plus\"",
+                h103Sub: "Very big super-size commercial house",
+                btnExpose: "Check full details (Exposé)",
+                labelPrice: "25% OFF · SALE PRICE",
+                labelOriginalPrice: "Was",
+                labelAvail: "Stock left:",
+                satzKicker: "Official Govt Rules",
+                satzTitle: "Building Rules & Panchayat Regs",
+                satzDesc: "Maximum 2 houses per team strictly allowed! Administration will do strict checking.",
+                ruleMatrixTitle: "Allowed & Strictly Prohibited Combinations",
+                ruleArchTitle: "Architectural & Building Guidelines",
+                rule1: "<strong>Facade Protection:</strong> Outer wall breaking strictly prohibited, non-negotiable!",
+                rule2: "<strong>Allowed Decoration:</strong> Banners, flower pots, hedges and photos outside side full okay.",
+                rule3: "<strong>Front Yard Zone:</strong> 3 blocks in front can be used for display and advertising items.",
+                rule4: "<strong>Interior Setup:</strong> Inside all 3 floors you can do whatever fancy work you like.",
+                antragKicker: "Application Form ST-IMM-01",
+                antragTitle: "Property Buying Application form",
+                antragDesc: "Kindly generate official application for server admin / city council.",
+                lblPlayer: "Minecraft Name / Team Name *",
+                lblType: "Selected House Model *",
+                lblShop: "Planned Shop Name / Business *",
+                lblNum: "Desired Plot Number / Location",
+                lblNotes: "Already having 1st house in team?",
+                btnSubmit: "Generate Application & Print, Saar!"
+            }
+        };
+
+        function toggleDialect() {
+            currentDialect = (currentDialect + 1) % 3;
+            const keys = ["standard", "bavarian", "indian"];
+            const text = translations[keys[currentDialect]];
+            document.documentElement.lang = currentDialect === 2 ? "en-IN" : "de";
+            const setText = (id, value) => {
+                document.getElementById(id).textContent = value;
+            };
+
+            document.querySelectorAll(".lang-btn-text").forEach(buttonText => {
+                buttonText.textContent = text.btnText;
+            });
+
+            [
+                ["hero-kicker", text.kicker],
+                ["sale-banner-title", text.saleTitle],
+                ["sale-banner-subtitle", text.saleSubtitle],
+                ["estate-title", text.heroTitle],
+                ["hero-desc", text.heroDesc],
+                ["hero-link-text", text.heroLink],
+                ["hero-note", text.heroNote],
+                ["katalog-kicker", text.katKicker],
+                ["katalog-title", text.katTitle],
+                ["katalog-sub", text.katDesc],
+                ["map-title", text.mapTitle],
+                ["map-desc", text.mapDesc],
+                ["h101-title", text.h101Title],
+                ["h101-sub", text.h101Sub],
+                ["h102-title", text.h102Title],
+                ["h102-sub", text.h102Sub],
+                ["h103-title", text.h103Title],
+                ["h103-sub", text.h103Sub],
+                ["satzung-kicker", text.satzKicker],
+                ["satzung-title", text.satzTitle],
+                ["satzung-desc", text.satzDesc],
+                ["rule-matrix-title", text.ruleMatrixTitle],
+                ["rule-arch-title", text.ruleArchTitle],
+                ["antrag-kicker", text.antragKicker],
+                ["antrag-title", text.antragTitle],
+                ["antrag-desc", text.antragDesc],
+                ["label-player", text.lblPlayer],
+                ["label-type", text.lblType],
+                ["label-shop", text.lblShop],
+                ["label-num", text.lblNum],
+                ["label-notes", text.lblNotes],
+                ["submit-label", text.btnSubmit]
+            ].forEach(([id, value]) => setText(id, value));
+
+            [text.rule1, text.rule2, text.rule3, text.rule4].forEach((value, index) => {
+                document.getElementById(`rule-${index + 1}`).innerHTML = value;
+            });
+            document.querySelectorAll(".expose-button").forEach(button => {
+                button.textContent = text.btnExpose;
+            });
+            document.querySelectorAll(".price-label").forEach(label => {
+                label.textContent = text.labelPrice;
+            });
+            document.querySelectorAll(".discount-badge-label").forEach(label => {
+                label.textContent = text.saleBadge;
+            });
+            document.querySelectorAll(".discount-badge").forEach(badge => {
+                badge.setAttribute("aria-label", `25% ${text.saleBadge}`);
+            });
+            document.querySelectorAll(".previous-price-label").forEach(label => {
+                label.textContent = text.labelOriginalPrice;
+            });
+            document.querySelectorAll(".availability-label").forEach(label => {
+                label.textContent = text.labelAvail;
+            });
+
+            showToast(text.btnText);
+        }
+
+        const houses = {
+            101: {
+                id: 101,
+                mapId: "#101",
+                title: 'Haus "Basis"',
+                sub: "Hälfte eines Doppelhauses",
+                price: "36 Cogs (2304 Spurs)",
+                previousPrice: "48 Cogs (3072 Spurs)",
+                type: "Doppelhaushälfte",
+                available: 6,
+                formValue: "Typ 101 - Basis (36 Cogs / 2304 Spurs)",
+                floors: [
+                    { label: "Erdgeschoss (EG)", image: "101_1.png" },
+                    { label: "Obergeschoss (OG)", image: "101_2.png" },
+                    { label: "Dachgeschoss (DG)", image: "101_3.png" }
+                ],
+                desc: "Ideal für Spezialisten und Händler mit überschaubarem Sortiment. Bietet 3 voll nutzbare Geschosse im Rohbau."
+            },
+            102: {
+            id: 102,
+            mapId: "#102",
+                title: 'Haus "Standard"',
+                sub: "Freistehendes Stadthaus",
+                price: "48 Cogs (3072 Spurs)",
+                previousPrice: "1 Sun (4096 Spurs)",
+                type: "Freistehend",
+                available: 12,
+                formValue: "Typ 102 - Standard (48 Cogs / 3072 Spurs)",
+                floors: [
+                    { label: "Erdgeschoss (EG)", image: "102_1.png" },
+                    { label: "Obergeschoss (OG)", image: "102_2.png" },
+                    { label: "Dachgeschoss (DG)", image: "102_3.png" }
+                ],
+                desc: "Der Klassiker für Fachgeschäfte mit regulärem Sortiment und Lager im Ober- und Dachgeschoss."
+            },
+            103: {
+            id: 103,
+            mapId: "#103",
+            title: 'Haus "Standard Plus"',
+            sub: "Großraum-Gewerbeimmobilie",
+            price: "1 Sun + 8 Cogs (4608 Spurs)",
+            previousPrice: "1 Sun + 32 Cogs (6144 Spurs)",
+            type: "Großraum-Gebäude",
+            available: 5,
+            formValue: "Typ 103 - Standard Plus (1 Sun + 8 Cogs / 4608 Spurs)",
+            floors: [
+                { label: "Erdgeschoss (EG)", image: "103_1.png" },
+                { label: "Obergeschoss (OG)", image: "103_2.png" },
+                { label: "Dachgeschoss (DG)", image: "103_3.png" }
+            ],
+            desc: "Repräsentatives Großraumkontor für Handelsgesellschaften, All-in-One-Shops und Großhändler."
+            }
+        };
+
+        let currentFloorSlides = [];
+        let currentFloorIndex = 0;
+
+        function openModal(id) {
+            const h = houses[id];
+            if (!h) return;
+            currentFloorSlides = h.floors;
+            currentFloorIndex = 0;
+
+            document.getElementById('modal-content').innerHTML = `
+                <div class="mb-4">
+                    <span class="text-xs font-mono text-amber-600 font-bold">${h.mapId}</span>
+                    <h3 class="text-2xl font-extrabold text-slate-900">${h.title}</h3>
+                    <p class="text-xs text-slate-500 italic">${h.sub}</p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4 text-xs space-y-2">
+                    <div class="flex justify-between"><span>${translations[["standard", "bavarian", "indian"][currentDialect]].labelPrice}:</span> <strong class="text-amber-600 font-mono font-bold">${h.price}</strong></div>
+                    <div class="flex justify-between"><span>${translations[["standard", "bavarian", "indian"][currentDialect]].labelOriginalPrice}:</span> <del class="text-slate-500">${h.previousPrice}</del></div>
+                    <div class="flex justify-between"><span>Bauart:</span> <strong>${h.type}</strong></div>
+                    <div class="flex justify-between"><span>Etagen:</span> <strong>3 (EG, OG, DG)</strong></div>
+                    <div class="flex justify-between"><span>Verfügbar:</span> <strong>${h.available} Häuser</strong></div>
+                </div>
+                <p class="text-xs text-slate-600 mb-6 leading-relaxed">${h.desc}</p>
+                <h4 class="text-sm font-bold text-slate-900">Innenansichten der Etagen</h4>
+                <div class="floor-slider" aria-label="Innenansichten der Etagen">
+                    <img id="floor-slide-image" class="floor-slider-image" src="${h.floors[0].image}" alt="Haustyp ${h.id} – ${h.floors[0].label}">
+                    <div class="floor-slider-controls">
+                        <button type="button" onclick="changeFloorSlide(-1)" aria-label="Vorherige Etage">←</button>
+                        <div class="floor-slider-caption">
+                            <span id="floor-slide-label">${h.floors[0].label}</span>
+                            <span class="floor-slider-count" id="floor-slide-count">1 / ${h.floors.length}</span>
+                        </div>
+                        <button type="button" onclick="changeFloorSlide(1)" aria-label="Nächste Etage">→</button>
+                    </div>
+                    <div class="floor-slider-dots" aria-label="Etage auswählen">
+                        ${h.floors.map((floor, index) => `
+                            <button type="button" onclick="showFloorSlide(${index})" aria-label="${floor.label}" aria-current="${index === 0}"></button>
+                        `).join("")}
+                    </div>
+                </div>
+                <button onclick="startApplication(${h.id})" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl text-xs font-mono">
+                    Kaufantrag für ${h.title} ausfüllen
+                </button>
+            `;
+
+            const modal = document.getElementById('property-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function showFloorSlide(index) {
+            if (!currentFloorSlides.length) return;
+            currentFloorIndex = (index + currentFloorSlides.length) % currentFloorSlides.length;
+            const floor = currentFloorSlides[currentFloorIndex];
+            document.getElementById('floor-slide-image').src = floor.image;
+            document.getElementById('floor-slide-image').alt = `Innenansicht – ${floor.label}`;
+            document.getElementById('floor-slide-label').innerText = floor.label;
+            document.getElementById('floor-slide-count').innerText = `${currentFloorIndex + 1} / ${currentFloorSlides.length}`;
+            document.querySelectorAll('.floor-slider-dots button').forEach((dot, index) => {
+                dot.setAttribute('aria-current', String(index === currentFloorIndex));
+            });
+        }
+
+        function changeFloorSlide(direction) {
+            showFloorSlide(currentFloorIndex + direction);
+        }
+
+        function startApplication(id) {
+            const house = houses[id];
+            if (!house) return;
+
+            const houseTypeField = document.getElementById('hType');
+            houseTypeField.value = house.formValue;
+            closeModal();
+            document.getElementById('antrag').scrollIntoView({ behavior: 'smooth' });
+            houseTypeField.focus({ preventScroll: true });
+        }
+
+        function closeModal() {
+            document.getElementById('property-modal').classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const selectedHouse = Object.values(houses).find(house => house.formValue === document.getElementById('hType').value);
+            if (!selectedHouse) {
+                throw new Error('Der ausgewählte Haustyp konnte dem Antrag nicht zugeordnet werden.');
+            }
+
+            const documentValues = {
+                'document-date': new Date().toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' }),
+                'document-applicant': document.getElementById('pName').value.trim(),
+                'document-shop': document.getElementById('sName').value.trim(),
+                'document-existing-house': document.getElementById('sNotes').value.trim() || 'Keine Angabe',
+                'document-house-type': selectedHouse.title,
+                'document-location': document.getElementById('hNum').value.trim() || 'Kein Wunschstandort angegeben',
+                'document-price': `${selectedHouse.price} (Vorweihnachts-Sale: 25 % Rabatt; vorher ${selectedHouse.previousPrice})`,
+                'document-building': `${selectedHouse.type}; drei Geschosse (EG, OG, DG)`
+            };
+            for (const [id, value] of Object.entries(documentValues)) {
+                document.getElementById(id).textContent = value;
+            }
+
+            showToast("Antrag generiert! Druckansicht wird geöffnet...");
+            setTimeout(() => { window.print(); }, 800);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
