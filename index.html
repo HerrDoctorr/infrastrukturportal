@@ -3,3380 +3,804 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#1b1f20" />
-    <title>D I - INFRASTRUKTURPORTAL</title>
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Das Serviceportal des Kreishauses Spawn: zentrale Zugänge zu DOCTOR INDUSTRIES und dem Stadtbauamt Spawn." />
+    <title>Kreishaus Spawn · Serviceportal</title>
     <style>
       :root {
         color-scheme: light;
-        --ink: #242729;
-        --soft: #4d5356;
-        --red: #9b1c2b;
-        --red-dark: #741522;
-        --hsm-line: #596467;
-        --pale: #f7e9eb;
+        --ink: #1d2939;
+        --soft: #4d5968;
+        --muted: #687486;
         --paper: #fff;
-        --canvas: #f3f4f3;
-        --line: #d9dddc;
-        --muted: #5e686b;
-        --green: #335a48;
-        --inverse-bg: #242729;
-        --surface: #fff;
-        --surface-alt: #fafbfa;
-        --header-bg: rgb(255 255 255 / 96%);
-        --map-border: #dfe2df;
-        --map-grid: #e3e6e3;
-        --field-border: #cbd0ce;
-        --field-hover-border: #8d9491;
-        --status-color: #284635;
-        --status-bg: #edf4ef;
-        --status-error-color: #741522;
+        --canvas: #f6f7f9;
+        --line: #e1e5eb;
+        --accent: #d29a16;
+        --accent-dark: #936700;
+        --brand-dark: #172438;
+        --amber: #f3b321;
+        --notice: #fffbef;
         --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-        --display: "Arial Narrow", Impact, Arial, sans-serif;
-        --body: Arial, Helvetica, sans-serif;
-        --shadow: 0 12px 30px rgb(32 39 40 / 8%);
-        font-family: var(--body);
+        --sans: "Segoe UI", Arial, sans-serif;
+        font-family: var(--sans);
         color: var(--ink);
         background: var(--paper);
         font-synthesis: none;
         text-rendering: optimizeLegibility;
       }
 
-      :root[data-theme="dark"] {
-        color-scheme: dark;
-        --ink: #f0f1ef;
-        --soft: #c3c8c6;
-        --red: #9b1c2b;
-        --red-dark: #741522;
-        --hsm-line: #a5aeac;
-        --pale: #482b30;
-        --paper: #1b1f20;
-        --canvas: #252a2b;
-        --line: #414849;
-        --muted: #a5aeac;
-        --green: #92c9a6;
-        --inverse-bg: #121617;
-        --surface: #202526;
-        --surface-alt: #202526;
-        --header-bg: rgb(27 31 32 / 96%);
-        --map-border: #414849;
-        --map-grid: #343b3c;
-        --field-border: #515b5c;
-        --field-hover-border: #74807e;
-        --status-color: #b8dfc3;
-        --status-bg: #24352b;
-        --status-error-color: #f1a0a8;
-        --shadow: 0 12px 30px rgb(0 0 0 / 24%);
-      }
-
       * {
         box-sizing: border-box;
-	}
-      
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 20px;
+      }
+
       body {
+        min-width: 320px;
         margin: 0;
         background: var(--paper);
         color: var(--ink);
-        font-size: 16px;
-      }
-
-      button, input, select, textarea {
-        font: inherit;
       }
 
       a {
         color: inherit;
       }
 
-      button:focus-visible,
-      a:focus-visible,
-      input:focus-visible,
-      select:focus-visible,
-      textarea:focus-visible {
-        outline: 3px solid #d85c69;
+      a:focus-visible {
+        outline: 3px solid #d59b16;
         outline-offset: 3px;
       }
 
-      ::selection {
-        color: #fff;
-        background: var(--red);
-      }
-
-      .shell {
-        width: min(100% - 48px, 1160px);
-        margin-inline: auto;
-      }
-
-      .topline {
-        min-height: 34px;
-        padding: 7px 24px;
+      .authority-bar {
+        min-height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
-        background: var(--inverse-bg);
-        color: #f2f3f2;
-        font: 500 11px/1.3 var(--mono);
-        letter-spacing: 0.075em;
-        text-transform: uppercase;
-        text-align: center;
-      }
-
-      .topline:before {
-        content: "";
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: #c7a04b;
-        flex: none;
-      }
-
-      .site-header {
-        position: sticky;
-        z-index: 20;
-        top: 0;
-        background: var(--header-bg);
-        backdrop-filter: blur(12px);
-      }
-
-      .site-header:after {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        height: 2px;
-        content: "";
-        pointer-events: none;
-        background: linear-gradient(90deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
-        background-size: 200% 100%;
-        animation: rgb-flow 8s linear infinite;
-      }
-
-      @keyframes rgb-flow {
-        from { background-position: 0 0; }
-        to { background-position: 200% 0; }
-      }
-
-      .header-inner {
-        min-height: 78px;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 28px;
-      }
-
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        text-decoration: none;
-        flex: none;
-      }
-
-      .brand-mark {
-        width: 40px;
-        height: 40px;
-        display: grid;
-        place-items: center;
-        color: #fff;
-        background: var(--red);
-        font: 700 17px/1 var(--display);
-        letter-spacing: -0.04em;
-      }
-
-      .brand-copy {
-        display: grid;
-        gap: 4px;
-      }
-
-      .brand-copy strong {
-        font: 700 16px/1 var(--display);
-        letter-spacing: 0.065em;
-      }
-
-      .brand-copy span {
-        color: var(--muted);
-        font: 500 10px/1.2 var(--mono);
-        letter-spacing: 0.08em;
-      }
-
-      .desktop-nav {
-        display: flex;
-        align-items: center;
-        gap: 34px;
-      }
-
-      .menu-toggle {
-        display: none;
-        width: 44px;
-        height: 44px;
-        flex: none;
-        place-items: center;
-        padding: 0;
-        border: 1px solid var(--line);
-        border-radius: 3px;
-        color: var(--ink);
-        background: var(--surface);
-        font-size: 22px;
-        line-height: 1;
-        cursor: pointer;
-      }
-
-      .theme-toggle {
-        width: 42px;
-        height: 42px;
-        display: grid;
-        flex: none;
-        place-items: center;
-        padding: 0;
-        border: 1px solid var(--line);
-        border-radius: 3px;
-        color: var(--ink);
-        background: var(--surface);
-        font-size: 20px;
-        line-height: 1;
-        cursor: pointer;
-        transition: color 0.08s ease, background-color 0.08s ease, border-color 0.08s ease;
-      }
-
-      .theme-toggle:hover {
-        border-color: var(--ink);
+        padding: 5px 16px;
+        border-bottom: 1px solid var(--line);
         background: var(--canvas);
-      }
-
-      .menu-toggle:hover {
-        border-color: var(--ink);
-        background: var(--canvas);
-      }
-
-      .nav-link {
-        position: relative;
-        padding: 10px 0;
         color: var(--soft);
-        font-size: 14px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: color 0.18s ease;
-      }
-
-      .nav-link:after {
-        position: absolute;
-        right: 0;
-        bottom: 2px;
-        left: 0;
-        height: 2px;
-        content: "";
-        background: var(--red);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.18s ease;
-      }
-
-      .nav-link:hover,
-      .nav-link:focus-visible {
-        color: var(--red);
-      }
-
-      .nav-link:hover:after,
-      .nav-link:focus-visible:after {
-        transform: scaleX(1);
-      }
-
-      .nav-link-portal {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .portal-label {
-        color: #0078d7;
-        background: linear-gradient(100deg, #ff5364, #ff9f36, #40c878, #48aaff, #bd75ff, #ff5364);
-        background-size: 250% 100%;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 0 5px rgb(111 185 255 / 28%));
-        animation: portal-color-flow 6s linear infinite;
-      }
-
-      .nav-link-portal > span:last-child {
-        color: var(--muted);
-        transition: color .18s ease;
-      }
-
-      .nav-link-portal:hover > span:last-child,
-      .nav-link-portal:focus-visible > span:last-child {
-        color: var(--red);
-      }
-
-      @keyframes portal-color-flow {
-        to { background-position: 250% 0; }
-      }
-
-      @media (max-width: 900px) {
-        .header-inner {
-          gap: 10px;
-        }
-
-        .desktop-nav {
-          display: none;
-          position: absolute;
-          z-index: 1;
-          top: 100%;
-          right: 0;
-          left: 0;
-          align-items: stretch;
-          gap: 0;
-          padding: 8px 16px;
-          border: 1px solid var(--line);
-          background: var(--surface);
-          box-shadow: var(--shadow);
-        }
-
-        .desktop-nav.is-open {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .desktop-nav .nav-link {
-          min-height: 44px;
-          display: flex;
-          align-items: center;
-          padding: 10px 0;
-          border-bottom: 1px solid var(--line);
-        }
-
-        .desktop-nav .nav-link:last-child {
-          border-bottom: 0;
-        }
-
-        .desktop-nav .nav-link:after {
-          display: none;
-        }
-
-        .desktop-nav .nav-link-portal {
-          min-height: 48px;
-          justify-content: space-between;
-          margin-top: 0;
-        }
-
-        .network-heading {
-          min-width: 0;
-        }
-
-        .network-heading h3 {
-          min-width: 0;
-          font-size: clamp(24px, 3.2vw, 30px);
-          overflow-wrap: anywhere;
-        }
-
-        .network-index {
-          flex: none;
-        }
-
-        .menu-toggle {
-          display: grid;
-          margin-left: auto;
-        }
-      }
-
-      .eyebrow {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin: 0 0 16px;
-        color: var(--red);
-        font: 500 11px/1.5 var(--mono);
-        letter-spacing: 0.12em;
+        font: 500 10px/1.4 var(--mono);
+        letter-spacing: 0.045em;
+        text-align: center;
         text-transform: uppercase;
       }
 
-      .eyebrow:before {
-        width: 22px;
-        height: 2px;
+      .authority-bar::before {
+        width: 6px;
+        height: 6px;
+        margin-right: 9px;
+        border-radius: 50%;
+        background: var(--accent);
         content: "";
-        background: currentColor;
       }
 
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1.18fr) minmax(300px, 0.82fr);
-        align-items: center;
-        gap: clamp(28px, 5vw, 56px);
-        padding: 90px 0 72px;
+      .masthead {
+        background: #fff;
         border-bottom: 1px solid var(--line);
       }
 
-      .hero-copy {
-        min-width: 0;
+      .masthead-inner {
+        width: min(100% - 40px, 1120px);
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        margin-inline: auto;
       }
 
-      .winter-sale-banner {
-        position: relative;
-        overflow: hidden;
-        margin: 0 0 26px;
-        padding: clamp(18px, 3vw, 30px);
-        border: 2px solid #fff;
-        outline: 1px solid var(--red);
-        color: #fff;
-        background: linear-gradient(120deg, var(--red-dark), var(--red) 56%, #b72b39);
-        box-shadow: 0 12px 30px rgb(116 21 34 / 22%);
+      .authority {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        text-decoration: none;
       }
 
-      .winter-sale-banner:after {
-        position: absolute;
-        top: -25px;
-        right: 12px;
-        content: "%";
-        color: rgb(255 255 255 / 12%);
-        font: 700 150px/.9 var(--display);
-        pointer-events: none;
-      }
-
-      .winter-sale-kicker {
-        margin: 0 0 8px;
-        color: #ffe8ad;
-        font: 700 11px/1.4 var(--mono);
-        letter-spacing: .13em;
-        text-transform: uppercase;
-      }
-
-      .winter-sale-banner h2 {
-        position: relative;
-        z-index: 1;
-        margin: 0;
-        color: #fff;
-        font: 700 clamp(30px, 4vw, 46px)/.98 var(--display);
-        letter-spacing: -.025em;
-        text-transform: uppercase;
-      }
-
-      .winter-sale-banner > p {
-        position: relative;
-        z-index: 1;
-        margin: 10px 0 18px;
-        color: #fff;
-        font-size: 15px;
-        font-weight: 700;
-      }
-
-      .winter-sale-rates {
-        position: relative;
-        z-index: 1;
+      .authority-seal {
+        width: 38px;
+        height: 38px;
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
+        place-items: center;
+        border: 2px solid var(--brand-dark);
+        border-radius: 50%;
+        color: var(--brand-dark);
+        font: 700 18px/1 Georgia, "Times New Roman", serif;
       }
 
-      .winter-sale-rate {
-        min-width: 0;
-        padding: 10px;
-        border: 1px solid rgb(255 255 255 / 45%);
-        background: rgb(54 0 8 / 22%);
+      .authority-name {
+        display: grid;
+        gap: 3px;
       }
 
-      .winter-sale-rate strong,
-      .winter-sale-rate span {
-        display: block;
-      }
-
-      .winter-sale-rate strong {
-        font: 700 clamp(18px, 2.4vw, 27px)/1 var(--display);
-        white-space: nowrap;
-      }
-
-      .winter-sale-rate span {
-        margin-top: 6px;
-        color: #ffe8e8;
-        font: 10px/1.35 var(--mono);
+      .authority-name strong {
+        font-size: 15px;
+        line-height: 1.1;
+        letter-spacing: 0.025em;
         text-transform: uppercase;
       }
 
-      .winter-sale-link {
+      .authority-name span {
+        color: var(--muted);
+        font: 9px/1.3 var(--mono);
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      .main-nav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .main-nav a {
+        color: var(--soft);
+        font-size: 12px;
+        text-decoration: none;
+      }
+
+      .main-nav a:hover {
+        color: var(--accent-dark);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+
+      .hero {
+        width: min(100% - 40px, 1120px);
+        min-height: 410px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+        align-items: center;
+        gap: clamp(32px, 6vw, 76px);
+        margin-inline: auto;
+        padding: 58px 0 64px;
+      }
+
+      .hero-visual {
         position: relative;
+        min-width: 0;
+        margin: 0;
+        padding: 10px;
+        border: 1px solid var(--line);
+        background: var(--canvas);
+      }
+
+      .hero-visual::before {
+        position: absolute;
         z-index: 1;
-        display: inline-block;
-        margin-top: 16px;
-        color: #fff;
-        font-weight: 700;
-        text-decoration-thickness: 2px;
-        text-underline-offset: 3px;
+        top: -1px;
+        left: -1px;
+        width: 64px;
+        height: 4px;
+        background: var(--accent);
+        content: "";
+      }
+
+      .hero-image {
+        width: 100%;
+        height: clamp(250px, 27vw, 340px);
+        display: block;
+        object-fit: cover;
+        object-position: center 54%;
+      }
+
+      .hero-caption {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 4px 2px;
+        color: var(--muted);
+        font: 9px/1.4 var(--mono);
+        letter-spacing: 0.045em;
+        text-transform: uppercase;
+      }
+
+      .hero-content {
+        min-width: 0;
+      }
+
+      .hero-kicker {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 13px;
+        color: var(--accent-dark);
+        font: 600 10px/1.4 var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .hero-kicker::before {
+        width: 24px;
+        height: 2px;
+        background: currentColor;
+        content: "";
       }
 
       .hero h1 {
+        max-width: 620px;
         margin: 0;
-        font: 700 clamp(32px, 5vw, 58px)/1.12 var(--display);
+        color: var(--ink);
+        font-size: clamp(42px, 5.8vw, 72px);
+        font-weight: 800;
+        line-height: 0.95;
         letter-spacing: -0.045em;
         text-transform: uppercase;
       }
 
-      .hero h1 span {
-        color: var(--red);
-      }
-
-      .hero h1 .hero-line {
+      .hero-highlight {
         display: block;
-        white-space: nowrap;
+        color: var(--accent-dark);
       }
 
-      .hero h1 .hero-line:first-child {
-        color: var(--ink);
-      }
-
-      .hero-intro {
-        max-width: 580px;
-        margin: 26px 0 0;
+      .hero-copy {
+        max-width: 550px;
+        margin: 14px 0 0;
         color: var(--soft);
-        font-size: 18px;
-        line-height: 1.65;
+        font-size: clamp(16px, 1.8vw, 19px);
+        font-weight: 400;
+        line-height: 1.45;
       }
 
-      .hero-actions {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-top: 30px;
-      }
-
-      .button {
+      .hero-link {
         display: inline-flex;
-        min-height: 48px;
         align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 12px 18px;
-        border: 1px solid transparent;
-        border-radius: 3px;
-        font-size: 14px;
-        font-weight: 700;
-        line-height: 1.25;
-        text-align: center;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      .button:hover {
-        transform: translateY(-1px);
-      }
-
-      .button-primary {
+        gap: 9px;
+        margin-top: 24px;
+        padding: 11px 16px;
+        border: 1px solid var(--brand-dark);
+        background: var(--brand-dark);
         color: #fff;
-        background: var(--red);
-      }
-
-      .button-primary:hover {
-        background: var(--red-dark);
-      }
-
-      .button-secondary {
-        border-color: var(--line);
-        color: var(--ink);
-        background: var(--surface);
-      }
-
-      .button-secondary:hover {
-        border-color: var(--ink);
-        background: var(--canvas);
-      }
-
-      .hero-caveat {
-        margin: 18px 0 0;
-        color: var(--muted);
-        font: 12px/1.55 var(--mono);
-      }
-
-      .hero-art {
-        position: relative;
-        min-height: 365px;
-        padding: 25px;
-        border: 1px solid var(--line);
-        background: var(--canvas);
-        box-shadow: var(--shadow);
-      }
-
-      .hero-art:before {
-        position: absolute;
-        top: -8px;
-        left: 22px;
-        width: 46px;
-        height: 5px;
-        content: "";
-        background: var(--red);
-      }
-
-      .art-heading {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        color: var(--muted);
-        font: 11px/1.4 var(--mono);
-        letter-spacing: 0.05em;
-      }
-
-      .hero-map {
-        display: grid;
-        place-items: center;
-        min-height: 270px;
-        margin-top: 18px;
-        padding: 12px;
-        border: 1px solid var(--map-border);
-        background-color: var(--surface-alt);
-      }
-
-      .metro-map {
-        display: block;
-        width: 100%;
-        height: auto;
-        overflow: visible;
-      }
-
-      .metro-line {
-        fill: none;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        stroke-width: 4.5;
-      }
-
-      .metro-line.ism { stroke: var(--red); }
-      .metro-line.hsm { stroke: var(--hsm-line); }
-
-      .metro-train-body {
-        fill: var(--ink);
-        stroke: var(--surface);
-        stroke-width: 1.5;
-      }
-
-      .metro-train-window {
-        fill: var(--surface);
-      }
-
-      .metro-train-wheel {
-        fill: var(--red);
-        stroke: var(--surface);
-        stroke-width: 1;
-      }
-
-      .metro-stop {
-        fill: var(--surface);
-        stroke-width: 3;
-      }
-
-      .metro-stop.ism { stroke: var(--red); }
-      .metro-stop.hsm { stroke: var(--hsm-line); }
-
-      .metro-transfer {
-        fill: var(--surface);
-        stroke: var(--ink);
-        stroke-width: 3;
-      }
-
-      .metro-transfer-core {
-        fill: var(--red);
-      }
-
-      .metro-label {
-        fill: var(--ink);
-        font: 11px var(--mono);
-      }
-
-      .metro-badge {
-        font: 700 10px var(--mono);
-      }
-
-      .metro-badge.ism { fill: var(--red); }
-      .metro-badge.hsm { fill: var(--hsm-line); }
-
-      .art-caption {
-        margin: 12px 0 0;
-        color: var(--muted);
-        font: 11px/1.5 var(--mono);
-      }
-
-      @media (max-width: 760px) {
-        .hero {
-          grid-template-columns: minmax(0, 1fr);
-          gap: 38px;
-          padding-top: 58px;
-        }
-
-        .hero h1 {
-          font-size: clamp(24px, 8vw, 58px);
-        }
-
-        .winter-sale-banner {
-          padding: 18px;
-        }
-
-        .winter-sale-rates {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .winter-sale-rate {
-          display: flex;
-          align-items: baseline;
-          justify-content: space-between;
-          gap: 10px;
-        }
-
-        .winter-sale-rate span {
-          margin-top: 0;
-          text-align: right;
-        }
-
-      }
-
-      .section {
-        padding: 90px 0;
-      }
-
-      .section-soft {
-        background: var(--canvas);
-      }
-
-      .section-heading {
-        display: flex;
-        align-items: end;
-        justify-content: space-between;
-        gap: 40px;
-        margin-bottom: 38px;
-      }
-
-      .section-heading-copy {
-        max-width: 760px;
-      }
-
-      .section-heading h2 {
-        margin: 0;
-        font: 700 52px/0.98 var(--display);
-        letter-spacing: -0.025em;
-        text-transform: uppercase;
-      }
-
-      .section-heading-copy > p {
-        max-width: 610px;
-        margin: 16px 0 0;
-        color: var(--soft);
-        font-size: 16px;
-        line-height: 1.7;
-      }
-
-      .steps {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        border-block: 1px solid var(--line);
-      }
-
-      .step {
-        min-height: 205px;
-        padding: 25px 25px 28px 0;
-      }
-
-      .step + .step {
-        padding-left: 26px;
-        border-left: 1px solid var(--line);
-      }
-
-      .step-number {
-        color: var(--red);
-        font: 12px/1 var(--mono);
-      }
-
-      .step-number:after {
-        display: inline-block;
-        width: 32px;
-        height: 1px;
-        margin: 0 0 3px 12px;
-        content: "";
-        background: var(--red);
-      }
-
-      .step h3 {
-        margin: 25px 0 9px;
-        font: 700 25px/1.1 var(--display);
-        text-transform: uppercase;
-      }
-
-      .step p {
-        max-width: 360px;
-        margin: 0;
-        color: var(--soft);
-        font-size: 15px;
-        line-height: 1.65;
-      }
-
-      #steps-title {
-        max-width: none;
-        margin: 0;
-        font-size: clamp(16px, 4vw, 40px);
-        line-height: 1;
-        letter-spacing: -0.035em;
-        white-space: nowrap;
-      }
-
-      .network-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
-      }
-
-      @media (max-width: 760px) {
-        .network-grid {
-          grid-template-columns: minmax(0, 1fr);
-        }
-      }
-
-      .network-card {
-        padding: 28px;
-        border: 1px solid var(--line);
-        background: var(--surface);
-      }
-
-      .network-heading {
-        display: flex;
-        align-items: start;
-        justify-content: space-between;
-        gap: 16px;
-      }
-
-      .network-heading h3 {
-        margin: 0;
-        font: 700 34px/1 var(--display);
-        text-transform: uppercase;
-      }
-
-      .network-index {
-        color: var(--red);
-        font: 12px/1.4 var(--mono);
-      }
-
-      .track {
-        min-height: 172px;
-        margin: 25px 0 17px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: clamp(14px, 3vw, 28px);
-        padding: 14px 18px;
-        border: 1px solid var(--line);
-        background: var(--surface-alt);
-      }
-
-      .rails {
-        position: relative;
-        width: min(52%, 180px);
-        min-width: 90px;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .rails:before,
-      .rails:after {
-        position: absolute;
-        right: 0;
-        left: 0;
-        height: 4px;
-        content: "";
-        border-radius: 2px;
-        background: linear-gradient(180deg, var(--soft), var(--ink));
-      }
-
-      .rails:before { top: 25px; }
-      .rails:after { bottom: 25px; }
-
-      .sleeper {
-        z-index: 1;
-        width: 4px;
-        height: 42px;
-        border-radius: 1px;
-        background: var(--red);
-      }
-
-      .wide .rails:before { top: 12px; }
-      .wide .rails:after { bottom: 12px; }
-
-      .wide .sleeper {
-        height: 58px;
-      }
-
-      .track-caption {
-        display: grid;
-        grid-template-columns: auto auto;
-        align-items: center;
-        gap: 8px;
-        color: var(--muted);
-        font: 10px/1.4 var(--mono);
-        text-transform: uppercase;
-      }
-
-      .track-caption strong {
-        color: var(--red);
-        font: 700 27px/1 var(--display);
-      }
-
-      .track-caption small {
-        font: inherit;
-      }
-
-      .network-note {
-        margin: 0;
-        color: var(--soft);
-        font-size: 15px;
-        line-height: 1.65;
-      }
-
-      .status-tag {
-        display: inline-flex;
-        align-items: center;
-        min-height: 24px;
-        margin-top: 16px;
-        padding: 5px 10px;
-        border: 1px solid #c8ccca;
-        color: var(--muted);
-        font: 10px/1.25 var(--mono);
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }
-
-      .status-tag.status-standard {
-        border-color: #9cb8a5;
-        border-left: 3px solid var(--green);
-        color: var(--green);
-        background: var(--status-bg);
-      }
-
-      .status-tag.status-restricted {
-        border-color: var(--red);
-        border-left: 3px solid var(--red);
-        color: var(--status-error-color);
-        background: var(--pale);
-      }
-
-      .network-disclaimer {
-        margin: 20px 0 0;
-        padding: 16px 18px;
-        border-left: 3px solid var(--red);
-        background: var(--canvas);
-        color: var(--soft);
-        font-size: 15px;
-        line-height: 1.65;
-      }
-
-      .rule-layout {
-        display: grid;
-        grid-template-columns: minmax(0, 1.4fr) minmax(250px, 0.6fr);
-        align-items: start;
-        gap: 22px;
-      }
-
-      .norm-heading {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: end;
-        gap: 24px;
-        margin-bottom: 30px;
-        padding: 22px 24px;
-        border: 1px solid var(--line);
-        border-top: 5px solid var(--red);
-        background: var(--surface);
-      }
-
-      .norm-heading .eyebrow {
-        margin-bottom: 10px;
-      }
-
-      .norm-heading h2 {
-        margin: 0;
-        font: 700 clamp(32px, 4vw, 48px)/0.98 var(--display);
-        letter-spacing: -0.025em;
-        text-transform: uppercase;
-      }
-
-      .norm-heading-copy > p:last-child {
-        max-width: 700px;
-        margin: 12px 0 0;
-        color: var(--soft);
-        font-size: 15px;
-        line-height: 1.6;
-      }
-
-      .norm-document-id {
-        display: grid;
-        min-width: 190px;
-        gap: 8px;
-        padding: 12px 0 12px 18px;
-        border-left: 1px solid var(--line);
-        color: var(--muted);
-        font: 10px/1.35 var(--mono);
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-      }
-
-      .norm-document-id strong {
-        color: var(--red);
-        font-size: 15px;
-      }
-
-      .rule-table-wrap {
-        border: 1px solid var(--line);
-        background: var(--surface);
-      }
-
-      .rule-table-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 14px 18px;
-        border-bottom: 2px solid var(--ink);
-        background: var(--surface);
-      }
-
-      .rule-table-head h3 {
-        margin: 0;
-        font: 700 20px/1 var(--display);
-        text-transform: uppercase;
-      }
-
-      .rule-table-head span {
-        color: var(--muted);
-        font: 10px/1.3 var(--mono);
-        letter-spacing: 0.05em;
-        text-align: right;
-        text-transform: uppercase;
-      }
-
-      .rule-list {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .rule-list li {
-        display: grid;
-        grid-template-columns: 98px minmax(110px, 0.55fr) minmax(0, 1.8fr);
-        gap: 12px;
-        padding: 15px 18px;
-        border-bottom: 1px solid var(--line);
-        font-size: 14px;
-        line-height: 1.6;
-      }
-
-      .rule-status {
-        align-self: start;
-        padding-top: 2px;
-        color: var(--muted);
-        font: 10px/1.5 var(--mono);
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }
-
-      .rule-status strong {
-        display: block;
-        color: var(--red);
-        font-size: 11px;
-      }
-
-      .rule-title {
-        font-weight: 700;
-      }
-
-      .rule-description {
-        margin: 0;
-        color: var(--soft);
-      }
-
-      .rule-open {
-        padding: 22px;
-        border: 1px solid var(--line);
-        border-top: 5px solid var(--red);
-        background: var(--surface);
-      }
-
-      .rule-open .eyebrow {
-        margin-bottom: 14px;
-      }
-
-      .rule-open h3 {
-        margin: 0 0 12px;
-        font: 700 26px/1 var(--display);
-        text-transform: uppercase;
-      }
-
-      .rule-open p {
-        margin: 12px 0 0;
-        color: var(--soft);
-        font-size: 14px;
-        line-height: 1.65;
-      }
-
-      .station-section {
-        border-block: 1px solid var(--line);
-        background: var(--canvas);
-      }
-
-      .station-heading {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: end;
-        gap: 32px;
-        margin-bottom: 32px;
-      }
-
-      .station-intro {
-        max-width: 800px;
-      }
-
-      .station-intro h2 {
-        max-width: 760px;
-        margin: 0;
-        font: 700 52px/0.98 var(--display);
-        letter-spacing: -0.025em;
-        text-transform: uppercase;
-      }
-
-      .station-intro > p:last-child {
-        max-width: 650px;
-        margin: 18px 0 0;
-        color: var(--soft);
-        font-size: 17px;
-        line-height: 1.65;
-      }
-
-      .station-index {
-        display: grid;
-        gap: 8px;
-        padding: 12px 0 12px 18px;
-        border-left: 3px solid var(--red);
-        color: var(--muted);
-        font: 10px/1.35 var(--mono);
-        letter-spacing: 0.06em;
-      }
-
-      .station-index strong {
-        color: var(--ink);
         font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background-color 140ms ease, transform 140ms ease;
       }
 
-      .platform-comparison {
+      .hero-link:hover {
+        transform: translateY(-2px);
+        border-color: var(--amber);
+        background: var(--amber);
+        color: var(--brand-dark);
+      }
+
+      .content {
+        width: min(100% - 40px, 1000px);
+        margin-inline: auto;
+      }
+
+      .intro {
+        padding: 35px 0 22px;
+        text-align: center;
+      }
+
+      .intro h2,
+      .section-heading {
+        margin: 0;
+        color: var(--ink);
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.045em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .intro p {
+        max-width: 760px;
+        margin: 13px auto 0;
+        color: var(--soft);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+
+      .service-notice {
+        max-width: 850px;
+        margin: 18px auto 0;
+        padding: 15px 20px;
+        border: 1px solid #ead9a6;
+        background: var(--notice);
+        color: #594b2e;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.65;
+        text-align: center;
+      }
+
+      .popular {
+        padding: 23px 0 42px;
+      }
+
+      .popular .section-heading {
+        margin-bottom: 17px;
+      }
+
+      .service-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
       }
 
-      .platform-panel {
+      .service-card {
         min-width: 0;
-        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
         border: 1px solid var(--line);
-        border-top: 5px solid var(--red);
-        background: var(--surface);
-        box-shadow: var(--shadow);
+        background: #fff;
+        text-decoration: none;
+        transition: border-color 150ms ease, transform 150ms ease;
       }
 
-      .platform-broad,
-      :root[data-theme="dark"] .platform-normal {
-        --platform-border: var(--line);
-        --platform-text: var(--ink);
-        --platform-meta: var(--muted);
-        --platform-diagram-bg: var(--surface);
-        --platform-diagram-border: var(--line);
-        --platform-diagram-text: var(--soft);
-        --platform-dimension: var(--red-dark);
-        --platform-dimension-line: var(--red);
-        --platform-surface: #dce1df;
-        --platform-surface-border: #737e80;
-        --platform-side: #9b1c2b;
-        --platform-side-border: #741522;
-        --platform-joints: #748083;
-        --platform-spec-bg: var(--surface);
-        --platform-spec-border: var(--line);
-        border-color: var(--platform-border);
-        border-top-color: #c94755;
-        background: var(--surface);
-        color: var(--platform-text);
+      .service-card:hover {
+        transform: translateY(-2px);
+        border-color: #c9a13b;
       }
 
-      :root[data-theme="dark"] .platform-broad,
-      :root[data-theme="dark"] .platform-normal {
-        --platform-border: #414849;
-        --platform-meta: #c7cecd;
-        --platform-diagram-bg: #343b3d;
-        --platform-diagram-border: #515a5c;
-        --platform-diagram-text: #e1e5e4;
-        --platform-dimension: #ff8994;
-        --platform-dimension-line: #ff8994;
-        --platform-surface: #687274;
-        --platform-surface-border: #bdc5c3;
-        --platform-side: #bd3444;
-        --platform-side-border: #f0808b;
-        --platform-joints: #eef0ef;
-        --platform-spec-bg: #353c3e;
-        --platform-spec-border: #4b5456;
-        background: #202526;
-        color: #f7f8f7;
+      .service-card img {
+        width: 100%;
+        height: 116px;
+        display: block;
+        object-fit: cover;
       }
 
-      .platform-panel-head {
+      .service-card span {
+        min-height: 58px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 14px;
-      }
-
-      .platform-panel-head > div {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .platform-code {
-        min-width: 48px;
-        height: 38px;
-        display: grid;
-        place-items: center;
-        background: var(--red);
-        color: #fff;
-        font: 700 13px var(--mono);
-      }
-
-      .platform-panel h3 {
-        margin: 0;
-        font: 700 21px/1 var(--display);
-        letter-spacing: 0.01em;
-        text-transform: uppercase;
-      }
-
-      .platform-type {
-        color: var(--muted);
-        font: 10px/1 var(--mono);
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        text-align: right;
-      }
-
-      .platform-broad .platform-type,
-      :root[data-theme="dark"] .platform-normal .platform-type {
-        color: var(--platform-meta);
-      }
-
-      .platform-diagram {
-        display: block;
-        width: 100%;
-        height: auto;
-        margin: 18px 0 14px;
-        border: 1px solid var(--line);
-        background: var(--surface);
-      }
-
-      .platform-broad .platform-diagram,
-      :root[data-theme="dark"] .platform-normal .platform-diagram {
-        border-color: var(--platform-diagram-border);
-        background: var(--platform-diagram-bg);
-      }
-
-      .platform-diagram .diagram-label,
-      .platform-diagram .diagram-small,
-      .platform-diagram .dimension-text {
-        font-family: var(--mono);
-        font-size: 10px;
-        fill: var(--soft);
-      }
-
-      .platform-diagram .diagram-label {
-        font-size: 9px;
-        letter-spacing: 0.04em;
-      }
-
-      .platform-diagram .diagram-small {
-        font-size: 8px;
-      }
-
-      .platform-diagram .dimension-text {
-        font-weight: 700;
-        fill: var(--red-dark);
-      }
-
-      .platform-broad .platform-diagram .diagram-label,
-      .platform-broad .platform-diagram .diagram-small,
-      :root[data-theme="dark"] .platform-normal .platform-diagram .diagram-label,
-      :root[data-theme="dark"] .platform-normal .platform-diagram .diagram-small {
-        fill: var(--platform-diagram-text);
-      }
-
-      .platform-broad .platform-diagram .dimension-text,
-      :root[data-theme="dark"] .platform-normal .platform-diagram .dimension-text {
-        fill: var(--platform-dimension);
-      }
-
-      .platform-diagram .dimension-line,
-      .platform-diagram .dimension-tick {
-        stroke: var(--red);
-        stroke-width: 1.4;
-      }
-
-      .platform-broad .platform-diagram .dimension-line,
-      .platform-broad .platform-diagram .dimension-tick,
-      :root[data-theme="dark"] .platform-normal .platform-diagram .dimension-line,
-      :root[data-theme="dark"] .platform-normal .platform-diagram .dimension-tick {
-        stroke: var(--platform-dimension-line);
-      }
-
-      .platform-diagram .platform-surface {
-        fill: #dce1df;
-        stroke: #737e80;
-        stroke-width: 1;
-      }
-
-      .platform-broad .platform-diagram .platform-surface,
-      :root[data-theme="dark"] .platform-normal .platform-diagram .platform-surface {
-        fill: var(--platform-surface);
-        stroke: var(--platform-surface-border);
-        stroke-width: 1;
-      }
-
-      .platform-diagram .platform-side {
-        fill: #9b1c2b;
-        stroke: #741522;
-        stroke-width: 1;
-      }
-
-      .platform-broad .platform-diagram .platform-side,
-      :root[data-theme="dark"] .platform-normal .platform-diagram .platform-side {
-        fill: var(--platform-side);
-        stroke: var(--platform-side-border);
-        stroke-width: 1;
-      }
-
-      .platform-diagram .block-joints {
-        stroke: #748083;
-        stroke-width: 0.8;
-        opacity: 0.7;
-      }
-
-      .platform-broad .platform-diagram .block-joints,
-      :root[data-theme="dark"] .platform-normal .platform-diagram .block-joints {
-        stroke: var(--platform-joints);
-        opacity: 0.55;
-      }
-
-      .platform-diagram .ground-line {
-        stroke: #aeb6b4;
-        stroke-width: 1;
-      }
-
-      .platform-specs {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 8px;
+        padding: 10px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.35;
       }
 
-      .platform-specs p {
-        display: grid;
-        gap: 7px;
-        min-width: 0;
-        margin: 0;
-        padding: 12px 10px;
-        border: 1px solid var(--line);
-        background: var(--surface);
+      .service-card span::after {
+        flex: none;
+        color: var(--accent-dark);
+        content: "→";
+        font-size: 17px;
       }
 
-      .platform-specs span {
-        color: var(--muted);
-        font: 10px/1.2 var(--mono);
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }
-
-      .platform-specs strong {
-        font-size: 14px;
-        line-height: 1.25;
-      }
-
-      .platform-broad .platform-specs p,
-      :root[data-theme="dark"] .platform-normal .platform-specs p {
-        border-color: var(--platform-spec-border);
-        background: var(--platform-spec-bg);
-      }
-
-      .platform-broad .platform-specs span,
-      :root[data-theme="dark"] .platform-normal .platform-specs span {
-        color: var(--platform-meta);
-      }
-
-      .diagram-note {
-        margin: 12px 0 0;
-        color: var(--muted);
-        font: 10px/1.4 var(--mono);
-      }
-
-      .platform-broad .diagram-note,
-      :root[data-theme="dark"] .platform-normal .diagram-note {
-        color: var(--platform-meta);
-      }
-
-      .station-operations {
-        display: grid;
-        grid-template-columns: minmax(190px, 0.55fr) minmax(0, 1.45fr);
-        gap: 28px;
-        align-items: start;
-        margin-top: 44px;
-        padding-top: 27px;
+      .providers {
+        padding: 30px 0 52px;
         border-top: 1px solid var(--line);
       }
 
-      .operations-heading .eyebrow {
-        margin: 0 0 10px;
+      .providers .section-heading {
+        margin-bottom: 18px;
       }
 
-      .operations-heading h3 {
-        max-width: 250px;
-        margin: 0;
-        font: 700 31px/1.02 var(--display);
+      .provider-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .provider {
+        display: grid;
+        grid-template-columns: 150px minmax(0, 1fr);
+        min-width: 0;
+        border: 1px solid var(--line);
+        background: #fff;
+      }
+
+      .provider img {
+        width: 100%;
+        height: 100%;
+        min-height: 158px;
+        display: block;
+        object-fit: cover;
+      }
+
+      .provider-copy {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 17px;
+      }
+
+      .provider-copy small {
+        color: var(--accent-dark);
+        font: 9px/1.4 var(--mono);
+        letter-spacing: 0.06em;
         text-transform: uppercase;
       }
 
-      .operation-flow {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0;
+      .provider-copy h3 {
+        margin: 8px 0;
+        font-size: 16px;
+        line-height: 1.25;
+      }
+
+      .provider-copy p {
         margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .operation-flow li {
-        display: grid;
-        grid-template-columns: 34px 1fr;
-        gap: 10px;
-        padding: 0 16px;
-        border-left: 1px solid var(--line);
-      }
-
-      .operation-flow li > span {
-        color: var(--red);
-        font: 12px/1.4 var(--mono);
-      }
-
-      .operation-flow strong {
-        display: block;
-        font-size: 14px;
-      }
-
-      .operation-flow p {
-        margin: 7px 0 0;
         color: var(--soft);
-        font-size: 13px;
+        font-size: 12px;
         line-height: 1.55;
       }
 
-      .station-pricing {
-        display: grid;
-        grid-template-columns: minmax(175px, 1.1fr) repeat(3, minmax(0, 1fr));
-        gap: 0;
-        margin-top: 28px;
-        padding: 21px 22px;
-        background: var(--red);
-        color: #fff;
+      .provider-copy a {
+        margin-top: auto;
+        padding-top: 14px;
+        color: var(--brand-dark);
+        font-size: 11px;
+        font-weight: 700;
+        text-decoration: none;
       }
 
-      .station-sale-banner {
+      .provider-copy a:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--line);
+        background: var(--canvas);
+        color: var(--ink);
+      }
+
+      .footer-inner {
+        width: min(100% - 40px, 1000px);
         display: grid;
-        grid-template-columns: auto 1fr auto;
+        grid-template-columns: 1fr auto;
         align-items: center;
-        gap: 18px;
-        margin-top: 34px;
-        padding: 19px 22px;
-        border: 2px solid #fff;
-        outline: 1px solid var(--red);
-        color: #fff;
-        background: linear-gradient(110deg, var(--red-dark), var(--red));
-        box-shadow: var(--shadow);
+        gap: 32px;
+        margin-inline: auto;
+        padding: 24px 0;
       }
 
-      .station-sale-percent {
-        font: 700 40px/.9 var(--display);
-        white-space: nowrap;
-      }
-
-      .station-sale-copy strong,
-      .station-sale-copy span {
+      .footer-inner strong {
         display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
       }
 
-      .station-sale-copy strong {
-        font: 700 22px/1 var(--display);
+      .footer-inner p {
+        margin: 0;
+        color: var(--soft);
+        font-size: 11px;
+        line-height: 1.6;
+      }
+
+      .footer-credit {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        text-align: left;
+      }
+
+      .footer-logo {
+        width: 76px;
+        height: 76px;
+        flex: none;
+        object-fit: contain;
+      }
+
+      .footer-credit strong {
+        color: var(--accent-dark);
+        font: 700 11px/1.5 var(--mono);
+        letter-spacing: 0.045em;
         text-transform: uppercase;
       }
 
-      .station-sale-copy span {
-        margin-top: 6px;
-        color: #ffe8e8;
+      .main-nav {
+        display: none;
+      }
+
+      .portal-picker {
+        width: min(100% - 48px, 1120px);
+        min-height: calc(100svh - 74px);
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+        gap: 22px;
+        margin-inline: auto;
+        padding: 28px 0 34px;
+      }
+
+      .portal-picker-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .portal-picker-heading p {
+        margin: 0 0 7px;
+        color: var(--accent-dark);
+        font: 600 10px/1.4 var(--mono);
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+
+      .portal-picker-heading h1 {
+        margin: 0;
+        color: var(--ink);
+        font-size: clamp(24px, 3vw, 36px);
+        line-height: 1.1;
+      }
+
+      .portal-picker-heading > span {
+        padding-bottom: 4px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .portal-grid {
+        min-height: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .portal-choice {
+        min-width: 0;
+        min-height: 420px;
+        display: grid;
+        grid-template-rows: minmax(0, 1fr) auto;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: #fff;
+        text-decoration: none;
+        transition: border-color 150ms ease, transform 150ms ease;
+      }
+
+      .portal-choice:hover {
+        transform: translateY(-3px);
+        border-color: #c9a13b;
+      }
+
+      .portal-choice:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .portal-choice-image {
+        position: relative;
+        min-height: 0;
+        overflow: hidden;
+        background: var(--canvas);
+      }
+
+      .portal-choice-image::after {
+        position: absolute;
+        inset: auto 0 0;
+        height: 34%;
+        background: linear-gradient(transparent, rgb(15 25 38 / 34%));
+        content: "";
+        pointer-events: none;
+      }
+
+      .portal-choice-image img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        transition: transform 220ms ease;
+      }
+
+      .portal-choice:hover .portal-choice-image img {
+        transform: scale(1.025);
+      }
+
+      .portal-choice-copy {
+        min-height: 148px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-content: center;
+        align-items: center;
+        gap: 8px 18px;
+        padding: 20px 24px;
+        border-top: 3px solid var(--brand-dark);
+      }
+
+      .portal-choice-city .portal-choice-copy {
+        border-top-color: var(--accent);
+      }
+
+      .portal-choice-copy small {
+        grid-column: 1 / -1;
+        color: var(--accent-dark);
+        font: 600 9px/1.4 var(--mono);
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      .portal-choice-copy strong {
+        color: var(--ink);
+        font-size: clamp(20px, 2.4vw, 30px);
+        line-height: 1.1;
+      }
+
+      .portal-choice-copy span {
+        grid-column: 1;
+        color: var(--soft);
         font-size: 13px;
         line-height: 1.45;
       }
 
-      .station-sale-snow {
-        color: #ffe8ad;
-        font-size: 28px;
-        letter-spacing: .15em;
-        white-space: nowrap;
-      }
-
-      .price-heading,
-      .price-item {
+      .portal-choice-action {
+        grid-column: 2;
+        grid-row: 2 / span 2;
+        width: 44px;
+        height: 44px;
         display: grid;
-        align-content: center;
-        gap: 7px;
-        padding: 4px 16px;
-        border-right: 1px solid rgb(255 255 255 / 38%);
+        place-items: center;
+        border: 1px solid var(--line);
+        color: var(--brand-dark);
+        font-size: 22px;
+        transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
       }
 
-      .price-heading {
-        padding-left: 0;
-      }
-
-      .price-heading span,
-      .price-item > span {
+      .portal-choice:hover .portal-choice-action {
+        border-color: var(--brand-dark);
+        background: var(--brand-dark);
         color: #fff;
-        font: 10px/1.3 var(--mono);
-        letter-spacing: 0.07em;
-        text-transform: uppercase;
-      }
-
-      .price-heading strong {
-        font: 700 21px/1 var(--display);
-        text-transform: uppercase;
-      }
-
-      .price-heading span {
-        font-weight: 700;
-      }
-
-      .price-discount {
-        display: inline-block;
-        width: fit-content;
-        margin-top: 2px;
-        padding: 3px 6px;
-        border: 1px solid rgb(255 255 255 / 70%);
-        color: #fff;
-        font: 700 11px/1.2 var(--mono);
-      }
-
-      .price-item strong {
-        font: 700 18px/1.1 var(--display);
-        color: #fff;
-      }
-
-      .price-item small {
-        color: #f7e9eb;
-        font-size: 12px;
-        line-height: 1.35;
-      }
-
-      .price-item .previous-price {
-        color: #fff;
-        opacity: .8;
-      }
-
-      .price-surcharge {
-        border: 0;
-      }
-
-      .price-surcharge strong {
-        color: #fff;
-      }
-
-      .price-conversion-note {
-        grid-column: 1 / -1;
-        margin: 8px 0 0;
-        color: #ffe8e8;
-        font-size: 12px;
-        line-height: 1.5;
-      }
-
-      @media (max-width: 1000px) {
-        .rule-layout {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .rule-open {
-          display: grid;
-          grid-template-columns: minmax(160px, 0.4fr) minmax(0, 1fr);
-          column-gap: 24px;
-        }
-
-        .rule-open .eyebrow {
-          grid-column: 1;
-          grid-row: 1;
-        }
-
-        .rule-open h3 {
-          grid-column: 1;
-          grid-row: 2;
-        }
-
-        .rule-open p {
-          grid-column: 2;
-          grid-row: 1 / span 2;
-          margin-top: 0;
-        }
-
-        .station-pricing {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 16px 0;
-        }
-
-        .price-item:nth-child(2) {
-          border-right: 0;
-        }
       }
 
       @media (max-width: 760px) {
-        .norm-heading {
-          grid-template-columns: minmax(0, 1fr);
-          gap: 18px;
-          padding: 20px;
-        }
-
-        .norm-document-id {
-          grid-template-columns: auto auto;
-          justify-content: start;
-          gap: 8px 14px;
-          padding: 0;
-          border-left: 0;
-        }
-
-        .norm-document-id strong {
-          grid-column: 2;
-          grid-row: 1 / span 2;
-          align-self: center;
-        }
-
-        .rule-list li {
-          grid-template-columns: minmax(0, 1fr);
-          gap: 4px;
-          padding: 14px 16px;
-        }
-
-        .rule-status strong {
-          display: inline;
-          margin-right: 8px;
-        }
-
-        .rule-open {
-          display: block;
-        }
-
-        .rule-open p {
-          margin-top: 12px;
-        }
-
-        .station-heading {
-          grid-template-columns: minmax(0, 1fr);
-          gap: 18px;
-        }
-
-        .station-sale-banner {
-          grid-template-columns: auto 1fr;
+        .portal-grid {
           gap: 12px;
+        }
+
+        .portal-choice {
+          min-height: 360px;
+        }
+
+        .portal-choice-copy {
+          min-height: 156px;
+          gap: 8px 10px;
           padding: 16px;
         }
 
-        .station-sale-percent {
-          font-size: 32px;
+        .portal-choice-copy strong {
+          font-size: clamp(18px, 3vw, 24px);
         }
 
-        .station-sale-copy strong {
-          font-size: 19px;
-        }
-
-        .station-sale-snow {
-          display: none;
-        }
-
-        .platform-comparison {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .station-operations {
-          grid-template-columns: minmax(0, 1fr);
-          gap: 20px;
-        }
-
-        .operation-flow {
-          grid-template-columns: minmax(0, 1fr);
-          gap: 18px;
-        }
-
-        .operation-flow li {
-          padding: 0 0 0 12px;
-        }
-
-        .station-pricing {
-          grid-template-columns: minmax(0, 1fr);
-          gap: 0;
-        }
-
-        .price-heading,
-        .price-item,
-        .price-item:nth-child(2) {
-          padding: 12px 0;
-          border-right: 0;
-          border-bottom: 1px solid #53595a;
-        }
-
-        .price-surcharge {
-          border-bottom: 0;
+        .portal-choice-copy span {
+          font-size: 12px;
         }
       }
 
-      .application-layout {
-        display: grid;
-        grid-template-columns: minmax(250px, 0.72fr) minmax(0, 1.28fr);
-        gap: clamp(24px, 4vw, 56px);
-        align-items: start;
-      }
-
-      .application-intro {
-        position: sticky;
-        top: 112px;
-        padding: 24px;
-        border: 1px solid var(--line);
-        border-top: 4px solid var(--red);
-        background: var(--surface);
-      }
-
-      .application-intro .eyebrow {
-        margin: 0 0 14px;
-      }
-
-      .application-intro h3 {
-        margin: 0;
-        font: 700 clamp(32px, 3.5vw, 44px)/0.98 var(--display);
-        letter-spacing: -0.025em;
-        text-transform: uppercase;
-      }
-
-      .application-intro > p {
-        margin: 14px 0 0;
-        color: var(--soft);
-        font-size: 14px;
-        line-height: 1.65;
-      }
-
-      .application-intro > p .contact-name {
-        color: var(--red);
-      }
-
-      .application-note {
-        margin-top: 14px;
-        padding: 13px 15px;
-        border-left: 3px solid var(--red);
-        background: var(--canvas);
-        color: var(--soft);
-        font-size: 14px;
-        line-height: 1.65;
-      }
-
-      .application-note + .application-note {
-        margin-top: 8px;
-      }
-
-      .application-note strong {
-        color: var(--ink);
-      }
-
-      .application-note .contact-name {
-        color: var(--red);
-        font-weight: 700;
-      }
-
-      .form-panel {
-        min-width: 0;
-        padding: clamp(22px, 3vw, 36px);
-        border: 1px solid var(--line);
-        background: var(--surface);
-        box-shadow: var(--shadow);
-      }
-
-      .form-document-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 24px;
-        padding-bottom: 16px;
-        border-bottom: 2px solid var(--ink);
-      }
-
-      .form-document-head span {
-        display: block;
-        color: var(--muted);
-        font: 10px/1.5 var(--mono);
-        letter-spacing: 0.07em;
-        text-transform: uppercase;
-      }
-
-      .form-document-head strong {
-        color: var(--red);
-        font: 700 16px/1.2 var(--display);
-        letter-spacing: 0.04em;
-        text-align: right;
-        text-transform: uppercase;
-      }
-
-      .form-panel fieldset {
-        min-width: 0;
-        margin: 0;
-        padding: 0;
-        border: 0;
-      }
-
-      #application-form > fieldset + fieldset {
-        margin-top: 28px;
-        padding-top: 25px;
-        border-top: 1px solid var(--line);
-      }
-
-      .coordinate-group + .coordinate-group {
-        margin-top: 12px;
-        padding-top: 16px;
-        border-top: 1px solid var(--line);
-      }
-
-      .form-panel legend {
-        width: 100%;
-        margin-bottom: 18px;
-        color: var(--ink);
-        font: 700 21px/1.1 var(--display);
-        text-transform: uppercase;
-      }
-
-      .form-section-number {
-        display: inline-block;
-        margin-right: 8px;
-        color: var(--red);
-        font: 11px/1 var(--mono);
-        vertical-align: 2px;
-      }
-
-      .form-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 17px 14px;
-      }
-
-      .field {
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 7px;
-      }
-
-      .field.full {
-        grid-column: 1 / -1;
-      }
-
-      .field label {
-        color: var(--soft);
-        font-size: 14px;
-        font-weight: 700;
-      }
-
-      .required {
-        color: var(--red);
-      }
-
-      .field input,
-      .field select,
-      .field textarea {
-        width: 100%;
-        min-width: 0;
-        min-height: 46px;
-        padding: 10px 12px;
-        border: 1px solid var(--field-border);
-        border-radius: 3px;
-        color: var(--ink);
-        background: var(--surface);
-        font-size: 15px;
-      }
-
-      .field textarea {
-        min-height: 110px;
-        resize: vertical;
-      }
-
-      .field input:hover,
-      .field select:hover,
-      .field textarea:hover {
-        border-color: var(--field-hover-border);
-      }
-
-      .field input:focus,
-      .field select:focus,
-      .field textarea:focus {
-        border-color: var(--red);
-        box-shadow: 0 0 0 3px rgb(155 28 43 / 10%);
-        outline: 0;
-      }
-
-      .hint {
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.5;
-      }
-
-      .coordinate-group {
-        margin-top: 17px;
-        padding: 16px;
-        border: 1px solid var(--line);
-        background: var(--surface-alt);
-      }
-
-      .coordinate-group legend {
-        margin-bottom: 6px;
-        font: 700 14px/1.4 var(--body);
-        text-transform: none;
-      }
-
-      .coordinate-group > .hint {
-        margin: 0 0 12px;
-      }
-
-      .coordinate-fields {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      .coordinate-fields .field {
-        gap: 5px;
-      }
-
-      .form-actions {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 12px;
-        margin-top: 22px;
-      }
-
-      .form-actions .button {
-        flex: 1 1 180px;
-      }
-
-      .status-message {
-        margin: 18px 0 0;
-        padding: 14px 16px;
-        border-left: 3px solid var(--green);
-        color: var(--status-color);
-        background: var(--status-bg);
-        font-size: 14px;
-        line-height: 1.6;
-      }
-
-      .status-message:empty {
-        display: none;
-      }
-
-      .status-message.error {
-        border-color: var(--red);
-        color: var(--status-error-color);
-        background: var(--pale);
-      }
-
-      .status-message strong {
-        display: block;
-        margin-bottom: 4px;
-      }
-
-      @media (max-width: 1000px) {
-        .application-layout {
-          grid-template-columns: minmax(0, 1fr);
+      @media (max-width: 520px) {
+        .masthead-inner {
+          width: min(100% - 28px, 460px);
         }
 
-        .application-intro {
-          position: static;
-        }
-      }
-
-      @media (max-width: 600px) {
-        .form-document-head {
-          flex-direction: column;
-          align-items: flex-start;
+        .masthead-inner {
+          min-height: 64px;
+          gap: 12px;
         }
 
-        .form-document-head strong {
-          max-width: none;
-          text-align: left;
-        }
-
-        .form-document-head > div {
-          min-width: 0;
-        }
-
-        .form-document-head span {
-          overflow-wrap: anywhere;
-        }
-
-        #antrag .section-heading-copy {
-          min-width: 0;
-        }
-
-        #antrag .section-heading-copy .eyebrow {
-          flex-wrap: wrap;
-        }
-
-        #application-title {
-          font-size: clamp(32px, 8vw, 46px);
-          line-height: 1;
-        }
-
-        .form-grid {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .coordinate-fields {
-          gap: 8px;
-        }
-
-        .coordinate-group {
-          padding: 12px;
-        }
-      }
-
-      @media (max-width: 760px) {
-        .shell {
-          width: min(100% - 32px, 1160px);
-        }
-
-        .site-header .header-inner {
-          min-height: 68px;
-        }
-
-        .brand {
-          gap: 9px;
-        }
-
-        .brand-mark {
-          width: 36px;
-          height: 36px;
-        }
-
-        .brand-copy strong {
-          font-size: 14px;
-        }
-
-        .brand-copy span {
-          font-size: 9px;
-        }
-
-        .hero {
-          gap: 30px;
-          padding: 46px 0 52px;
-        }
-
-        .hero h1 {
-          font-size: clamp(26px, 8.4vw, 38px);
-          line-height: 1.08;
-        }
-
-        .hero h1 .hero-line {
-          white-space: normal;
-        }
-
-        .hero-intro {
-          margin-top: 20px;
+        .authority-seal {
+          width: 33px;
+          height: 33px;
           font-size: 16px;
         }
 
-        .hero-actions {
-          align-items: stretch;
-          flex-direction: column;
-          margin-top: 22px;
-        }
-
-        .hero-actions .button {
-          width: 100%;
-        }
-
-        .hero-art {
-          min-height: 0;
-          padding: 16px;
-        }
-
-        .hero-map {
-          min-height: 0;
-          padding: 8px;
-        }
-
-        .section {
-          padding: 60px 0;
-        }
-
-        .section-heading {
-          align-items: flex-start;
-          gap: 18px;
-          margin-bottom: 26px;
-        }
-
-        .section-heading h2 {
-          font-size: clamp(34px, 9vw, 44px);
-          line-height: 1.02;
-          overflow-wrap: anywhere;
-        }
-
-        .norm-heading h2 {
-          overflow-wrap: anywhere;
-        }
-
-        #steps-title {
-          font-size: clamp(30px, 8vw, 40px);
-          line-height: 1.05;
-          white-space: normal;
-        }
-
-        .steps {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .step {
-          min-height: 0;
-          padding: 22px 0;
-        }
-
-        .step + .step {
-          padding-left: 0;
-          border-top: 1px solid var(--line);
-          border-left: 0;
-        }
-
-        .network-card {
-          padding: 20px;
-        }
-
-        .network-heading h3 {
-          min-width: 0;
-          font-size: clamp(23px, 7vw, 30px);
-          overflow-wrap: anywhere;
-        }
-
-        .network-index {
-          flex: none;
-        }
-
-        .platform-panel-head {
-          align-items: flex-start;
-          flex-wrap: wrap;
-          gap: 8px;
-        }
-
-        .platform-panel-head > div {
-          min-width: 0;
-          flex: 1 1 180px;
-          gap: 8px;
-        }
-
-        .platform-type {
-          min-width: 0;
-          flex: 1 1 120px;
-          overflow-wrap: anywhere;
-          text-align: left;
-        }
-
-        .track {
-          gap: 14px;
-          padding-inline: 12px;
-        }
-
-        .rule-table-head {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-
-        .rule-table-head span {
-          text-align: left;
-        }
-
-        .application-intro {
-          padding: 20px;
-        }
-
-        .form-panel {
-          padding: 20px;
-        }
-
-        .footer-inner {
-          align-items: flex-start;
-          flex-direction: column;
-          gap: 14px;
-        }
-      }
-
-      @media (max-width: 360px) {
-        .topline {
-          padding-inline: 12px;
-          font-size: 9px;
-        }
-
-        .brand-copy strong {
+        .authority-name strong {
           font-size: 12px;
         }
 
-        .brand-copy span {
+        .authority-name span {
           font-size: 8px;
         }
 
-        .menu-toggle,
-        .theme-toggle {
-          width: 40px;
-          height: 40px;
+        .portal-picker {
+          width: min(100% - 28px, 460px);
+          min-height: calc(100svh - 66px);
+          gap: 14px;
+          padding: 24px 0;
         }
 
-        .network-card,
-        .form-panel {
-          padding: 16px;
+        .portal-picker-heading {
+          display: block;
         }
-      }
 
-      .portal-footer {
-        padding: 28px 0;
-        border-top: 1px solid var(--line);
-        background: var(--surface);
-      }
+        .portal-picker-heading > span {
+          display: block;
+          margin-top: 6px;
+          font-size: 12px;
+        }
 
-      .footer-inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 22px;
-      }
+        .portal-grid {
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-rows: repeat(2, minmax(0, 1fr));
+          gap: 12px;
+        }
 
-      .footer-brand {
-        display: grid;
-        gap: 5px;
-      }
+        .portal-choice {
+          min-height: 0;
+        }
 
-      .footer-brand strong {
-        font: 700 16px/1.2 var(--display);
-        letter-spacing: 0.06em;
-      }
+        .portal-choice-copy {
+          min-height: 124px;
+          grid-template-columns: minmax(0, 1fr) 40px;
+          gap: 5px 10px;
+          padding: 12px 14px;
+        }
 
-      .footer-brand span {
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.5;
-      }
+        .portal-choice-copy small {
+          font-size: 8px;
+        }
 
-      .print-document {
-        display: none;
+        .portal-choice-copy strong {
+          font-size: clamp(19px, 6vw, 25px);
+        }
+
+        .portal-choice-copy span {
+          font-size: 11px;
+        }
+
+        .portal-choice-action {
+          width: 38px;
+          height: 38px;
+          font-size: 19px;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        html { scroll-behavior: auto; }
-        *, *:before, *:after {
-          scroll-behavior: auto !important;
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
           transition-duration: 0.01ms !important;
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-        }
-        .site-header:after {
-          animation-play-state: paused !important;
-        }
-      }
-
-      @media print {
-        @page {
-          size: A4;
-          margin: 13mm;
-        }
-        html, body {
-          width: 100%;
-          min-width: 0;
-          margin: 0;
-          background: #fff !important;
-          color: #17191a !important;
-        }
-        body > *:not(#print-root) {
-          display: none !important;
-        }
-        #print-root {
-          display: block !important;
-        }
-        #print-root .print-document {
-          display: flex !important;
-          flex-direction: column;
-          width: 100%;
-          min-height: calc(297mm - 26mm);
-          color: #17191a;
-          background: #fff;
-          font: 9.5pt/1.4 Arial, sans-serif;
-          print-color-adjust: exact;
-          -webkit-print-color-adjust: exact;
-        }
-
-        .print-head {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 0 0 10px;
-          border-bottom: 3px solid #9b1c2b;
-        }
-
-        .print-logo {
-          width: 40px;
-          height: 40px;
-          display: grid;
-          place-items: center;
-          flex: none;
-          color: #fff;
-          background: #9b1c2b;
-          font-size: 13pt;
-          font-weight: 700;
-        }
-
-        .print-head-copy {
-          min-width: 0;
-          flex: 1;
-        }
-
-        .print-head p {
-          margin: 0;
-          color: #565b5d;
-          font: 7pt/1.3 var(--mono);
-          letter-spacing: 0.07em;
-          text-transform: uppercase;
-        }
-
-        .print-head h1 {
-          margin: 3px 0;
-          font: 700 19pt/1.05 var(--display);
-          line-height: 1.05;
-          text-transform: uppercase;
-        }
-
-        .print-subtitle {
-          color: #565b5d;
-          font-size: 8pt;
-        }
-
-        .print-document-meta {
-          display: grid;
-          gap: 4px;
-          min-width: 118px;
-          padding-left: 12px;
-          border-left: 1px solid #c9cecc;
-          text-align: right;
-        }
-
-        .print-document-meta strong {
-          color: #9b1c2b;
-          font: 700 9pt/1.2 var(--mono);
-        }
-
-        .print-document-meta span {
-          color: #565b5d;
-          font: 6.5pt/1.3 var(--mono);
-          text-transform: uppercase;
-        }
-
-        .print-section {
-          margin-top: 16px;
-          break-inside: avoid;
-        }
-
-        .print-section h2 {
-          display: flex;
-          align-items: baseline;
-          gap: 8px;
-          margin: 0 0 8px;
-          padding: 0 0 5px;
-          border-bottom: 1px solid #d5d8d6;
-          color: #242729;
-          font: 700 9pt/1.2 var(--display);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-        }
-
-        .print-section-number {
-          color: #9b1c2b;
-          font: 700 7.5pt/1 var(--mono);
-        }
-
-        .print-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 8px 28px;
-        }
-
-        .print-item {
-          min-height: 0;
-          padding: 3px 0;
-          overflow-wrap: anywhere;
-        }
-
-        .print-item strong {
-          display: block;
-          color: #5d6260;
-          font: 6.8pt/1.25 var(--mono);
-          letter-spacing: 0.025em;
-          text-transform: uppercase;
-        }
-
-        .print-item span {
-          display: block;
-          min-height: 12px;
-          color: #17191a;
-          font-size: 8.5pt;
-          font-weight: 600;
-          white-space: pre-wrap;
-        }
-
-        .print-disclaimer {
-          margin: 12px 0 0;
-          color: #565b5d;
-          font-size: 8pt;
-          line-height: 1.5;
-        }
-
-        .print-remarks {
-          min-height: 20mm;
-          padding: 3px 0;
-          white-space: pre-wrap;
-          overflow-wrap: anywhere;
-        }
-
-        .print-admin {
-          margin-top: auto;
-          padding: 12px 0 0;
-          border-top: 1px solid #c9cecc;
-          break-inside: avoid;
-        }
-
-        .print-admin h2 {
-          margin: 0 0 10px;
-          color: #242729;
-          font: 700 10pt/1.2 var(--display);
-          text-transform: uppercase;
-        }
-
-        .decision-row {
-          display: flex;
-          gap: 24px;
-          margin: 8px 0;
-          font-size: 8pt;
-        }
-
-        .decision-choice {
-          display: inline-flex;
-          align-items: center;
-          gap: 7px;
-        }
-
-        .decision-box {
-          width: 12px;
-          height: 12px;
-          display: inline-block;
-          border: 1px solid #242729;
-        }
-
-        .admin-signoff {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 28px;
-          margin-top: 14px;
-        }
-
-        .admin-line {
-          min-height: 12mm;
-          display: grid;
-          grid-template-columns: auto minmax(0, 1fr);
-          align-items: end;
-          gap: 12px;
-          padding: 0 0 4px;
-          border-bottom: 1px solid #8e9491;
-          color: #333;
-          font-size: 7.5pt;
-        }
-
-        .admin-line strong {
-          display: block;
-        }
-
-        .print-footer {
-          margin: 8px 0 0;
-          color: #555;
-          font-size: 7pt;
-          line-height: 1.35;
         }
       }
     </style>
-
-
-    <script>
-      try {
-        const savedTheme = localStorage.getItem("di-theme");
-        document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark";
-      } catch (error) {
-        console.error("Die gespeicherte Darstellung konnte nicht geladen werden.", error);
-        document.documentElement.dataset.theme = "dark";
-      }
-    </script>
-
   </head>
-
-
   <body>
-    <header class="site-header">
-      <div class="shell header-inner">
-        <a class="brand" href="#start" aria-label="DOCTOR INDUSTRIES – zur Startseite">
-          <span class="brand-mark" aria-hidden="true">D I</span>
-          <span class="brand-copy">
-            <strong>DOCTOR INDUSTRIES</strong>
-            <span>INFRASTRUKTURPORTAL</span>
+    <header class="masthead">
+      <div class="masthead-inner">
+        <a class="authority" href="index.html" aria-label="Kreishaus Spawn – Serviceportal">
+          <span class="authority-seal" aria-hidden="true">K</span>
+          <span class="authority-name">
+            <strong>Kreishaus Spawn</strong>
+            <span>Zentrale Verwaltungsstelle</span>
           </span>
         </a>
-        <nav class="desktop-nav" id="primary-navigation" aria-label="Hauptnavigation">
-          <a class="nav-link" href="#start">Home</a>
-          <a class="nav-link" href="#netze">Spurbreiten-Standard [SBS]</a>
-          <a class="nav-link" href="#regelwerk">DI-NORM</a>
-          <a class="nav-link" href="#bahnhof">Bahnhof</a>
-          <a class="nav-link" href="#antrag">Anschluss beantragen</a>
-          <a class="nav-link nav-link-portal" href="shops.html" aria-label="Immobilienportal – eigenständiges Portal">
-            <span class="portal-label">Immobilienportal</span> <span aria-hidden="true">↗</span>
-          </a>
-        </nav>
-        <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="primary-navigation">
-          <span aria-hidden="true">☰</span>
-        </button>
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Darkmode aktivieren" aria-pressed="false" title="Darkmode aktivieren">
-          <span aria-hidden="true">☾</span>
-        </button>
       </div>
     </header>
 
-
-    <main>
-      <section class="hero shell" id="start" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <aside class="winter-sale-banner" aria-labelledby="winter-sale-title">
-            <p class="winter-sale-kicker">❄ DOCTOR INDUSTRIES · SAISONANGEBOT ❄</p>
-            <h2 id="winter-sale-title">Großer Wintersale!</h2>
-            <p>Günstiger ans Schienennetz – sichere dir jetzt deinen Anschluss.</p>
-            <div class="winter-sale-rates" aria-label="Wintersale-Rabatte">
-              <div class="winter-sale-rate"><strong>50 %</strong><span>DI-Bahnhof</span></div>
-              <div class="winter-sale-rate"><strong>98,44 %</strong><span>Streckenbau je 100 m</span></div>
-              <div class="winter-sale-rate"><strong>87,5 %*</strong><span>Dimensionspreis</span></div>
-            </div>
-            <a class="winter-sale-link" href="#kosten">%% Wintersale-Preise ansehen %%</a>
-          </aside>
-          <p class="eyebrow">EINHEITLICH · ORGANISIERT · REGULIERT</p>
-          <h1 id="hero-title"><span class="hero-line">EGAL WIE GUT DU FLIEGST.</span><span class="hero-line">ZÜGE FAHREN GÜTER.</span></h1>
-          <p class="hero-intro">
-            Das Infrastrukturportal von DOCTOR INDUSTRIES™.<br/>
-            Verbinden Sie Ihren Standort mit einem standardisierten Schienennetz für industriellen Transport. 
-	    Informieren Sie sich über unsere Spurklassen, technische Anschlussbedingungen und den Weg zu Ihrem eigenen Netzanschluss.
-          </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#antrag">Anschluss beantragen<span aria-hidden="true">↗</span></a>
-            <a class="button button-secondary" href="#netze">Spursysteme entdecken</a>
-          </div>
+    <main class="portal-picker" id="start">
+      <div class="portal-picker-heading">
+        <div>
+          <p>Kreishaus Spawn · Zentrale Verwaltung</p>
+          <h1>Welches Portal möchten Sie besuchen?</h1>
         </div>
-
-        <div class="hero-art" role="img" aria-label="Schematischer Netzplan: Die rote ISM-Linie und die graue HSM-Linie treffen sich an einem gekennzeichneten Umsteigebahnhof. Kleine Züge fahren auf beiden Linien. Weitere Stationen sind beispielhaft und zur besseren Übersicht nur teilweise beschriftet.">
-          <div class="art-heading">
-            <span>NETZPLAN</span><span>01 / ÜBERSICHT</span>
-          </div>
-          <div class="hero-map" aria-hidden="true">
-            <svg class="metro-map" viewBox="0 0 360 250" xmlns="http://www.w3.org/2000/svg">
-              <path class="metro-line ism" d="M28 70H100L180 130L260 70H332" />
-              <path class="metro-line hsm" d="M28 190H100L180 130L260 190H332" />
-
-              <text class="metro-badge ism" x="28" y="27">ISM · NORMALSPUR</text>
-              <text class="metro-badge hsm" x="28" y="239">HSM · BREITSPUR</text>
-
-              <circle class="metro-stop ism" cx="28" cy="70" r="7" />
-              <circle class="metro-stop ism" cx="100" cy="70" r="7" />
-              <circle class="metro-stop ism" cx="260" cy="70" r="7" />
-              <circle class="metro-stop ism" cx="332" cy="70" r="7" />
-              <circle class="metro-stop hsm" cx="28" cy="190" r="7" />
-              <circle class="metro-stop hsm" cx="100" cy="190" r="7" />
-              <circle class="metro-stop hsm" cx="260" cy="190" r="7" />
-              <circle class="metro-stop hsm" cx="332" cy="190" r="7" />
-              <circle class="metro-transfer" cx="180" cy="130" r="10" />
-              <circle class="metro-transfer-core" cx="180" cy="130" r="4" />
-
-              <g class="metro-train ism" aria-hidden="true">
-                <animateMotion dur="14s" repeatCount="indefinite" rotate="auto" path="M 28 70 H 100 L 180 130 L 260 70 H 332" />
-                <rect class="metro-train-body" x="-10" y="-6" width="20" height="12" rx="3" />
-                <rect class="metro-train-window" x="-5" y="-3.5" width="7" height="5" rx="1" />
-                <circle class="metro-train-wheel" cx="-5" cy="6" r="2" />
-                <circle class="metro-train-wheel" cx="5" cy="6" r="2" />
-              </g>
-              <g class="metro-train hsm" aria-hidden="true">
-                <animateMotion dur="19s" repeatCount="indefinite" rotate="auto" path="M 332 190 H 260 L 180 130 L 100 190 H 28" />
-                <rect class="metro-train-body" x="-10" y="-6" width="20" height="12" rx="3" />
-                <rect class="metro-train-window" x="-5" y="-3.5" width="7" height="5" rx="1" />
-                <circle class="metro-train-wheel" cx="-5" cy="6" r="2" />
-                <circle class="metro-train-wheel" cx="5" cy="6" r="2" />
-              </g>
-
-              <text class="metro-label" x="28" y="53" text-anchor="start">Westtor</text>
-              <text class="metro-label" x="100" y="53" text-anchor="middle">Mitte</text>
-              <text class="metro-label" x="180" y="153" text-anchor="middle">Umstieg</text>
-              <text class="metro-label" x="332" y="53" text-anchor="end">Osttor</text>
-              <text class="metro-label" x="28" y="212" text-anchor="start">Norddepot</text>
-              <text class="metro-label" x="332" y="212" text-anchor="end">Ostdepot</text>
-            </svg>
-          </div>
-          <p class="art-caption">Schematische Linienführung · Stationen beispielhaft</p>
-        </div>
-      </section>
-
-      <section class="section section-soft" aria-labelledby="steps-title">
-        <div class="shell">
-          <div class="section-heading">
-            <div class="section-heading-copy">
-              <p class="eyebrow">DER WEG ZUM ANSCHLUSS</p>
-              <h2 id="steps-title">PRÜFEN. GENEHMIGEN. ANSCHLIESSEN.</h2>
-              <p>Der Weg zu Ihrem Netzanschluss folgt einem klar geregelten Verfahren. Von der Antragstellung über die behördliche Prüfung bis zur Festlegung des 		 	 Standorts – jeder Schritt schafft die Grundlage für eine geordnete Einbindung in das Schienennetz von DOCTOR INDUSTRIES™.
-              </p>
-            </div>
-          </div>
-          <div class="steps">
-
-            <article class="step">
-              <span class="step-number">01</span>
-              <h3>Antrag einreichen</h3>
-              <p>
-                Bereiten Sie Ihren Anschlussantrag über das Portal vor und senden Sie das ausgefüllte PDF per Discord-Direktnachricht an herr.doctor. Die 		Übermittlung erfolgt manuell; das Portal überträgt oder speichert keine Antragsdaten.
-              </p>
-            </article>
-
-            <article class="step">
-              <span class="step-number">02</span>
-              <h3>Bescheid erhalten</h3>
-              <p>
-                Die Verwaltung prüft Ihren Antrag und entscheidet über die Genehmigung. Sie erhalten einen unterzeichneten und gestempelten Bescheid mit dem 				Ergebnis „Genehmigt“ oder „Abgelehnt“.
-              </p>
-            </article>
-
-            <article class="step">
-              <span class="step-number">03</span>
-              <h3>STANDORT FESTLEGEN</h3>
-              <p>
-                Nach erteilter Genehmigung wird ein Termin zur Ortsbesichtigung und gemeinsamen Standortauswahl vereinbart. Anschließend errichtet DOCTOR 				INDUSTRIES™ oder Sie einen Bahnhof.
-              </p>
-            </article>
-
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="netze" aria-labelledby="networks-title">
-        <div class="shell">
-          <div class="section-heading">
-            <div class="section-heading-copy">
-              <p class="eyebrow">DI-SBS · SPURBREITENSTANDARD</p>
-              <h2 id="networks-title">
-                ZWEI KLASSEN. EIN STANDARD.
-              </h2>
-              <p>
-                DOCTOR INDUSTRIES™ betreibt ein standardisiertes Schienennetz mit klar definierten Zugangsbedingungen.
-
-		<p>Die Industriestandard-Magistrale (ISM) bildet das allgemein zugängliche Rückgrat unserer Infrastruktur. Sie ermöglicht geeigneten Standorten 			den regulären Anschluss an das Netz.</p>
-		<p>Die Hochleistungs-Schwerlastmagistrale (HSM) unterliegt einer gesonderten Zulassung. Anschlüsse werden 						ausschließlich auf besonderen Antrag und nach individueller Prüfung vergeben.</p>
-              </p>
-            </div>
-          </div>
-
-          <div class="network-grid">
-            <article class="network-card">
-              <div class="network-heading">
-                <h3>INDUSTRIESTANDARD-MAGISTRALE</h3>
-                <span class="network-index">ISM</span>
-              </div>
-              <div class="track" role="img" aria-label="Schematische Darstellung der Normalspur mit einer Gleisbreite von 3 Blöcken">
-                <div class="rails" aria-hidden="true">
-                  <i class="sleeper"></i><i class="sleeper"></i><i class="sleeper"></i>
-                  <i class="sleeper"></i><i class="sleeper"></i><i class="sleeper"></i>
-                </div>
-                <span class="track-caption"><strong>3</strong><small>Blöcke<br />Spurweite</small></span>
-              </div>
-              <p class="network-note">
-                Die reguläre Spurklasse für den Anschluss an das weltweite DOCTOR-INDUSTRIES™-Netz.
-              </p>
-              <span class="status-tag status-standard">Weltweiter Standard</span>
-            </article>
-
-            <article class="network-card">
-              <div class="network-heading">
-                <h3>HOCHLEISTUNGS-SCHWERLASTMAGISTRALE</h3>
-                <span class="network-index">HSM</span>
-              </div>
-              <div class="track wide" role="img" aria-label="Schematische Darstellung der Breitspur mit einer Gleisbreite von 5 Blöcken">
-                <div class="rails" aria-hidden="true">
-                  <i class="sleeper"></i><i class="sleeper"></i><i class="sleeper"></i>
-                  <i class="sleeper"></i><i class="sleeper"></i><i class="sleeper"></i>
-                </div>
-                <span class="track-caption"><strong>5</strong><small>Blöcke<br />Spurweite</small></span>
-              </div>
-              <p class="network-note">
-                Eine gesonderte Spurklasse für ausgewählte Infrastrukturvorhaben mit besonderen Anforderungen.
-              </p>
-              <span class="status-tag status-restricted">Sonderzulassung</span>
-            </article>
-
-          </div>
-          <p class="network-disclaimer">
-            ISM und HSM sind technisch inkompatible Gleissysteme. Ein Wechsel der Spurklasse während des Betriebs oder eine nachträgliche Umstellung eines 	    bestehenden Anschlusses ist ausgeschlossen. Die Spurklasse muss bereits bei der Antragstellung festgelegt werden. Ein zusätzlicher Anschluss an 	    	    die jeweils andere Spurklasse erfordert einen separaten Antrag und eine eigenständige Anschlussanlage an einem genehmigten Standort.
-          </p>
-        </div>
-      </section>
-
-      <section class="section section-soft" id="regelwerk" aria-labelledby="rules-title">
-        <div class="shell">
-          <div class="norm-heading">
-            <div class="norm-heading-copy">
-              <p class="eyebrow">REGELWERK &amp; ZUSTÄNDIGKEIT</p>
-              <h2 id="rules-title">Technische Anschlussbedingungen</h2>
-              <p>
-                Die DI-NORM bündelt technische und organisatorische Vorgaben für Anschlüsse an das Schienennetz von DOCTOR INDUSTRIES™. Die nachfolgenden Anforderungen bilden den verbindlichen Rahmen für Planung, Antrag und Bau.
-              </p>
-            </div>
-            <div class="norm-document-id" aria-label="Dokumentkennung DI-NORM 01">
-              <span>Normenreihe</span>
-              <strong>DI-NORM 01</strong>
-              <span>Infrastruktur · Anschlüsse</span>
-            </div>
-          </div>
-          <div class="rule-layout">
-            <div class="rule-table-wrap">
-              <div class="rule-table-head">
-                <h3>Anforderungen</h3>
-                <span>Technische und organisatorische Bestimmungen</span>
-              </div>
-              <ul class="rule-list">
-                <li>
-                  <span class="rule-status"><strong>DI-SBS-01</strong>Spurklassen</span>
-                  <span class="rule-title">Gleisbreiten und Übergänge</span>
-                  <p class="rule-description">ISM mit 3 Blöcken und HSM mit 5 Blöcken Gleisbreite. Die Systeme sind inkompatibel; ein Übergang ist ausschließlich über Umstiegsbahnhöfe zulässig.</p>
-                </li>
-                <li>
-                  <span class="rule-status"><strong>DI-BST-01</strong>Bahnsteige</span>
-                  <span class="rule-title">Mindestmaße und Höhe</span>
-                  <p class="rule-description">ISM und HSM erfordern mindestens 50 Blöcke Länge und 10 Blöcke Breite. Die Bahnsteighöhe beträgt bei ISM 2 Blöcke und bei HSM 2,5 Blöcke.</p>
-                </li>
-                <li>
-                  <span class="rule-status"><strong>DI-ANS-01</strong>Bahnhofspflicht</span>
-                  <span class="rule-title">Bau vor Streckenanschluss</span>
-                  <p class="rule-description">Jeder Anschluss erfordert einen Bahnhof. Eigenbauten müssen vor der Anbindung fertiggestellt sein. Bei beauftragtem Bahnhofsbau durch DI erfolgt dieser vor dem Streckenbau.</p>
-                </li>
-                <li>
-                  <span class="rule-status"><strong>DI-KOS-01</strong>Baukosten</span>
-                  <span class="rule-title">Leistungsbezogene Kosten</span>
-                  <p class="rule-description">Wintersale: DI-Bahnhof 50 Spurs statt 100 Spurs (50 % Rabatt); Streckenbau 1 Sprocket = 16 Spurs je 100 Meter statt 2 Crowns = 1.024 Spurs (98,44 % Rabatt). Dimensionszuschlag: einmalig 1 Cog = 64 Spurs je Nether- oder Endanschluss statt 1 Crown je 100 Meter. Bei einem Vergleich über 100 Meter entspricht das 87,5 % Ersparnis. Umrechnung: 1 Sprocket = 16 Spurs, 1 Cog = 64 Spurs, 1 Crown = 8 Cogs.</p>
-                </li>
-                <li>
-                  <span class="rule-status"><strong>DI-BET-01</strong>Dimensionsbindung</span>
-                  <span class="rule-title">Geltungsbereich des Antrags</span>
-                  <p class="rule-description">Jeder Antrag gilt für genau eine Dimension – Oberwelt, Nether oder Ende. Ein dimensionsübergreifender Zugverkehr durch Portale ist nicht vorgesehen.</p>
-                </li>
-                <li>
-                  <span class="rule-status"><strong>DI-VER-01</strong>Antragstellung</span>
-                  <span class="rule-title">Einreichung und Bearbeitung</span>
-                  <p class="rule-description">Anträge sind als PDF per Discord-Direktnachricht an herr.doctor einzureichen. Das Webportal dient ausschließlich der Information und Antragsvorbereitung; eine automatische Übermittlung oder Speicherung erfolgt nicht.</p>
-                </li>
-              </ul>
-            </div>
-            <aside class="rule-open">
-              <p class="eyebrow">DI-SBS-01 · GRUNDSATZ</p>
-              <h3>Getrennte Netze. Definierte Übergänge.</h3>
-              <p>
-                Die ISM und die HSM bilden zwei getrennte, technisch inkompatible Netze. Ein direkter Übergang zwischen den Spurklassen ist ausgeschlossen. Eine zusätzliche Spurklasse erfordert einen gesonderten Antrag und eine 		eigenständige Anschlussanlage. Die bei Antragstellung gewählte Spurklasse kann nachträglich nicht umgestellt werden.
-              </p>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <section class="section station-section" id="bahnhof" aria-labelledby="station-title">
-        <div class="shell">
-          <div class="station-heading">
-            <div class="station-intro">
-              <p class="eyebrow">ANSCHLUSSPUNKT · BAHNSTEIG-STANDARD</p>
-              <h2 id="station-title">Jeder Anschluss braucht einen Bahnhof.</h2>
-              <p>
-                Beide Bahnsteige teilen Länge und Breite. Der Höhenunterschied
-                ist der einzige Maßunterschied zwischen den Spurklassen.
-              </p>
-            </div>
-            <div class="station-index" aria-label="Technische Referenz DI-BST-01, Bahnsteigstandard">
-              <span>TECHNISCHE ANFORDERUNG</span>
-              <strong>DI-BST-01</strong>
-              <span>MINDESTMAẞE · BLÖCKE</span>
-            </div>
-          </div>
-          <div class="platform-comparison" aria-label="Direkter Vergleich der Bahnsteigmaße für ISM und HSM">
-            <article id="normalspur-panel" class="platform-panel platform-normal" aria-labelledby="normalspur-title">
-              <header class="platform-panel-head">
-                <div>
-                  <span class="platform-code">ISM</span>
-                  <h3 id="normalspur-title">Normalspur-Bahnsteig</h3>
-                </div>
-                <span class="platform-type">DI-BST-01<br />Standardprofil</span>
-              </header>
-              <svg class="platform-diagram" viewBox="0 0 390 230" role="img" aria-label="Schematischer Normalspur-Bahnsteig: mindestens 50 Blöcke lang, mindestens 10 Blöcke breit, 2 Blöcke hoch. Nicht maßstabsgetreu.">
-                <text x="50" y="21" class="diagram-label">DRAUFSICHT · GRUNDRISS</text>
-                <line x1="50" y1="35" x2="280" y2="35" class="dimension-line" />
-                <path d="M50 30v10 M280 30v10" class="dimension-tick" />
-                <text x="165" y="29" text-anchor="middle" class="dimension-text">≥ 50 BLÖCKE</text>
-                <rect x="50" y="50" width="230" height="48" class="platform-surface" />
-                <path d="M73 50v48 M96 50v48 M119 50v48 M142 50v48 M165 50v48 M188 50v48 M211 50v48 M234 50v48 M257 50v48" class="block-joints" />
-                <line x1="300" y1="50" x2="300" y2="98" class="dimension-line" />
-                <path d="M295 50h10 M295 98h10" class="dimension-tick" />
-                <text x="311" y="72" class="dimension-text">≥ 10</text>
-                <text x="311" y="85" class="diagram-small">BLÖCKE</text>
-                <text x="50" y="129" class="diagram-label">SEITENANSICHT · HÖHE</text>
-                <line x1="50" y1="204" x2="280" y2="204" class="ground-line" />
-                <rect x="50" y="162" width="230" height="42" class="platform-side" />
-                <path d="M73 162v42 M96 162v42 M119 162v42 M142 162v42 M165 162v42 M188 162v42 M211 162v42 M234 162v42 M257 162v42" class="block-joints" />
-                <line x1="300" y1="162" x2="300" y2="204" class="dimension-line" />
-                <path d="M295 162h10 M295 204h10" class="dimension-tick" />
-                <text x="311" y="182" class="dimension-text">2</text>
-                <text x="311" y="195" class="diagram-small">BLÖCKE</text>
-              </svg>
-              <div class="platform-specs">
-                <p><span>Länge</span><strong>mind. 50 Blöcke</strong></p>
-                <p><span>Breite</span><strong>mind. 10 Blöcke</strong></p>
-                <p><span>Höhe</span><strong>2 Blöcke</strong></p>
-              </div>
-              <p class="diagram-note">Schematische Darstellung · nicht maßstabsgetreu</p>
-            </article>
-
-            <article id="breitspur-panel" class="platform-panel platform-broad" aria-labelledby="breitspur-title">
-              <header class="platform-panel-head">
-                <div>
-                  <span class="platform-code">HSM</span>
-                  <h3 id="breitspur-title">Breitspur-Bahnsteig</h3>
-                </div>
-                <span class="platform-type">DI-BST-01<br />Schwerlastprofil</span>
-              </header>
-              <svg class="platform-diagram" viewBox="0 0 390 230" role="img" aria-label="Schematischer Breitspur-Bahnsteig: mindestens 50 Blöcke lang, mindestens 10 Blöcke breit, 2,5 Blöcke hoch. Nicht maßstabsgetreu.">
-                <text x="50" y="21" class="diagram-label">DRAUFSICHT · GRUNDRISS</text>
-                <line x1="50" y1="35" x2="280" y2="35" class="dimension-line" />
-                <path d="M50 30v10 M280 30v10" class="dimension-tick" />
-                <text x="165" y="29" text-anchor="middle" class="dimension-text">≥ 50 BLÖCKE</text>
-                <rect x="50" y="50" width="230" height="48" class="platform-surface" />
-                <path d="M73 50v48 M96 50v48 M119 50v48 M142 50v48 M165 50v48 M188 50v48 M211 50v48 M234 50v48 M257 50v48" class="block-joints" />
-                <line x1="300" y1="50" x2="300" y2="98" class="dimension-line" />
-                <path d="M295 50h10 M295 98h10" class="dimension-tick" />
-                <text x="311" y="72" class="dimension-text">≥ 10</text>
-                <text x="311" y="85" class="diagram-small">BLÖCKE</text>
-                <text x="50" y="129" class="diagram-label">SEITENANSICHT · HÖHE</text>
-                <line x1="50" y1="204" x2="280" y2="204" class="ground-line" />
-                <rect x="50" y="151.5" width="230" height="52.5" class="platform-side" />
-                <path d="M73 151.5v52.5 M96 151.5v52.5 M119 151.5v52.5 M142 151.5v52.5 M165 151.5v52.5 M188 151.5v52.5 M211 151.5v52.5 M234 151.5v52.5 M257 151.5v52.5" class="block-joints" />
-                <line x1="300" y1="151.5" x2="300" y2="204" class="dimension-line" />
-                <path d="M295 151.5h10 M295 204h10" class="dimension-tick" />
-                <text x="311" y="178" class="dimension-text">2,5</text>
-                <text x="311" y="191" class="diagram-small">BLÖCKE</text>
-              </svg>
-              <div class="platform-specs">
-                <p><span>Länge</span><strong>mind. 50 Blöcke</strong></p>
-                <p><span>Breite</span><strong>mind. 10 Blöcke</strong></p>
-                <p><span>Höhe</span><strong>2,5 Blöcke</strong></p>
-              </div>
-              <p class="diagram-note">Schematische Darstellung · nicht maßstabsgetreu</p>
-            </article>
-          </div>
-
-          <div class="station-operations">
-            <div class="operations-heading">
-              <p class="eyebrow">ANSCHLUSSABLAUF</p>
-              <h3>Erst Freigabe, dann Standort.</h3>
-            </div>
-            <ol class="operation-flow">
-              <li>
-                <span>01</span>
-                <div>
-                  <strong>Bahnhof erforderlich</strong>
-                  <p>Jeder Anschluss benötigt einen Bahnhof.</p>
-                </div>
-              </li>
-              <li>
-                <span>02</span>
-                <div>
-                  <strong>Antrag prüfen lassen</strong>
-                  <p>Nach der Genehmigung folgen Ortsbesichtigung und Standortauswahl.</p>
-                </div>
-              </li>
-              <li>
-                <span>03</span>
-                <div>
-                  <strong>Bahnhof vor Verbindung</strong>
-                  <p>DI baut einen beauftragten Bahnhof zuerst. Eigenbau muss vor dem Anschluss vollständig fertig sein.</p>
-                </div>
-              </li>
-            </ol>
-          </div>
-
-          <div class="station-sale-banner" role="note" aria-label="Großer Wintersale: bis zu 98,44 Prozent Rabatt auf den Streckenbau">
-            <span class="station-sale-percent" aria-hidden="true">%%</span>
-            <span class="station-sale-copy"><strong>Wintersale für deinen Netzanschluss</strong><span>Bahnhof, Strecke und Dimensionsanschluss jetzt zu stark gesenkten Preisen · spare bis zu 98,44 % beim Streckenbau!</span></span>
-            <span class="station-sale-snow" aria-hidden="true">❄ ❅ ❄</span>
-          </div>
-          <div class="station-pricing" id="kosten" aria-label="Wintersale-Preise für Bahnhof und Streckenbau">
-            <div class="price-heading">
-              <span>❄ WINTERSALE · SONDERPREISE ❄</span>
-              <strong>Jetzt günstig ans Netz</strong>
-            </div>
-            <div class="price-item">
-              <span>DI-Bahnhof</span>
-              <strong>50 Spurs</strong>
-              <small>Vorher: <del>100 Spurs</del> · Ersparnis: 50 Spurs</small>
-              <span class="price-discount">50 % RABATT</span>
-            </div>
-            <div class="price-item">
-              <span>Streckenbau · je 100 m</span>
-              <strong>1 Sprocket = 16 Spurs</strong>
-              <small>Vorher: <del>2 Crowns = 1.024 Spurs</del></small>
-              <span class="price-discount">98,44 % RABATT</span>
-            </div>
-            <div class="price-item price-surcharge">
-              <span>Dimension · einmalig je Anschluss</span>
-              <strong>1 Cog = 64 Spurs</strong>
-              <small>Vorher: <del>1 Crown / 100 m</del> · 87,5 % Ersparnis im 100-m-Vergleich</small>
-              <span class="price-discount">87,5 %* RABATT</span>
-            </div>
-            <p class="price-conversion-note">* Dimensionsrabatt im Vergleich zu 100 m bisheriger Strecke. Umrechnung: 1 Sprocket = 16 Spurs · 1 Cog = 64 Spurs · 1 Crown = 8 Cogs.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Formular -->
-      <section class="section section-soft" id="antrag" aria-labelledby="application-title">
-        <div class="shell">
-          <div class="section-heading">
-            <div class="section-heading-copy">
-              <p class="eyebrow">LOKALE ANTRAGSVORBEREITUNG</p>
-              <h2 id="application-title">Antrag auf Netzanschluss</h2>
-              <p>
-                Bitte füllen Sie den Antrag vollständig aus. Mit * markierte Felder sind Pflichtangaben. Der Antrag gilt für genau eine Dimension; Züge fahren nicht durch Portale.
-              </p>
-            </div>
-          </div>
-          <div class="application-layout">
-            <div class="application-intro">
-              <p class="eyebrow">VERFAHRENSHINWEIS · DI-ANS-01</p>
-              <h3>Einreichung in drei Schritten</h3>
-              <p>
-                Dieses Formular erstellt ausschließlich eine lokale Antragskopie. Es werden keine Angaben gespeichert oder übertragen.
-              </p>
-              <div class="application-note">
-                <strong>01 · Antrag vorbereiten</strong><br />Angaben prüfen und den Antrag als PDF speichern.
-              </div>
-              <div class="application-note">
-                <strong>02 · Antrag einreichen</strong><br />PDF manuell per Discord-Direktnachricht an <span class="contact-name">herr.doctor</span> senden.
-              </div>
-              <div class="application-note">
-                <strong>03 · Bescheid abwarten</strong><br />Die Verwaltung prüft den Antrag. Bei Genehmigung folgen Ortsbesichtigung und Standortauswahl.
-              </div>
-            </div>
-            <form class="form-panel" id="application-form">
-              <div class="form-document-head">
-                <div>
-                  <span>DOCTOR INDUSTRIES · Infrastrukturverwaltung</span>
-                  <span>Formblatt für Anschlussanträge</span>
-                </div>
-                <strong>DI-ANS-01<br />Antragstellerexemplar</strong>
-              </div>
-              <fieldset>
-                <legend><span class="form-section-number">01</span>Antragsteller &amp; Geltungsbereich</legend>
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="date">Datum <span class="required" aria-hidden="true">*</span></label>
-                    <input id="date" name="date" type="date" required />
-                  </div>
-                  <div class="field">
-                    <label for="dimension">Betriebsdimension <span class="required" aria-hidden="true">*</span></label>
-                    <select id="dimension" name="dimension" required>
-                      <option value="">Bitte auswählen</option>
-                      <option>Overworld</option>
-                      <option>Nether</option>
-                      <option>End</option>
-                    </select>
-                    <small class="hint">Antrag, Strecke und Betrieb bleiben in dieser Dimension. Keine Portal-Durchfahrt.</small>
-                  </div>
-                  <div class="field">
-                    <label for="organization">Firma / Gruppe <span class="required" aria-hidden="true">*</span></label>
-                    <input id="organization" name="organization" type="text" autocomplete="organization" required />
-                  </div>
-                  <div class="field">
-                    <label for="player">Minecraft-Spielername <span class="required" aria-hidden="true">*</span></label>
-                    <input id="player" name="player" type="text" autocomplete="off" required />
-                  </div>
-                  <div class="field">
-                    <label for="trackClass">Beantragte Spurklasse <span class="required" aria-hidden="true">*</span></label>
-                    <select id="trackClass" name="trackClass" required>
-                      <option value="">Bitte auswählen</option>
-                      <option>Normalspur</option>
-                      <option>Breitspur</option>
-                    </select>
-                    <small class="hint">Normalspur: 3 Blöcke · Breitspur: 5 Blöcke.</small>
-                  </div>
-                  <div class="field">
-                    <label for="stationMode">Bahnhofsbau <span class="required" aria-hidden="true">*</span></label>
-                    <select id="stationMode" name="stationMode" required>
-                      <option value="">Bitte auswählen</option>
-                      <option value="Eigenleistung">Eigenleistung – Bahnhof wird selbst gebaut</option>
-                      <option value="DI-Auftrag">DI-Auftrag – Bahnhofsbau durch DI beauftragen</option>
-                    </select>
-                    <small class="hint">Bahnhof ist für jeden Anschluss erforderlich. DI baut zuerst; Eigenbau muss vor Anschluss fertig sein.</small>
-                  </div>
-                </div>
-              </fieldset>
-              <fieldset>
-                <legend><span class="form-section-number">02</span>Verbindlicher Streckenendpunkt</legend>
-                <fieldset class="coordinate-group">
-                  <legend>Zielpunkt der Strecke <span class="required" aria-hidden="true">*</span></legend>
-                  <p class="hint" id="endpoint-coordinate-help">Bis zu diesem Punkt wird die Strecke verbindlich gebaut. Von dort wird sie anschließend nur noch an den Bahnhof angeschlossen. Für diesen Abschnitt sind keine weiteren Koordinaten nötig. X und Z bezeichnen die horizontale Position, Y die Höhe. Ganze Zahlen; negative Werte sind zulässig.</p>
-                  <div class="coordinate-fields">
-                    <div class="field">
-                      <label for="endpointX">X · Ost/West *</label>
-                      <input id="endpointX" name="endpointX" type="text" inputmode="numeric" pattern="-?[0-9]+" title="Ganze Zahl, optional mit führendem Minuszeichen" required aria-label="Verbindlicher Streckenendpunkt, Koordinate X" aria-describedby="endpoint-coordinate-help" />
-                    </div>
-                    <div class="field">
-                      <label for="endpointY">Y · Höhe *</label>
-                      <input id="endpointY" name="endpointY" type="text" inputmode="numeric" pattern="-?[0-9]+" title="Ganze Zahl, optional mit führendem Minuszeichen" required aria-label="Verbindlicher Streckenendpunkt, Koordinate Y" aria-describedby="endpoint-coordinate-help" />
-                    </div>
-                    <div class="field">
-                      <label for="endpointZ">Z · Nord/Süd *</label>
-                      <input id="endpointZ" name="endpointZ" type="text" inputmode="numeric" pattern="-?[0-9]+" title="Ganze Zahl, optional mit führendem Minuszeichen" required aria-label="Verbindlicher Streckenendpunkt, Koordinate Z" aria-describedby="endpoint-coordinate-help" />
-                    </div>
-                  </div>
-                </fieldset>
-                <div class="form-grid" style="margin-top: 17px">
-                  <div class="field full">
-                    <label for="remarks">Anmerkungen (optional)</label>
-                    <textarea id="remarks" name="remarks" rows="4"></textarea>
-                  </div>
-                </div>
-              </fieldset>
-              <div class="form-actions">
-                <button class="button button-primary" type="submit">Als PDF speichern / drucken</button>
-                <button class="button button-secondary" type="reset">Zurücksetzen</button>
-              </div>
-              <div class="status-message" id="form-status" role="status" aria-live="polite"></div>
-            </form>
-          </div>
-        </div>
-      </section>
-    </main>
-
-
-    <footer class="portal-footer">
-      <div class="shell footer-inner">
-        <div class="footer-brand">
-          <strong>DOCTOR INDUSTRIES™</strong>
-          <span>Infrastrukturportal · © 2026 Alle Rechte vorbehalten.</span>
-        </div>
+        <span>Wählen Sie einen Bereich aus.</span>
       </div>
-    </footer>
-
-
-    <div id="print-root" aria-live="off"></div>
-
-    <script>
-      (() => {
-        const metroMap = document.querySelector(".metro-map");
-        const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-        function syncMetroMotion() {
-          if (motionPreference.matches) {
-            metroMap.pauseAnimations();
-          } else {
-            metroMap.unpauseAnimations();
-          }
-        }
-
-        syncMetroMotion();
-        motionPreference.addEventListener("change", syncMetroMotion);
-      })();
-    </script>
-
-    <!-- Formular-Handling -->
-    <script>
-      (() => {
-        const form = document.getElementById("application-form");
-        const status = document.getElementById("form-status");
-        const printRoot = document.getElementById("print-root");
-        const dateField = document.getElementById("date");
-        const themeToggle = document.getElementById("theme-toggle");
-        const menuToggle = document.getElementById("menu-toggle");
-        const primaryNavigation = document.getElementById("primary-navigation");
-        const themeColor = document.querySelector('meta[name="theme-color"]');
-        function setMenuOpen(isOpen) {
-          primaryNavigation.classList.toggle("is-open", isOpen);
-          menuToggle.setAttribute("aria-expanded", String(isOpen));
-          menuToggle.setAttribute("aria-label", isOpen ? "Menü schließen" : "Menü öffnen");
-          menuToggle.querySelector("span").textContent = isOpen ? "×" : "☰";
-        }
-
-        menuToggle.addEventListener("click", () => {
-          setMenuOpen(menuToggle.getAttribute("aria-expanded") !== "true");
-        });
-
-        primaryNavigation.querySelectorAll("a").forEach((link) => {
-          link.addEventListener("click", () => setMenuOpen(false));
-        });
-
-        document.addEventListener("keydown", (event) => {
-          if (event.key === "Escape" && menuToggle.getAttribute("aria-expanded") === "true") {
-            setMenuOpen(false);
-            menuToggle.focus();
-          }
-        });
-
-        window.matchMedia("(max-width: 900px)").addEventListener("change", (event) => {
-          if (!event.matches) setMenuOpen(false);
-        });
-
-        function setTheme(theme, persist = true) {
-          const isDark = theme === "dark";
-          document.documentElement.dataset.theme = isDark ? "dark" : "light";
-          themeToggle.setAttribute("aria-pressed", String(isDark));
-          themeToggle.setAttribute("aria-label", isDark ? "Hellmodus aktivieren" : "Darkmode aktivieren");
-          themeToggle.setAttribute("title", isDark ? "Hellmodus aktivieren" : "Darkmode aktivieren");
-          themeToggle.querySelector("span").textContent = isDark ? "☀" : "☾";
-          themeColor.setAttribute("content", isDark ? "#1b1f20" : "#ffffff");
-
-          if (persist) {
-            try {
-              localStorage.setItem("di-theme", isDark ? "dark" : "light");
-            } catch (error) {
-              console.error("Die Darstellung konnte nicht gespeichert werden.", error);
-            }
-          }
-        }
-
-        setTheme(document.documentElement.dataset.theme === "dark" ? "dark" : "light", false);
-        themeToggle.addEventListener("click", () => {
-          setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
-        });
-
-        function localDate() {
-          const now = new Date();
-          return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-        }
-
-        function setStatus(message, isError = false) {
-          status.replaceChildren();
-          status.classList.toggle("error", isError);
-          if (!message) return;
-
-          const heading = document.createElement("strong");
-          heading.textContent = "PDF konnte nicht erstellt werden";
-          const copy = document.createElement("span");
-          copy.textContent = message;
-          status.append(heading, copy);
-        }
-
-        function getValue(data, name) {
-          return String(data.get(name) || "").trim();
-        }
-
-        function formatDate(value) {
-          if (!value) return "—";
-          const parts = value.split("-");
-          return parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : value;
-        }
-
-        function createPrintItem(label, value) {
-          const item = document.createElement("div");
-          item.className = "print-item";
-          const name = document.createElement("strong");
-          name.textContent = label;
-          const text = document.createElement("span");
-          text.textContent = value || "—";
-          item.append(name, text);
-          return item;
-        }
-
-        function createPrintSection(number, title, items) {
-          const section = document.createElement("section");
-          section.className = "print-section";
-          const heading = document.createElement("h2");
-          const sectionNumber = document.createElement("span");
-          sectionNumber.className = "print-section-number";
-          sectionNumber.textContent = number;
-          heading.append(sectionNumber);
-          const headingText = document.createElement("span");
-          headingText.textContent = title;
-          heading.append(headingText);
-          const grid = document.createElement("div");
-          grid.className = "print-grid";
-          items.forEach(([label, value]) => grid.append(createPrintItem(label, value)));
-          section.append(heading, grid);
-          return section;
-        }
-
-        function makePrintDocument(data) {
-          const article = document.createElement("article");
-          article.className = "print-document";
-          article.setAttribute("aria-label", "Druckansicht des Anschlussantrags");
-
-          const header = document.createElement("header");
-          header.className = "print-head";
-          const logo = document.createElement("span");
-          logo.className = "print-logo";
-          logo.textContent = "DI";
-          const headingWrap = document.createElement("div");
-          headingWrap.className = "print-head-copy";
-          const brand = document.createElement("p");
-          brand.textContent = "DOCTOR INDUSTRIES · Infrastrukturverwaltung";
-          const title = document.createElement("h1");
-          title.textContent = "Antrag auf Netzanschluss";
-          const subtitle = document.createElement("div");
-          subtitle.className = "print-subtitle";
-          subtitle.textContent = "Antragstellerexemplar · lokal vorbereitet · noch nicht eingereicht";
-          headingWrap.append(brand, title, subtitle);
-          const documentMeta = document.createElement("div");
-          documentMeta.className = "print-document-meta";
-          const documentId = document.createElement("strong");
-          documentId.textContent = "DI-ANS-01";
-          const documentType = document.createElement("span");
-          documentType.textContent = "Formblatt";
-          const documentDate = document.createElement("span");
-          documentDate.textContent = `Datum · ${formatDate(data.date)}`;
-          documentMeta.append(documentId, documentType, documentDate);
-          header.append(logo, headingWrap, documentMeta);
-          article.append(header);
-
-          article.append(
-            createPrintSection("01", "Antragsteller & Geltungsbereich", [
-              ["Datum", formatDate(data.date)],
-              ["Dimension", data.dimension],
-              ["Firma / Gruppe", data.organization],
-              ["Minecraft-Spielername", data.player],
-              ["Beantragte Spurklasse", data.trackClass],
-              ["Bahnhofsbau", data.stationMode],
-            ])
-          );
-
-          const disclaimer = document.createElement("p");
-          disclaimer.className = "print-disclaimer";
-          disclaimer.textContent = "Geltungsbereich: Antrag, Strecke und Betrieb gelten ausschließlich für die gewählte Dimension. Eine Portal-Durchfahrt ist nicht vorgesehen.";
-          article.append(disclaimer);
-
-          article.append(
-            createPrintSection("02", "Verbindlicher Streckenendpunkt", [
-              ["X · Ost/West", data.endpointX],
-              ["Y · Höhe", data.endpointY],
-              ["Z · Nord/Süd", data.endpointZ],
-            ])
-          );
-
-          const routeNote = document.createElement("p");
-          routeNote.className = "print-disclaimer";
-          routeNote.textContent = "Die Strecke wird verbindlich bis zu diesem Punkt gebaut. Von dort wird sie anschließend an den Bahnhof angeschlossen.";
-          article.append(routeNote);
-
-          const remarks = document.createElement("section");
-          remarks.className = "print-section";
-          const remarksTitle = document.createElement("h2");
-          const remarksNumber = document.createElement("span");
-          remarksNumber.className = "print-section-number";
-          remarksNumber.textContent = "03";
-          const remarksHeading = document.createElement("span");
-          remarksHeading.textContent = "Anmerkungen des Antragstellers";
-          remarksTitle.append(remarksNumber, remarksHeading);
-          const remarksText = document.createElement("div");
-          remarksText.className = "print-remarks";
-          remarksText.textContent = data.remarks || "Keine Anmerkungen angegeben.";
-          remarks.append(remarksTitle, remarksText);
-          article.append(remarks);
-
-          const admin = document.createElement("section");
-          admin.className = "print-admin";
-          const adminTitle = document.createElement("h2");
-          adminTitle.textContent = "Nur durch die Verwaltung auszufüllen · Entscheidung";
-          const choices = document.createElement("p");
-          choices.className = "decision-row";
-          ["Genehmigt", "Abgelehnt"].forEach((label) => {
-            const choice = document.createElement("span");
-            choice.className = "decision-choice";
-            const box = document.createElement("i");
-            box.className = "decision-box";
-            box.setAttribute("aria-hidden", "true");
-            const text = document.createElement("span");
-            text.textContent = label;
-            choice.append(box, text);
-            choices.append(choice);
-          });
-          admin.append(adminTitle, choices);
-
-          const signoff = document.createElement("div");
-          signoff.className = "admin-signoff";
-          ["Unterschrift", "Stempel"].forEach((label) => {
-            const line = document.createElement("div");
-            line.className = "admin-line";
-            const strong = document.createElement("strong");
-            strong.textContent = label;
-            line.append(strong);
-            line.append(document.createElement("span"));
-            signoff.append(line);
-          });
-          admin.append(signoff);
-
-          const instructions = document.createElement("p");
-          instructions.className = "print-footer";
-          instructions.textContent = "Einreichung per Discord-Direktnachricht an herr.doctor. Dieser Ausdruck wird nicht automatisch versendet.";
-          admin.append(instructions);
-          article.append(admin);
-
-          return article;
-        }
-
-        dateField.value = localDate();
-
-        form.addEventListener("input", () => setStatus(""));
-
-        form.addEventListener("submit", (event) => {
-          event.preventDefault();
-          if (!form.reportValidity()) return;
-          try {
-            const data = new FormData(form);
-            const application = {
-              date: getValue(data, "date"),
-              dimension: getValue(data, "dimension"),
-              organization: getValue(data, "organization"),
-              player: getValue(data, "player"),
-              trackClass: getValue(data, "trackClass"),
-              stationMode: getValue(data, "stationMode"),
-              endpointX: getValue(data, "endpointX"),
-              endpointY: getValue(data, "endpointY"),
-              endpointZ: getValue(data, "endpointZ"),
-              remarks: getValue(data, "remarks"),
-            };
-            printRoot.replaceChildren(makePrintDocument(application));
-            setStatus("");
-            window.print();
-          } catch (error) {
-            setStatus("Beim Erstellen des PDF-Ausdrucks ist ein Fehler aufgetreten.", true);
-            console.error(error);
-          }
-        });
-
-        form.addEventListener("reset", () => {
-          setTimeout(() => {
-            dateField.value = localDate();
-            printRoot.replaceChildren();
-            setStatus("");
-          }, 0);
-        });
-      })();
-    </script>
+      <div class="portal-grid" aria-label="Portalauswahl">
+        <a class="portal-choice" href="infrastrukturportal.html" aria-label="DOCTOR INDUSTRIES Infrastrukturportal öffnen">
+          <div class="portal-choice-image">
+            <img src="assets/service/service-bahnhof.jpg" alt="" fetchpriority="high" />
+          </div>
+          <div class="portal-choice-copy">
+            <small>Schienenverkehr · Infrastruktur · Anschlüsse</small>
+            <strong>DOCTOR INDUSTRIES</strong>
+            <span>Zum Infrastrukturportal</span>
+            <span class="portal-choice-action" aria-hidden="true">→</span>
+          </div>
+        </a>
+        <a class="portal-choice portal-choice-city" href="stadtbauamt.html" aria-label="Stadtbauamt Spawn öffnen">
+          <div class="portal-choice-image">
+            <img src="assets/service/service-gewerbe.jpg" alt="" loading="lazy" decoding="async" />
+          </div>
+          <div class="portal-choice-copy">
+            <small>Gewerbe · Immobilien · Bauanliegen</small>
+            <strong>Stadtbauamt Spawn</strong>
+            <span>Zum Stadtbauamt</span>
+            <span class="portal-choice-action" aria-hidden="true">→</span>
+          </div>
+        </a>
+      </div>
+    </main>
   </body>
 </html>
