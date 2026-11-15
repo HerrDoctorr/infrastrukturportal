@@ -1246,6 +1246,50 @@
                 lblNotes: "Habts ihr scho a Hütte im Team?",
                 btnSubmit: "Antrag ausdrucka & einreichen!"
             },
+            swabian: {
+                btnText: "Sprache: Schwäbisch 🥨",
+                kicker: "VORWEIHNACHTS-SALE · 25 % RABATT!",
+                saleTitle: "GROSSER VORWEIHNACHTS-SALE",
+                saleSubtitle: "JETZT 25 % AUF ALLE IMMOBILIEN",
+                saleBadge: "RABATT",
+                heroTitle: "A guater Platz für große Pläne.",
+                heroDesc: "Zum Vorweihnachts-Sale gibt's alle Geschäftshäuser am Marktplatz 25 % günstiger – ganz ohne Miete und mit Platz für dei eigene Idee.",
+                heroLink: "Gewerbeimmobilien o'schaua",
+                heroNote: "Marktplatz · Spawn / Gewerbeimmobilien",
+                katKicker: "25 % VORWEIHNACHTS-SALE · 25 % GÜNSTIGER",
+                katTitle: "Gewerbetypen, wo's gibt",
+                katDesc: "Alle Kaufpreise sind scho um 25 % reduziert; die alten Preise sind durchgestricha. Jedes Gebäude hat genau drei ausbaubare Stockwerke: Erdgeschoss, Obergeschoss und Dachgeschoss. Treppe und Aufzug planst ganz nach deinem Bedarf.",
+                mapTitle: "Lageplan von der Gewerbezone",
+                mapDesc: "Auf der Karte siehsch, wo die Immobilien liegen. Die Markierungen passen zu den Haustypen im Katalog.",
+                h101Title: "Haus \"Basis\"",
+                h101Sub: "Hälfte von einem Doppelhaus",
+                h102Title: "Haus \"Standard\"",
+                h102Sub: "Freistehendes Stadthaus",
+                h103Title: "Haus \"Standard Plus\"",
+                h103Sub: "Große Gewerbeimmobilie",
+                btnExpose: "Exposé o'schaua",
+                labelPrice: "25 % RABATT · SALE-PREIS",
+                labelOriginalPrice: "Vorher",
+                labelAvail: "Häuser, wo's no gibt",
+                satzKicker: "Amtliche Vorschrifta",
+                satzTitle: "Bauvorschrifta & Regeln fürs Kaufa",
+                satzDesc: "Höchstens 2 Häuser pro Team. D'Stadtverwaltung schaut, dass alle Regeln eihalta werdet.",
+                ruleMatrixTitle: "Erlaubte & verbotene Team-Kombinationen",
+                ruleArchTitle: "Architektur- & Bauvorschrifta",
+                rule1: "<strong>Fassadenschutz:</strong> Die Außenfassade darfst net verändern oder abreißen.",
+                rule2: "<strong>Erlaubte Deko:</strong> Banner, Pflanzkübel, Hecken und Fotos darfst außen aufstellen.",
+                rule3: "<strong>Vorgarten-Zone:</strong> Bis zu 3 Blöcke vors Gebäude darfst als Werbefläche oder Stand nutzen.",
+                rule4: "<strong>Innenarchitektur:</strong> Innen drin darfst alle 3 Stockwerke ganz nach deinem Gusto gestalten.",
+                antragKicker: "Formular ST-IMM-01",
+                antragTitle: "Antrag zum Immobilienkauf",
+                antragDesc: "Erstell deinen amtlichen Antrag für d'Serverleitung / Stadtverwaltung.",
+                lblPlayer: "Minecraft-Name / Team-Name *",
+                lblType: "Gewünschter Haustyp *",
+                lblShop: "Geplanter Ladenname / Branche *",
+                lblNum: "Gewünschte Hausnummer / Standort",
+                lblNotes: "Hat's im Team scho a erstes Haus?",
+                btnSubmit: "Kaufantrag erstellen & drucken"
+            },
             indian: {
                 btnText: "Language: Indian Eng 🇮🇳",
                 kicker: "PRE-CHRISTMAS SALE · 25% OFF!",
@@ -1293,10 +1337,10 @@
         };
 
         function toggleDialect() {
-            currentDialect = (currentDialect + 1) % 3;
-            const keys = ["standard", "bavarian", "indian"];
+            const keys = ["standard", "bavarian", "swabian", "indian"];
+            currentDialect = (currentDialect + 1) % keys.length;
             const text = translations[keys[currentDialect]];
-            document.documentElement.lang = currentDialect === 2 ? "en-IN" : "de";
+            document.documentElement.lang = currentDialect === 3 ? "en-IN" : "de";
             const setText = (id, value) => {
                 document.getElementById(id).textContent = value;
             };
@@ -1435,8 +1479,8 @@
                     <p class="text-xs text-slate-500 italic">${h.sub}</p>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4 text-xs space-y-2">
-                    <div class="flex justify-between"><span>${translations[["standard", "bavarian", "indian"][currentDialect]].labelPrice}:</span> <strong class="text-amber-600 font-mono font-bold">${h.price}</strong></div>
-                    <div class="flex justify-between"><span>${translations[["standard", "bavarian", "indian"][currentDialect]].labelOriginalPrice}:</span> <del class="text-slate-500">${h.previousPrice}</del></div>
+                    <div class="flex justify-between"><span>${translations[["standard", "bavarian", "swabian", "indian"][currentDialect]].labelPrice}:</span> <strong class="text-amber-600 font-mono font-bold">${h.price}</strong></div>
+                    <div class="flex justify-between"><span>${translations[["standard", "bavarian", "swabian", "indian"][currentDialect]].labelOriginalPrice}:</span> <del class="text-slate-500">${h.previousPrice}</del></div>
                     <div class="flex justify-between"><span>Bauart:</span> <strong>${h.type}</strong></div>
                     <div class="flex justify-between"><span>Etagen:</span> <strong>3 (EG, OG, DG)</strong></div>
                     <div class="flex justify-between"><span>Verfügbar:</span> <strong>${h.available} Häuser</strong></div>
