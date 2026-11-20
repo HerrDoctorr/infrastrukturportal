@@ -1,0 +1,2290 @@
+<!doctype html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>RailCAD · DOCTOR INDUSTRIES™</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            :root {
+                --ink: #0b1e36;
+                --red: #003377;
+                --muted: #43556b;
+                --line: #cbd5e1;
+                --canvas: #f8fafc;
+                --surface: #ffffff;
+                --display: "Glacial Indifference", "Segoe UI", Arial, sans-serif;
+                --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+            }
+            body {
+                margin: 0;
+                background: var(--canvas);
+                color: var(--ink);
+                font: 13px var(--display);
+                overflow: hidden;
+            }
+            header {
+                height: 78px;
+                position: relative;
+                background: rgb(255 255 255 / 98%);
+                display: flex;
+                align-items: center;
+                padding: 8px 24px;
+                gap: 18px;
+            }
+            header:after {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                height: 2px;
+                content: "";
+                background: var(--red);
+            }
+            .brand {
+                display: inline-flex;
+                align-items: center;
+                gap: 12px;
+                color: var(--ink);
+                text-decoration: none;
+            }
+            .brand-emblem {
+                width: 42px;
+                height: 42px;
+                object-fit: contain;
+            }
+            .brand-wordmark {
+                width: 215px;
+                height: auto;
+                display: block;
+            }
+            .product-name {
+                margin-left: 0;
+                padding-left: 0;
+                border-left: 0;
+                color: var(--ink);
+                font-size: 16px;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+            }
+            .railcad-brand {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .railcad-mark {
+                width: 34px;
+                height: 34px;
+                display: grid;
+                place-items: center;
+                border: 1px solid var(--red);
+                border-radius: 3px;
+                color: var(--red);
+                background: var(--surface);
+            }
+            .railcad-mark svg {
+                width: 24px;
+                height: 24px;
+                fill: none;
+                stroke: currentColor;
+                stroke-width: 1.8;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+            .back-link {
+                margin-left: auto;
+                color: var(--red);
+                font-size: 12px;
+                font-weight: 700;
+                text-decoration: none;
+                text-transform: uppercase;
+                border: 1px solid var(--red);
+                border-radius: 3px;
+                background: var(--surface);
+                padding: 10px 14px;
+                cursor: pointer;
+            }
+            .back-link:hover {
+                color: var(--surface);
+                background: var(--red);
+            }
+            .toolbar {
+                height: 91px;
+                background: var(--surface);
+                display: flex;
+                padding: 4px;
+                overflow-x: auto;
+                border-bottom: 1px solid var(--line);
+            }
+            .panel {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                border-right: 1px solid var(--line);
+                padding: 2px 7px;
+                flex-shrink: 0;
+            }
+            .tools {
+                display: flex;
+                gap: 3px;
+            }
+            .tool {
+                min-width: 58px;
+                height: 62px;
+                background: transparent;
+                border: 1px solid transparent;
+                color: var(--ink);
+                border-radius: 4px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                font-size: 10px;
+                cursor: pointer;
+            }
+            .tool:hover:not(:disabled) {
+                background: var(--canvas);
+            }
+            .tool.active {
+                background: #eaf1f8;
+                border-color: var(--red);
+                color: var(--red);
+            }
+            .tool:disabled {
+                opacity: 0.35;
+                cursor: not-allowed;
+                color: #98a2af;
+            }
+            .ico {
+                font-size: 21px;
+                width: 24px;
+                height: 24px;
+                display: grid;
+                place-items: center;
+            }
+            .ico svg {
+                width: 22px;
+                height: 22px;
+                display: block;
+                fill: none;
+                stroke: currentColor;
+                stroke-width: 1.7;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+            .caption {
+                text-align: center;
+                color: var(--muted);
+                font-size: 10px;
+                border-top: 1px solid var(--line);
+                padding-top: 3px;
+            }
+            #workspace {
+                position: relative;
+                height: calc(100vh - 205px);
+            }
+            canvas {
+                display: block;
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+            #info,
+            #help {
+                position: absolute;
+                background: rgb(255 255 255 / 96%);
+                border: 1px solid var(--line);
+                color: var(--ink);
+                border-radius: 5px;
+                padding: 9px 11px;
+                font-size: 12px;
+                line-height: 1.6;
+                pointer-events: none;
+            }
+            #info {
+                left: 9px;
+                bottom: 10px;
+            }
+            #help {
+                right: 10px;
+                top: 10px;
+                max-width: 280px;
+                display: none;
+            }
+            #help.is-open {
+                display: block;
+            }
+            #contextMenu {
+                position: absolute;
+                display: none;
+                background: var(--surface);
+                border: 1px solid var(--line);
+                border-radius: 5px;
+                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+                padding: 5px 0;
+                min-width: 210px;
+                z-index: 100;
+            }
+            .ctx-item {
+                padding: 7px 14px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                color: var(--ink);
+                user-select: none;
+            }
+            .ctx-item:hover {
+                background: #eaf1f8;
+                color: var(--red);
+            }
+            .ctx-check {
+                display: inline-block;
+                width: 14px;
+                text-align: center;
+                font-weight: bold;
+                color: var(--red);
+            }
+            .ctx-sep {
+                height: 1px;
+                background: var(--line);
+                margin: 4px 0;
+            }
+            footer {
+                height: 36px;
+                background: var(--surface);
+                border-top: 1px solid var(--line);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 10px;
+                color: var(--muted);
+                font-size: 12px;
+            }
+            .footer-brand,
+            .footer-actions {
+                display: flex;
+                align-items: center;
+            }
+            .footer-brand {
+                gap: 8px;
+                color: var(--ink);
+                font-size: 10px;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+            }
+            .footer-brand img {
+                width: 22px;
+                height: 22px;
+                object-fit: contain;
+            }
+            .footer-actions {
+                gap: 10px;
+            }
+            .help-toggle {
+                width: 28px;
+                height: 28px;
+                display: grid;
+                place-items: center;
+                padding: 0;
+                border: 1px solid var(--line);
+                border-radius: 3px;
+                color: var(--red);
+                background: var(--surface);
+                font: 700 14px/1 var(--display);
+                cursor: pointer;
+            }
+            .help-toggle:hover,
+            .help-toggle.active {
+                border-color: var(--red);
+                background: #eaf1f8;
+            }
+            @media (max-width: 760px) {
+                header {
+                    height: 68px;
+                    padding-inline: 12px;
+                }
+                .brand-emblem {
+                    width: 36px;
+                    height: 36px;
+                }
+                .brand-wordmark {
+                    width: 150px;
+                }
+                .product-name {
+                    display: none;
+                }
+                .railcad-brand {
+                    display: none;
+                }
+                .back-link {
+                    font-size: 10px;
+                }
+                #workspace {
+                    height: calc(100vh - 195px);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <span class="product-name railcad-brand">
+                <span class="railcad-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 16h18M5 12h14M7 16l2-4M17 16l-2-4M9 12l6-7M15 12l-6-7"/>
+                        <path d="M14 8l4-4 2 2-4 4"/>
+                        <circle cx="12" cy="5" r="1"/>
+                    </svg>
+                </span>
+                RailCAD
+            </span>
+            <button class="back-link" id="exitRailcad" type="button">Beenden ×</button>
+        </header>
+
+        <div class="toolbar">
+            <div class="panel">
+                <div class="tools">
+                    <button class="tool" id="line"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 20L20 4"/><circle cx="4" cy="20" r="1.5"/><circle cx="20" cy="4" r="1.5"/></svg></span>Gerade</button>
+                    <button class="tool" id="curve" disabled title="Funktion derzeit deaktiviert (fehlerhaft)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 19c7 0 3-14 16-14"/></svg></span>Kurve</button>
+                    <button class="tool" id="switch" disabled title="Funktion derzeit deaktiviert (fehlerhaft)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 12h18M12 12l7-7"/><circle cx="12" cy="12" r="2"/></svg></span>Weiche</button>
+                    <button class="tool" id="cross" disabled title="Funktion derzeit deaktiviert (fehlerhaft)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16"/></svg></span>Kreuzung</button>
+                    <button class="tool" id="buffer"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 12h13M16 7v10M9 12l-4-4M9 12l-4 4"/></svg></span>Prellbock</button>
+                    <button class="tool" id="platform"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M7 7v10M12 7v10M17 7v10"/></svg></span>Bahnsteig</button>
+                </div>
+                <div class="caption">Zeichnen</div>
+            </div>
+
+            <div class="panel">
+                <div class="tools">
+                    <button class="tool active" id="normal"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 4v16M19 4v16M5 8h14M5 16h14"/></svg></span>Normalspur<br />3 Blöcke</button>
+                    <button class="tool" id="broad"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 4v16M21 4v16M3 8h18M3 16h18"/></svg></span>Breitspur<br />5 Blöcke</button>
+                </div>
+                <div class="caption">Gleisbreite</div>
+            </div>
+
+            <div class="panel">
+                <div class="tools">
+                    <button class="tool" id="split" title="Gleis an beliebiger Blockstelle teilen / zerschneiden"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><path d="M8 7l10 11M8 17L18 6"/></svg></span>Zerschneiden</button>
+                    <button class="tool" id="toggleBallast" title="Gleisbett für ausgewählte Gleise umschalten"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M12 5v14M17 5v14"/></svg></span>Gleisbett</button>
+                    <button class="tool" id="undo"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 7H4v-5M4 7l5-5c5 0 9 4 9 9s-4 9-9 9H7"/></svg></span>Rückgängig</button>
+                    <button class="tool" id="delete"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"/></svg></span>Löschen</button>
+                    <button class="tool" id="clear"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M6.4 6.4l11.2 11.2"/></svg></span>Alles löschen</button>
+                </div>
+                <div class="caption">Ändern</div>
+            </div>
+
+            <div class="panel">
+                <div class="tools">
+                    <button class="tool" id="zoomOut"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L20 20M7 10h6"/></svg></span>Zoom</button>
+                    <button class="tool" id="zoomIn"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L20 20M7 10h6M10 7v6"/></svg></span>Zoom</button>
+                    <button class="tool" id="center"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg></span>Zentrieren</button>
+                </div>
+                <div class="caption">Ansicht</div>
+            </div>
+
+            <div class="panel">
+                <div class="tools">
+                    <button class="tool" id="save"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 3h13l3 3v15H4zM8 3v6h8V3M8 21v-7h8v7"/></svg></span>Speichern</button>
+                    <button class="tool" id="load"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v11H3zM12 11v7M9 15l3 3 3-3"/></svg></span>Laden</button>
+                    <button class="tool" id="print"><span class="ico"><svg viewBox="0 0 24 24"><path d="M7 8V3h10v5M7 17H4v-7h16v7h-3M7 14h10v7H7z"/><circle cx="17" cy="12" r=".5"/></svg></span>PDF / Druck</button>
+                    <input id="file" type="file" accept=".json" hidden />
+                </div>
+                <div class="caption">Datei</div>
+            </div>
+        </div>
+
+        <div id="workspace">
+            <canvas id="canvas"></canvas>
+            <div id="contextMenu">
+                <div class="ctx-item" id="ctxBallast">
+                    <span class="ctx-check" id="ctxBallastCheck"></span>
+                    <span id="ctxBallastLabel">Gleisbett</span>
+                </div>
+                <div class="ctx-item" id="ctxSplit">
+                    <span class="ctx-check">✂</span>
+                    <span>Hier zerschneiden</span>
+                </div>
+                <div class="ctx-sep"></div>
+                <div class="ctx-item" id="ctxDelete">
+                    <span class="ctx-check">⌫</span>
+                    <span>Löschen</span>
+                </div>
+            </div>
+            <div id="info">
+                Raster: 1 Feld = 1 Minecraft-Block<br />
+                Position: <span id="position">0 / 0</span><br />
+                Zoom: <span id="zoomText">100 %</span><br />
+                <span id="selectionText">Keine Auswahl</span>
+            </div>
+            <div id="help">
+                <b>Bedienung RailCAD</b><br />
+                Gerade: Startpunkt anklicken, ziehen, Endpunkt loslassen<br />
+                Prellbock: nahe am Gleisende anklicken<br />
+                Bahnsteig: Zwei Eckpunkte anklicken<br />
+                <b>Werkzeug abwählen:</b> Aktives Werkzeug nochmal anklicken oder ESC<br />
+                <b>Zerschneiden (✂):</b> Werkzeug wählen &amp; auf Gleis klicken (oder Rechtsklick → „Hier zerschneiden“)<br />
+                <b>Gleisbett:</b> Rechtsklick auf Gleisabschnitt → Haken bei Gleisbett<br />
+                <b>Verschieben:</b> Ausgewählte Bauteile mit Linksklick packen &amp; ziehen<br />
+                Mittlere Maustaste: Fläche verschieben | Entf: Löschen
+            </div>
+        </div>
+
+        <footer>
+            <span class="footer-brand">
+                <img src="assets/brand/di-seal.png" alt="" />
+                DOCTOR INDUSTRIES
+            </span>
+            <span class="footer-actions">
+                <button class="help-toggle" id="helpToggle" type="button" aria-label="Bedienung ein- oder ausblenden" aria-expanded="false" aria-controls="help">?</button>
+                <span id="status">Bereit</span>
+            </span>
+        </footer>
+
+        <script>
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            const contextMenu = document.getElementById("contextMenu");
+            const helpPanel = document.getElementById("help");
+            const helpToggle = document.getElementById("helpToggle");
+            const exitRailcad = document.getElementById("exitRailcad");
+
+            function exitPlan() {
+                if (objects.length > 0 || history.length > 0) {
+                    if (!window.confirm("Die aktuelle Planung geht verloren, wenn RailCAD verlassen wird. Wirklich beenden?")) return;
+                }
+                window.location.href = "infrastrukturportal.html";
+            }
+
+            helpToggle.addEventListener("click", () => {
+                const isOpen = helpPanel.classList.toggle("is-open");
+                helpToggle.classList.toggle("active", isOpen);
+                helpToggle.setAttribute("aria-expanded", String(isOpen));
+            });
+
+            exitRailcad.addEventListener("click", exitPlan);
+
+            window.addEventListener("beforeunload", (event) => {
+                if (objects.length > 0 || history.length > 0) {
+                    event.preventDefault();
+                    event.returnValue = "";
+                }
+            });
+
+            const CELL = 16;
+            let zoom = 1,
+                panX = 0,
+                panY = 0;
+            let gauge = 3; // 3 = Normalspur, 5 = Breitspur
+            let mode = "select",
+                tool = "line";
+            let objects = [];
+            let history = [];
+            let selected = new Set();
+
+            let start = null,
+                current = null;
+            let drawing = false,
+                selecting = false,
+                panning = false,
+                draggingObjects = false;
+            let dragStartWorld = null;
+            let dragInitialObjects = null;
+            let dragMoved = false;
+            let selectionStart = null,
+                selectionEnd = null;
+            let pointer = { x: 0, y: 0 };
+            let lastPos = null;
+            let nextId = 1;
+            let ctxTargetId = null;
+            let ctxClickWorld = null;
+
+            const DRAW_TOOLS = ["line", "curve", "switch", "cross", "buffer", "platform", "split"];
+
+            function status(t) {
+                document.getElementById("status").textContent = t;
+            }
+
+            function hideContextMenu() {
+                contextMenu.style.display = "none";
+                ctxTargetId = null;
+                ctxClickWorld = null;
+            }
+
+            // --------------------------------------------------
+            // PROZEDURALE SCHOTTER-TEXTUR FÜR DAS GLEISBETT
+            // --------------------------------------------------
+
+            function createBallastPattern(highlight = false) {
+                const size = 32;
+                const pCanvas = document.createElement("canvas");
+                pCanvas.width = size;
+                pCanvas.height = size;
+                const pCtx = pCanvas.getContext("2d");
+
+                // Etwas helleres Schotter-Grau für klaren Kontrast zu den Holzschwellen
+                pCtx.fillStyle = highlight ? "#767d85" : "#5e646c";
+                pCtx.fillRect(0, 0, size, size);
+
+                let seed = 1337;
+                function rand() {
+                    seed = (seed * 16807) % 2147483647;
+                    return (seed - 1) / 2147483646;
+                }
+
+                const shades = highlight
+                    ? ["#656c74", "#575d64", "#868e97", "#959da6"]
+                    : ["#4e535a", "#444950", "#6f767f", "#7d848e"];
+
+                for (let i = 0; i < 75; i++) {
+                    const x = Math.floor(rand() * size);
+                    const y = Math.floor(rand() * size);
+                    const w = 1 + Math.floor(rand() * 3);
+                    const h = 1 + Math.floor(rand() * 3);
+                    pCtx.fillStyle = shades[Math.floor(rand() * shades.length)];
+                    pCtx.fillRect(x, y, w, h);
+                }
+
+                return ctx.createPattern(pCanvas, "repeat");
+            }
+
+            let ballastPatternNormal = null;
+            let ballastPatternHighlight = null;
+
+            function getBallastPattern(highlight = false) {
+                if (!ballastPatternNormal) {
+                    ballastPatternNormal = createBallastPattern(false);
+                    ballastPatternHighlight = createBallastPattern(true);
+                }
+                return highlight ? ballastPatternHighlight : ballastPatternNormal;
+            }
+
+            function resize() {
+                const r = canvas.getBoundingClientRect();
+                const d = window.devicePixelRatio || 1;
+                canvas.width = r.width * d;
+                canvas.height = r.height * d;
+                ctx.setTransform(d, 0, 0, d, 0, 0);
+                render();
+            }
+
+            window.addEventListener("resize", resize);
+
+            function world(x, y) {
+                return { x: (x - panX) / (CELL * zoom), y: (y - panY) / (CELL * zoom) };
+            }
+
+            function screen(p) {
+                return {
+                    x: panX + p.x * CELL * zoom,
+                    y: panY + p.y * CELL * zoom,
+                };
+            }
+
+            function snap(p) {
+                return { x: Math.round(p.x), y: Math.round(p.y) };
+            }
+
+            function alignedTrackPair(a, b) {
+                const dx = Math.abs(b.x - a.x),
+                    dy = Math.abs(b.y - a.y);
+                if (dx >= dy) {
+                    const y = Math.round((a.y + b.y) / 2 - 0.5) + 0.5;
+                    return [
+                        { x: Math.round(a.x), y },
+                        { x: Math.round(b.x), y },
+                    ];
+                }
+                const x = Math.round((a.x + b.x) / 2 - 0.5) + 0.5;
+                return [
+                    { x, y: Math.round(a.y) },
+                    { x, y: Math.round(b.y) },
+                ];
+            }
+
+            function pointerPos(e) {
+                const r = canvas.getBoundingClientRect();
+                return { x: e.clientX - r.left, y: e.clientY - r.top };
+            }
+
+            function makeId() {
+                return nextId++;
+            }
+
+            function saveHistory() {
+                history.push(JSON.stringify({ objects, nextId }));
+                if (history.length > 80) history.shift();
+            }
+
+            function restoreHistory() {
+                if (!history.length) return;
+                const d = JSON.parse(history.pop());
+                objects = d.objects || [];
+                nextId = d.nextId || 1;
+                selected.clear();
+                updateSelection();
+                render();
+                status("Rückgängig");
+            }
+
+            function updateSelection() {
+                const el = document.getElementById("selectionText");
+                if (selected.size === 0) {
+                    el.textContent = "Keine Auswahl";
+                } else {
+                    el.textContent = selected.size + " Bauteil(e) ausgewählt";
+                }
+            }
+
+            // --------------------------------------------------
+            // GEOMETRIE & ZERSCHNEIDEN VON GLEISEN
+            // --------------------------------------------------
+
+            function straightPoints(a, b) {
+                const len = Math.hypot(b.x - a.x, b.y - a.y);
+                const n = Math.max(1, Math.ceil(len * 10));
+                const pts = [];
+                for (let i = 0; i <= n; i++) {
+                    const t = i / n;
+                    pts.push({
+                        x: a.x + (b.x - a.x) * t,
+                        y: a.y + (b.y - a.y) * t,
+                    });
+                }
+                return pts;
+            }
+
+            function makeTrack(a, b, type, width, ballast = false) {
+                return {
+                    id: makeId(),
+                    kind: "track",
+                    type,
+                    a: { ...a },
+                    b: { ...b },
+                    width,
+                    ballast,
+                    pts: straightPoints(a, b),
+                };
+            }
+
+            // Berechnet den nächstgelegenen gültigen Block-Schnittpunkt auf einem Gleis
+            function getTrackSplitPoint(track, rawP) {
+                const ax = track.a.x,
+                    ay = track.a.y;
+                const bx = track.b.x,
+                    by = track.b.y;
+                const dx = bx - ax,
+                    dy = by - ay;
+                const lenSq = dx * dx + dy * dy;
+                if (lenSq < 0.01) return null;
+
+                let t = ((rawP.x - ax) * dx + (rawP.y - ay) * dy) / lenSq;
+                t = Math.max(0, Math.min(1, t));
+
+                let sx = ax + dx * t;
+                let sy = ay + dy * t;
+
+                // Auf ganze Block-Rasterlinien einrasten
+                if (Math.abs(dx) >= Math.abs(dy)) {
+                    sx = Math.round(sx);
+                    const totalDx = bx - ax;
+                    if (Math.abs(totalDx) < 0.01) return null;
+                    const newT = (sx - ax) / totalDx;
+                    if (newT <= 0.001 || newT >= 0.999) return null;
+                    sy = ay + dy * newT;
+                } else {
+                    sy = Math.round(sy);
+                    const totalDy = by - ay;
+                    if (Math.abs(totalDy) < 0.01) return null;
+                    const newT = (sy - ay) / totalDy;
+                    if (newT <= 0.001 || newT >= 0.999) return null;
+                    sx = ax + dx * newT;
+                }
+
+                const splitPt = { x: sx, y: sy };
+                // Mindestlänge von 1 Block je Teilstück sicherstellen
+                if (Math.hypot(splitPt.x - ax, splitPt.y - ay) < 0.95) return null;
+                if (Math.hypot(bx - splitPt.x, by - splitPt.y) < 0.95) return null;
+
+                return splitPt;
+            }
+
+            function splitTrackAt(trackId, rawP) {
+                const idx = objects.findIndex((o) => o.id === trackId);
+                if (idx === -1) return false;
+                const track = objects[idx];
+                if (track.kind !== "track") return false;
+
+                const splitPt = getTrackSplitPoint(track, rawP);
+                if (!splitPt) return false;
+
+                saveHistory();
+
+                const part1 = makeTrack(track.a, splitPt, track.type, track.width, track.ballast);
+                const part2 = makeTrack(splitPt, track.b, track.type, track.width, track.ballast);
+
+                objects.splice(idx, 1, part1, part2);
+
+                if (selected.has(trackId)) {
+                    selected.delete(trackId);
+                    selected.add(part1.id);
+                    selected.add(part2.id);
+                    updateSelection();
+                }
+
+                return true;
+            }
+
+            function lengthPoints(pts) {
+                let total = 0;
+                const lengths = [0];
+                for (let i = 1; i < pts.length; i++) {
+                    total += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+                    lengths.push(total);
+                }
+                return { total, lengths };
+            }
+
+            function pointAt(pts, lengths, d) {
+                let i = 1;
+                while (i < lengths.length - 1 && lengths[i] < d) i++;
+                const span = lengths[i] - lengths[i - 1] || 1;
+                const t = (d - lengths[i - 1]) / span;
+                return {
+                    x: pts[i - 1].x + (pts[i].x - pts[i - 1].x) * t,
+                    y: pts[i - 1].y + (pts[i].y - pts[i - 1].y) * t,
+                    dx: pts[i].x - pts[i - 1].x,
+                    dy: pts[i].y - pts[i - 1].y,
+                };
+            }
+
+            function offsetPath(pts, offset) {
+                const result = [];
+                for (let i = 0; i < pts.length; i++) {
+                    const prev = pts[Math.max(0, i - 1)];
+                    const next = pts[Math.min(pts.length - 1, i + 1)];
+                    const dx = next.x - prev.x;
+                    const dy = next.y - prev.y;
+                    const len = Math.hypot(dx, dy) || 1;
+
+                    result.push({
+                        x: pts[i].x - (dy / len) * offset,
+                        y: pts[i].y + (dx / len) * offset,
+                    });
+                }
+                return result;
+            }
+
+            function drawPathOnContext(targetCtx, screenFn, pts, strokeStyle, width) {
+                if (!pts || pts.length < 2) return;
+
+                targetCtx.beginPath();
+                const first = screenFn(pts[0]);
+                targetCtx.moveTo(first.x, first.y);
+
+                for (let i = 1; i < pts.length; i++) {
+                    const p = screenFn(pts[i]);
+                    targetCtx.lineTo(p.x, p.y);
+                }
+
+                targetCtx.strokeStyle = strokeStyle;
+                targetCtx.lineWidth = width;
+                targetCtx.lineJoin = "round";
+                targetCtx.lineCap = "butt";
+                targetCtx.stroke();
+            }
+
+            function drawPath(pts, strokeStyle, width) {
+                drawPathOnContext(ctx, screen, pts, strokeStyle, width);
+            }
+
+            // --------------------------------------------------
+            // GLEISZEICHNUNG
+            // --------------------------------------------------
+
+            function drawBallastFill(t, highlight = false) {
+                const pts = t.pts;
+                if (!pts || pts.length < 2) return;
+
+                const z = CELL * zoom;
+                const ballastWidth = t.width + 2;
+
+                // Schotter-Untergrund mit Textur
+                drawPath(pts, getBallastPattern(highlight), ballastWidth * z);
+
+                // Feine Schotter-Körnung
+                const data = lengthPoints(pts);
+                const step = 0.25;
+                for (let d = 0.1; d < data.total; d += step) {
+                    const p = pointAt(pts, data.lengths, d);
+                    const len = Math.hypot(p.dx, p.dy) || 1;
+                    const nx = -p.dy / len;
+                    const ny = p.dx / len;
+                    const hash = Math.sin(p.x * 12.9898 + p.y * 78.233) * 43758.5453;
+                    const frac = hash - Math.floor(hash);
+                    const offset = (frac - 0.5) * (ballastWidth - 0.35);
+                    const s = screen({ x: p.x + nx * offset, y: p.y + ny * offset });
+                    const dotSize = Math.max(1.2, 2.2 * zoom);
+
+                    ctx.fillStyle = frac > 0.5 ? (highlight ? "#969ea8" : "#7e858f") : highlight ? "#4e535a" : "#3f444b";
+                    ctx.fillRect(s.x - dotSize / 2, s.y - dotSize / 2, dotSize, dotSize);
+                }
+            }
+
+            function drawTrack(t, highlight = false) {
+                if (t.ballast) {
+                    drawBallastFill(t, highlight);
+                }
+                drawTrackWithoutBallastFill(t, highlight);
+            }
+
+            function drawTrackWithoutBallastFill(t, highlight = false) {
+                const pts = t.pts;
+                if (!pts || pts.length < 2) return;
+
+                const z = CELL * zoom;
+                const width = t.width;
+
+                if (t.ballast) {
+                    const ballastWidth = width + 2;
+                    for (const side of [-1, 1]) {
+                        const edge = offsetPath(pts, (ballastWidth / 2) * side);
+                        drawPath(edge, highlight ? "#b6bdc4" : "#3d4147", Math.max(1.2, 1.6 * zoom));
+                    }
+                }
+
+                // Schwellen (Sprossen): deutlich heller, damit sie auch auf dem Gleisbett klar sichtbar sind
+                const data = lengthPoints(pts);
+                const spacing = 0.5;
+
+                // Feiner dunkler Schatten unter jeder Sprosse für maximale Konturschärfe auf Schotter
+                if (t.ballast) {
+                    ctx.strokeStyle = "#251c16";
+                    ctx.lineWidth = Math.max(1.8, 3.0 * zoom);
+                    ctx.lineCap = "butt";
+                    for (let d = spacing / 2; d < data.total; d += spacing) {
+                        const p = pointAt(pts, data.lengths, d);
+                        const len = Math.hypot(p.dx, p.dy) || 1;
+                        const nx = ((-p.dy / len) * width) / 2;
+                        const ny = ((p.dx / len) * width) / 2;
+                        const s = screen(p);
+
+                        ctx.beginPath();
+                        ctx.moveTo(s.x - nx * z, s.y - ny * z);
+                        ctx.lineTo(s.x + nx * z, s.y + ny * z);
+                        ctx.stroke();
+                    }
+                }
+
+                ctx.strokeStyle = highlight ? "#b88a68" : "#8c6549";
+                ctx.lineWidth = Math.max(1.2, 2.1 * zoom);
+                ctx.lineCap = "butt";
+
+                for (let d = spacing / 2; d < data.total; d += spacing) {
+                    const p = pointAt(pts, data.lengths, d);
+                    const len = Math.hypot(p.dx, p.dy) || 1;
+                    const nx = ((-p.dy / len) * width) / 2;
+                    const ny = ((p.dx / len) * width) / 2;
+                    const s = screen(p);
+
+                    ctx.beginPath();
+                    ctx.moveTo(s.x - nx * z, s.y - ny * z);
+                    ctx.lineTo(s.x + nx * z, s.y + ny * z);
+                    ctx.stroke();
+                }
+
+                // Schienenabstand:
+                // Normalspur (3 Blöcke): railOffset = 1.0
+                // Breitspur (5 Blöcke): railOffset = 2.0
+                const railOffset = width === 5 ? 2.0 : 1.0;
+
+                for (const side of [-1, 1]) {
+                    const rail = offsetPath(pts, railOffset * side);
+                    drawPath(rail, highlight ? "#fff6e5" : "#e3e5e3", Math.max(1.8, 2.4 * zoom));
+                }
+
+                // Dezente Trennfugen-Markierung an den Gleisenden bei ausgewählten Gleisen
+                if (highlight) {
+                    for (const endPt of [t.a, t.b]) {
+                        const s = screen(endPt);
+                        ctx.fillStyle = "#003377";
+                        ctx.beginPath();
+                        ctx.arc(s.x, s.y, Math.max(2.5, 3.5 * zoom), 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            // --------------------------------------------------
+            // PRELLBOCK
+            // --------------------------------------------------
+
+            function createBuffer(p) {
+                let best = null;
+                let bestDistance = Infinity;
+                for (const obj of objects) {
+                    if (obj.kind !== "track" || !obj.pts || obj.pts.length < 2) continue;
+                    const ends = [
+                        { point: obj.pts[0], next: obj.pts[1] },
+                        { point: obj.pts[obj.pts.length - 1], next: obj.pts[obj.pts.length - 2] },
+                    ];
+                    for (const e of ends) {
+                        const dist = Math.hypot(p.x - e.point.x, p.y - e.point.y);
+                        if (dist < bestDistance) {
+                            bestDistance = dist;
+                            best = { point: e.point, next: e.next, width: obj.width };
+                        }
+                    }
+                }
+                if (!best || bestDistance > 3) return false;
+                const dx = best.point.x - best.next.x;
+                const dy = best.point.y - best.next.y;
+                const len = Math.hypot(dx, dy) || 1;
+                objects.push({
+                    id: makeId(),
+                    kind: "buffer",
+                    x: best.point.x,
+                    y: best.point.y,
+                    dx: dx / len,
+                    dy: dy / len,
+                    width: best.width,
+                });
+                return true;
+            }
+
+            function drawBufferOnContext(targetCtx, screenFn, scale, b, highlight = false, printMode = false) {
+                const z = scale;
+                const p = screenFn({ x: b.x, y: b.y });
+                const nx = -b.dy,
+                    ny = b.dx;
+                const tx = b.dx,
+                    ty = b.dy;
+                const half = b.width / 2 + 0.18;
+                const beamH = 0.3 * z;
+                targetCtx.save();
+                targetCtx.translate(p.x, p.y);
+                targetCtx.rotate(Math.atan2(ny, nx));
+                const left = -half * z,
+                    total = 2 * half * z,
+                    segments = 8;
+                targetCtx.fillStyle = "#292522";
+                targetCtx.fillRect(left - 0.06 * z, -beamH / 2 - 0.06 * z, total + 0.12 * z, beamH + 0.12 * z);
+                for (let i = 0; i < segments; i++) {
+                    targetCtx.fillStyle = i % 2 === 0 ? "#f4f4f0" : "#c83232";
+                    const sw = total / segments;
+                    targetCtx.fillRect(left + i * sw, -beamH / 2, sw + 0.3, beamH);
+                }
+                targetCtx.strokeStyle = "#343434";
+                targetCtx.lineWidth = Math.max(0.8, 0.05 * z);
+                targetCtx.strokeRect(left, -beamH / 2, total, beamH);
+                targetCtx.restore();
+
+                const railOffset = b.width === 5 ? 2.0 : 1.0;
+                for (const side of [-1, 1]) {
+                    const bx = p.x + nx * side * railOffset * z + tx * 0.1 * z;
+                    const by = p.y + ny * side * railOffset * z + ty * 0.1 * z;
+                    const r = Math.max(2.6, 0.25 * z);
+                    targetCtx.beginPath();
+                    targetCtx.arc(bx, by, r + 0.07 * z, 0, Math.PI * 2);
+                    targetCtx.fillStyle = "#282828";
+                    targetCtx.fill();
+                    targetCtx.beginPath();
+                    targetCtx.arc(bx, by, r, 0, Math.PI * 2);
+                    targetCtx.fillStyle = highlight && !printMode ? "#ffffff" : "#c9ced1";
+                    targetCtx.fill();
+                    targetCtx.strokeStyle = "#4d5257";
+                    targetCtx.lineWidth = Math.max(0.8, 0.06 * z);
+                    targetCtx.stroke();
+                    targetCtx.beginPath();
+                    targetCtx.arc(bx, by, r * 0.42, 0, Math.PI * 2);
+                    targetCtx.fillStyle = "#f4f4f0";
+                    targetCtx.fill();
+                }
+            }
+
+            function drawBuffer(b, highlight = false) {
+                drawBufferOnContext(ctx, screen, CELL * zoom, b, highlight, false);
+            }
+
+            // --------------------------------------------------
+            // BAHNSTEIGE
+            // --------------------------------------------------
+
+            function makePlatform(a, b) {
+                return {
+                    id: makeId(),
+                    kind: "platform",
+                    x: Math.min(a.x, b.x),
+                    y: Math.min(a.y, b.y),
+                    w: Math.max(1, Math.abs(b.x - a.x)),
+                    h: Math.max(1, Math.abs(b.y - a.y)),
+                };
+            }
+
+            function drawPlatformOnContext(targetCtx, screenFn, scale, p, highlight = false, printMode = false) {
+                const a = screenFn({ x: p.x, y: p.y });
+                const w = p.w * scale;
+                const h = p.h * scale;
+
+                if (printMode) {
+                    targetCtx.fillStyle = "#e6dfd3";
+                } else {
+                    targetCtx.fillStyle = highlight ? "#c7a36b" : "#918575";
+                }
+                targetCtx.fillRect(a.x, a.y, w, h);
+
+                targetCtx.strokeStyle = printMode ? "#7a6f60" : "#d8c8a7";
+                targetCtx.lineWidth = Math.max(1, 0.07 * scale);
+                targetCtx.strokeRect(a.x, a.y, w, h);
+
+                targetCtx.strokeStyle = printMode ? "#b5ab9c" : "#62584d";
+                targetCtx.lineWidth = Math.max(0.6, 0.045 * scale);
+
+                for (let x = 1; x < p.w; x++) {
+                    const xx = a.x + x * scale;
+                    targetCtx.beginPath();
+                    targetCtx.moveTo(xx, a.y);
+                    targetCtx.lineTo(xx, a.y + h);
+                    targetCtx.stroke();
+                }
+
+                for (let y = 1; y < p.h; y++) {
+                    const yy = a.y + y * scale;
+                    targetCtx.beginPath();
+                    targetCtx.moveTo(a.x, yy);
+                    targetCtx.lineTo(a.x + w, yy);
+                    targetCtx.stroke();
+                }
+            }
+
+            function drawPlatform(p, highlight = false) {
+                drawPlatformOnContext(ctx, screen, CELL * zoom, p, highlight, false);
+            }
+
+            // --------------------------------------------------
+            // RASTER
+            // --------------------------------------------------
+
+            function drawGrid(w, h) {
+                const step = CELL * zoom;
+                const ox = ((panX % step) + step) % step;
+                const oy = ((panY % step) + step) % step;
+
+                for (let x = ox; x < w; x += step) {
+                    ctx.strokeStyle = "rgba(170, 198, 226, 0.22)";
+                    ctx.lineWidth = 0.75;
+                    ctx.beginPath();
+                    ctx.moveTo(Math.round(x) + 0.5, 0);
+                    ctx.lineTo(Math.round(x) + 0.5, h);
+                    ctx.stroke();
+                }
+
+                for (let y = oy; y < h; y += step) {
+                    ctx.strokeStyle = "rgba(170, 198, 226, 0.22)";
+                    ctx.lineWidth = 0.75;
+                    ctx.beginPath();
+                    ctx.moveTo(0, Math.round(y) + 0.5);
+                    ctx.lineTo(w, Math.round(y) + 0.5);
+                    ctx.stroke();
+                }
+            }
+
+            // --------------------------------------------------
+            // AUSWAHL UND TREFFERERKENNUNG
+            // --------------------------------------------------
+
+            function distanceToSegment(p, a, b) {
+                const dx = b.x - a.x;
+                const dy = b.y - a.y;
+                const l = dx * dx + dy * dy;
+
+                if (!l) return Math.hypot(p.x - a.x, p.y - a.y);
+
+                const t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / l));
+
+                return Math.hypot(p.x - a.x - dx * t, p.y - a.y - dy * t);
+            }
+
+            function hitObject(p, onlyTracks = false) {
+                for (let i = objects.length - 1; i >= 0; i--) {
+                    const o = objects[i];
+
+                    if (o.kind === "track") {
+                        const hitRadius = (o.ballast ? o.width + 2 : o.width) / 2 + 0.5;
+                        for (let j = 1; j < o.pts.length; j++) {
+                            if (distanceToSegment(p, o.pts[j - 1], o.pts[j]) < hitRadius) {
+                                return o.id;
+                            }
+                        }
+                    }
+
+                    if (onlyTracks) continue;
+
+                    if (o.kind === "platform") {
+                        if (p.x >= o.x && p.x <= o.x + o.w && p.y >= o.y && p.y <= o.y + o.h) return o.id;
+                    }
+
+                    if (o.kind === "buffer") {
+                        if (Math.hypot(p.x - o.x, p.y - o.y) < 1.5) return o.id;
+                    }
+                }
+                return null;
+            }
+
+            function boundsOf(o) {
+                if (o.kind === "platform") {
+                    return { minX: o.x, minY: o.y, maxX: o.x + o.w, maxY: o.y + o.h };
+                }
+
+                if (o.kind === "buffer") {
+                    const r = o.width / 2 + 0.3;
+                    return { minX: o.x - r, minY: o.y - r, maxX: o.x + r, maxY: o.y + r };
+                }
+
+                const xs = o.pts.map((p) => p.x);
+                const ys = o.pts.map((p) => p.y);
+                const r = (o.ballast ? o.width + 2 : o.width) / 2;
+
+                return {
+                    minX: Math.min(...xs) - r,
+                    minY: Math.min(...ys) - r,
+                    maxX: Math.max(...xs) + r,
+                    maxY: Math.max(...ys) + r,
+                };
+            }
+
+            function intersects(a, b) {
+                return a.minX <= b.maxX && a.maxX >= b.minX && a.minY <= b.maxY && a.maxY >= b.minY;
+            }
+
+            function fullyInside(a, b) {
+                return a.minX >= b.minX && a.maxX <= b.maxX && a.minY >= b.minY && a.maxY <= b.maxY;
+            }
+
+            function selectWindow(a, b) {
+                const leftToRight = b.x >= a.x;
+
+                const rect = {
+                    minX: Math.min(a.x, b.x),
+                    minY: Math.min(a.y, b.y),
+                    maxX: Math.max(a.x, b.x),
+                    maxY: Math.max(a.y, b.y),
+                };
+
+                selected.clear();
+
+                for (const o of objects) {
+                    const bounds = boundsOf(o);
+
+                    if (leftToRight ? fullyInside(bounds, rect) : intersects(bounds, rect)) {
+                        selected.add(o.id);
+                    }
+                }
+
+                updateSelection();
+            }
+
+            // --------------------------------------------------
+            // DARSTELLUNG
+            // --------------------------------------------------
+
+            function render() {
+                const w = canvas.clientWidth;
+                const h = canvas.clientHeight;
+
+                ctx.clearRect(0, 0, w, h);
+                ctx.fillStyle = "#0b3a70";
+                ctx.fillRect(0, 0, w, h);
+
+                drawGrid(w, h);
+
+                // Zuerst alle Gleisbetten zeichnen, damit sie immer sauber unter Schwellen & Schienen liegen
+                for (const o of objects) {
+                    if (o.kind === "track" && o.ballast) {
+                        drawBallastFill(o, selected.has(o.id));
+                    }
+                }
+
+                for (const o of objects) {
+                    const highlight = selected.has(o.id);
+
+                    if (o.kind === "track") {
+                        drawTrackWithoutBallastFill(o, highlight);
+                    }
+                    if (o.kind === "platform") drawPlatform(o, highlight);
+                    if (o.kind === "buffer") drawBuffer(o, highlight);
+                }
+
+                // Schnittlinien-Vorschau beim aktiven Zerschneiden-Werkzeug
+                if (mode === "draw" && tool === "split") {
+                    const rawP = world(pointer.x, pointer.y);
+                    const trackId = hitObject(rawP, true);
+                    if (trackId !== null) {
+                        const track = objects.find((o) => o.id === trackId);
+                        const splitPt = track ? getTrackSplitPoint(track, rawP) : null;
+                        if (track && splitPt) {
+                            const dx = track.b.x - track.a.x;
+                            const dy = track.b.y - track.a.y;
+                            const len = Math.hypot(dx, dy) || 1;
+                            const halfW = (track.ballast ? track.width + 2 : track.width) / 2 + 0.4;
+                            const nx = (-dy / len) * halfW;
+                            const ny = (dx / len) * halfW;
+
+                            const s1 = screen({ x: splitPt.x - nx, y: splitPt.y - ny });
+                            const s2 = screen({ x: splitPt.x + nx, y: splitPt.y + ny });
+
+                            ctx.save();
+                            ctx.strokeStyle = "#ffffff";
+                            ctx.lineWidth = Math.max(2, 2.5 * zoom);
+                            ctx.setLineDash([5, 4]);
+                            ctx.beginPath();
+                            ctx.moveTo(s1.x, s1.y);
+                            ctx.lineTo(s2.x, s2.y);
+                            ctx.stroke();
+                            ctx.restore();
+                        }
+                    }
+                }
+
+                if (drawing && start && current) {
+                    if (tool === "platform") {
+                        drawPlatform(makePlatform(start, current));
+                    } else if (tool === "line") {
+                        const pair = alignedTrackPair(start, current);
+                        drawTrack(makeTrack(pair[0], pair[1], "line", gauge, false));
+                    }
+                }
+
+                if (selecting && selectionStart && selectionEnd) {
+                    const a = screen(selectionStart);
+                    const b = screen(selectionEnd);
+
+                    ctx.fillStyle = "#ffffff22";
+                    ctx.strokeStyle = "#ffffff";
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([5, 4]);
+                    ctx.fillRect(a.x, a.y, b.x - a.x, b.y - a.y);
+                    ctx.strokeRect(a.x, a.y, b.x - a.x, b.y - a.y);
+                    ctx.setLineDash([]);
+                }
+            }
+
+            // --------------------------------------------------
+            // ZEICHENMODUS (INKL. TOGGLE BEIM ERNEUTEN ANKLICKEN)
+            // --------------------------------------------------
+
+            function deactivateDrawMode(msg = "Auswahlmodus aktiv") {
+                mode = "select";
+                drawing = false;
+                selecting = false;
+                start = null;
+                current = null;
+
+                DRAW_TOOLS.forEach((id) => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.remove("active");
+                });
+
+                canvas.style.cursor = "default";
+                status(msg);
+                render();
+            }
+
+            function activate(next) {
+                const btn = document.getElementById(next);
+                if (!btn || btn.disabled) return;
+
+                hideContextMenu();
+
+                // Erneutes Anklicken eines bereits aktiven Werkzeugs deaktiviert den Modus wieder
+                if (mode === "draw" && tool === next) {
+                    deactivateDrawMode("Werkzeug deaktiviert – Auswahl bereit");
+                    return;
+                }
+
+                tool = next;
+                mode = "draw";
+                drawing = false;
+                start = null;
+                current = null;
+                selected.clear();
+                updateSelection();
+
+                DRAW_TOOLS.forEach((id) => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.toggle("active", id === next);
+                });
+
+                canvas.style.cursor = "crosshair";
+                if (next === "split") {
+                    status("Zerschneiden: Auf gewünschte Stelle am Gleis klicken (erneut klicken oder ESC zum Beenden)");
+                } else {
+                    status("Zeichenmodus: " + btn.textContent.trim() + " (erneut klicken oder ESC zum Beenden)");
+                }
+                render();
+            }
+
+            DRAW_TOOLS.forEach((id) => {
+                const el = document.getElementById(id);
+                if (el) el.onclick = () => activate(id);
+            });
+
+            document.getElementById("normal").onclick = () => {
+                gauge = 3;
+                document.getElementById("normal").classList.add("active");
+                document.getElementById("broad").classList.remove("active");
+                status("Normalspur: 3 Blöcke");
+            };
+
+            document.getElementById("broad").onclick = () => {
+                gauge = 5;
+                document.getElementById("broad").classList.add("active");
+                document.getElementById("normal").classList.remove("active");
+                status("Breitspur: 5 Blöcke");
+            };
+
+            document.getElementById("toggleBallast").onclick = () => {
+                const selectedTracks = objects.filter((o) => selected.has(o.id) && o.kind === "track");
+                if (!selectedTracks.length) {
+                    status("Bitte zuerst ein oder mehrere Gleise auswählen (oder Rechtsklick auf ein Gleis)");
+                    return;
+                }
+                saveHistory();
+                const allHaveBallast = selectedTracks.every((t) => t.ballast);
+                const nextState = !allHaveBallast;
+                selectedTracks.forEach((t) => (t.ballast = nextState));
+                render();
+                status(nextState ? "Gleisbett hinzugefügt" : "Gleisbett entfernt");
+            };
+
+            // --------------------------------------------------
+            // KONTEXTMENÜ (RECHTSKLICK AUF GLEIS)
+            // --------------------------------------------------
+
+            document.getElementById("ctxBallast").onclick = () => {
+                if (ctxTargetId === null) return;
+                const obj = objects.find((o) => o.id === ctxTargetId);
+                if (obj && obj.kind === "track") {
+                    saveHistory();
+                    obj.ballast = !obj.ballast;
+                    render();
+                    status(
+                        obj.ballast
+                            ? `Gleisbett aktiviert (${obj.width + 2} Blöcke breit)`
+                            : "Gleisbett deaktiviert"
+                    );
+                }
+                hideContextMenu();
+            };
+
+            document.getElementById("ctxSplit").onclick = () => {
+                if (ctxTargetId !== null && ctxClickWorld) {
+                    if (splitTrackAt(ctxTargetId, ctxClickWorld)) {
+                        render();
+                        status("Gleisabschnitt zerschnitten");
+                    } else {
+                        status("Schnittpunkt zu nah am Gleisende (mind. 1 Block je Abschnitt)");
+                    }
+                }
+                hideContextMenu();
+            };
+
+            document.getElementById("ctxDelete").onclick = () => {
+                if (ctxTargetId === null) return;
+                saveHistory();
+                objects = objects.filter((o) => o.id !== ctxTargetId);
+                selected.delete(ctxTargetId);
+                updateSelection();
+                render();
+                status("Bauteil gelöscht");
+                hideContextMenu();
+            };
+
+            // --------------------------------------------------
+            // MAUSSTEUERUNG
+            // --------------------------------------------------
+
+            canvas.addEventListener("contextmenu", (e) => {
+                e.preventDefault();
+                if (mode !== "select") return;
+
+                const pos = pointerPos(e);
+                const p = world(pos.x, pos.y);
+                const id = hitObject(p);
+
+                if (id !== null) {
+                    const obj = objects.find((o) => o.id === id);
+                    if (!obj) return;
+
+                    if (!selected.has(id)) {
+                        selected.clear();
+                        selected.add(id);
+                        updateSelection();
+                        render();
+                    }
+
+                    ctxTargetId = id;
+                    ctxClickWorld = p;
+                    const ballastRow = document.getElementById("ctxBallast");
+                    const splitRow = document.getElementById("ctxSplit");
+                    const ballastSep = contextMenu.querySelector(".ctx-sep");
+
+                    if (obj.kind === "track") {
+                        ballastRow.style.display = "flex";
+                        splitRow.style.display = getTrackSplitPoint(obj, p) ? "flex" : "none";
+                        ballastSep.style.display = "block";
+                        document.getElementById("ctxBallastCheck").textContent = obj.ballast ? "✓" : "";
+                        document.getElementById("ctxBallastLabel").textContent = `Gleisbett (${obj.width + 2} Blöcke)`;
+                    } else {
+                        ballastRow.style.display = "none";
+                        splitRow.style.display = "none";
+                        ballastSep.style.display = "none";
+                    }
+
+                    contextMenu.style.display = "block";
+                    const menuW = contextMenu.offsetWidth;
+                    const menuH = contextMenu.offsetHeight;
+                    const maxX = canvas.clientWidth - menuW - 6;
+                    const maxY = canvas.clientHeight - menuH - 6;
+                    contextMenu.style.left = Math.max(6, Math.min(pos.x, maxX)) + "px";
+                    contextMenu.style.top = Math.max(6, Math.min(pos.y, maxY)) + "px";
+                } else {
+                    hideContextMenu();
+                }
+            });
+
+            canvas.addEventListener("pointerdown", (e) => {
+                hideContextMenu();
+                const pos = pointerPos(e);
+                pointer = pos;
+
+                // Mittlere Maustaste: Verschieben
+                if (e.button === 1) {
+                    panning = true;
+                    lastPos = pos;
+                    canvas.setPointerCapture(e.pointerId);
+                    return;
+                }
+
+                // Rechtsklick im Zeichenmodus: Löschen
+                if (e.button === 2 && mode === "draw") {
+                    const p = world(pos.x, pos.y);
+                    const id = hitObject(p);
+
+                    if (id !== null) {
+                        saveHistory();
+                        objects = objects.filter((o) => o.id !== id);
+                        selected.delete(id);
+                        updateSelection();
+                        render();
+                        status("Bauteil gelöscht");
+                    }
+                    return;
+                }
+
+                if (e.button !== 0) return;
+
+                const rawP = world(pos.x, pos.y);
+                const p = snap(rawP);
+
+                // Auswahlmodus: Anklicken, Auswahlfenster oder Verschieben per Linksklick & Halten
+                if (mode === "select") {
+                    const id = hitObject(rawP);
+
+                    if (id !== null) {
+                        if (e.shiftKey) {
+                            if (selected.has(id)) selected.delete(id);
+                            else selected.add(id);
+                        } else if (!selected.has(id)) {
+                            selected.clear();
+                            selected.add(id);
+                        }
+
+                        selecting = false;
+
+                        if (selected.has(id)) {
+                            draggingObjects = true;
+                            dragMoved = false;
+                            dragStartWorld = rawP;
+                            dragInitialObjects = JSON.parse(
+                                JSON.stringify(objects.filter((o) => selected.has(o.id)))
+                            );
+                        }
+                    } else {
+                        if (!e.shiftKey) selected.clear();
+
+                        selecting = true;
+                        selectionStart = p;
+                        selectionEnd = p;
+                    }
+
+                    updateSelection();
+                    canvas.setPointerCapture(e.pointerId);
+                    render();
+                    return;
+                }
+
+                // Zerschneiden-Werkzeug
+                if (tool === "split") {
+                    const trackId = hitObject(rawP, true);
+                    if (trackId !== null && splitTrackAt(trackId, rawP)) {
+                        status("Gleis zerschnitten – Abschnitte können jetzt einzeln bearbeitet werden");
+                    } else {
+                        status("Bitte mit mindestens 1 Block Abstand zum Gleisende auf ein Gleis klicken");
+                    }
+                    render();
+                    return;
+                }
+
+                // Prellbock wird mit einem Klick platziert
+                if (tool === "buffer") {
+                    saveHistory();
+
+                    if (createBuffer(rawP)) {
+                        status("Prellbock platziert");
+                    } else {
+                        history.pop();
+                        status("Kein Gleis in der Nähe gefunden");
+                    }
+
+                    render();
+                    return;
+                }
+
+                start = p;
+                current = p;
+                drawing = true;
+                canvas.setPointerCapture(e.pointerId);
+                render();
+            });
+
+            canvas.addEventListener("pointermove", (e) => {
+                const pos = pointerPos(e);
+                pointer = pos;
+
+                const raw = world(pos.x, pos.y);
+
+                document.getElementById("position").textContent = Math.round(raw.x) + " / " + Math.round(raw.y);
+
+                if (panning && lastPos) {
+                    panX += pos.x - lastPos.x;
+                    panY += pos.y - lastPos.y;
+                    lastPos = pos;
+                } else if (draggingObjects && dragStartWorld && dragInitialObjects) {
+                    const dx = Math.round(raw.x - dragStartWorld.x);
+                    const dy = Math.round(raw.y - dragStartWorld.y);
+
+                    if (dx !== 0 || dy !== 0) {
+                        dragMoved = true;
+                    }
+
+                    for (const orig of dragInitialObjects) {
+                        const target = objects.find((o) => o.id === orig.id);
+                        if (!target) continue;
+
+                        if (target.kind === "track") {
+                            target.a = { x: orig.a.x + dx, y: orig.a.y + dy };
+                            target.b = { x: orig.b.x + dx, y: orig.b.y + dy };
+                            target.pts = orig.pts.map((pt) => ({ x: pt.x + dx, y: pt.y + dy }));
+                        } else if (target.kind === "platform") {
+                            target.x = orig.x + dx;
+                            target.y = orig.y + dy;
+                        } else if (target.kind === "buffer") {
+                            target.x = orig.x + dx;
+                            target.y = orig.y + dy;
+                        }
+                    }
+                    canvas.style.cursor = "grabbing";
+                } else if (drawing && start) {
+                    current = snap(raw);
+                } else if (selecting && selectionStart) {
+                    selectionEnd = snap(raw);
+                } else if (mode === "select") {
+                    const hoverId = hitObject(raw);
+                    canvas.style.cursor = hoverId !== null ? "grab" : "default";
+                } else {
+                    canvas.style.cursor = "crosshair";
+                }
+
+                render();
+            });
+
+            canvas.addEventListener("pointerup", (e) => {
+                if (panning) {
+                    panning = false;
+                    lastPos = null;
+                    return;
+                }
+
+                if (draggingObjects) {
+                    if (dragMoved && dragInitialObjects) {
+                        const prevObjects = objects.map((o) => {
+                            const orig = dragInitialObjects.find((i) => i.id === o.id);
+                            return orig ? orig : o;
+                        });
+                        history.push(JSON.stringify({ objects: prevObjects, nextId }));
+                        if (history.length > 80) history.shift();
+                        status("Bauteil(e) verschoben");
+                    }
+                    draggingObjects = false;
+                    dragStartWorld = null;
+                    dragInitialObjects = null;
+                    dragMoved = false;
+                    canvas.style.cursor = "grab";
+                    render();
+                    return;
+                }
+
+                if (selecting && selectionStart && selectionEnd) {
+                    selectWindow(selectionStart, selectionEnd);
+                    selecting = false;
+                    selectionStart = null;
+                    selectionEnd = null;
+                    render();
+                    return;
+                }
+
+                if (drawing && start && current) {
+                    saveHistory();
+
+                    if (tool === "platform") {
+                        objects.push(makePlatform(start, current));
+                    } else {
+                        const pair = alignedTrackPair(start, current);
+                        if (Math.hypot(pair[1].x - pair[0].x, pair[1].y - pair[0].y) < 0.01) {
+                            pair[1] = { x: pair[0].x + 1, y: pair[0].y };
+                        }
+                        objects.push(makeTrack(pair[0], pair[1], "line", gauge, false));
+                    }
+
+                    status("Bauteil hinzugefügt");
+                }
+
+                drawing = false;
+                start = null;
+                current = null;
+                render();
+            });
+
+            canvas.addEventListener("pointercancel", () => {
+                drawing = false;
+                selecting = false;
+                panning = false;
+                draggingObjects = false;
+                dragStartWorld = null;
+                dragInitialObjects = null;
+                start = null;
+                current = null;
+                selectionStart = null;
+                selectionEnd = null;
+                lastPos = null;
+                render();
+            });
+
+            // --------------------------------------------------
+            // TASTATUR
+            // --------------------------------------------------
+
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") {
+                    hideContextMenu();
+                    deactivateDrawMode("Zeichenmodus beendet – Auswahl bereit");
+                }
+
+                if (e.key === "Delete" || e.key === "Backspace") {
+                    hideContextMenu();
+                    deleteSelected();
+                }
+
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+                    e.preventDefault();
+                    hideContextMenu();
+                    restoreHistory();
+                }
+            });
+
+            // --------------------------------------------------
+            // LÖSCHEN UND RÜCKGÄNGIG
+            // --------------------------------------------------
+
+            function deleteSelected() {
+                if (selected.size === 0) return;
+
+                saveHistory();
+                objects = objects.filter((o) => !selected.has(o.id));
+                selected.clear();
+
+                updateSelection();
+                render();
+                status("Auswahl gelöscht");
+            }
+
+            document.getElementById("undo").onclick = restoreHistory;
+            document.getElementById("delete").onclick = deleteSelected;
+
+            document.getElementById("clear").onclick = () => {
+                if (!objects.length) return;
+                if (!confirm("Alle Bauteile löschen?")) return;
+
+                saveHistory();
+                objects = [];
+                selected.clear();
+                updateSelection();
+                render();
+                status("Zeichenfläche geleert");
+            };
+
+            // --------------------------------------------------
+            // ZOOM
+            // --------------------------------------------------
+
+            function updateZoom() {
+                document.getElementById("zoomText").textContent = Math.round(zoom * 100) + " %";
+            }
+
+            function changeZoom(factor, x, y) {
+                const before = world(x, y);
+
+                zoom = Math.max(0.2, Math.min(5, zoom * factor));
+
+                panX = x - before.x * CELL * zoom;
+                panY = y - before.y * CELL * zoom;
+
+                updateZoom();
+                render();
+            }
+
+            canvas.addEventListener(
+                "wheel",
+                (e) => {
+                    e.preventDefault();
+                    hideContextMenu();
+                    const p = pointerPos(e);
+                    changeZoom(e.deltaY < 0 ? 1.12 : 0.89, p.x, p.y);
+                },
+                { passive: false }
+            );
+
+            document.getElementById("zoomIn").onclick = () => {
+                changeZoom(1.2, canvas.clientWidth / 2, canvas.clientHeight / 2);
+            };
+
+            document.getElementById("zoomOut").onclick = () => {
+                changeZoom(1 / 1.2, canvas.clientWidth / 2, canvas.clientHeight / 2);
+            };
+
+            document.getElementById("center").onclick = () => {
+                zoom = 1;
+                panX = canvas.clientWidth / 2;
+                panY = canvas.clientHeight / 2;
+                updateZoom();
+                render();
+            };
+
+            // --------------------------------------------------
+            // SPEICHERN
+            // --------------------------------------------------
+
+            document.getElementById("save").onclick = () => {
+                const data = {
+                    format: "CreateGleisplaner",
+                    version: 12,
+                    objects,
+                    gauge,
+                };
+
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+
+                a.href = url;
+                a.download = "create-gleisplan-v12.json";
+                a.click();
+
+                URL.revokeObjectURL(url);
+                status("Projekt gespeichert");
+            };
+
+            // --------------------------------------------------
+            // LADEN
+            // --------------------------------------------------
+
+            document.getElementById("load").onclick = () => {
+                document.getElementById("file").click();
+            };
+
+            document.getElementById("file").onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                try {
+                    const data = JSON.parse(await file.text());
+
+                    saveHistory();
+
+                    if (Array.isArray(data.objects)) {
+                        objects = data.objects.map((o) =>
+                            o.kind === "track" ? { ...o, ballast: Boolean(o.ballast) } : o
+                        );
+                    } else if (Array.isArray(data.tracks)) {
+                        objects = data.tracks.map((t) => ({
+                            ...t,
+                            id: makeId(),
+                            kind: "track",
+                            ballast: Boolean(t.ballast),
+                            pts: t.pts || straightPoints(t.a, t.b),
+                        }));
+
+                        (data.platforms || []).forEach((p) => {
+                            objects.push({ ...p, id: makeId(), kind: "platform" });
+                        });
+                    } else {
+                        throw new Error("Ungültiges Projekt");
+                    }
+
+                    nextId = Math.max(nextId, ...objects.map((o) => o.id + 1), 1);
+                    gauge = data.gauge || 3;
+
+                    document.getElementById("normal").classList.toggle("active", gauge === 3);
+                    document.getElementById("broad").classList.toggle("active", gauge === 5);
+
+                    selected.clear();
+                    updateSelection();
+                    render();
+
+                    status("Projekt geladen");
+                } catch (err) {
+                    alert("Datei konnte nicht geladen werden.");
+                }
+
+                e.target.value = "";
+            };
+
+            // --------------------------------------------------
+            // TECHNISCHE ZEICHNUNG / PDF-EXPORT
+            // --------------------------------------------------
+
+            function buildBlueprintDataUrl() {
+                let minX = Infinity,
+                    minY = Infinity,
+                    maxX = -Infinity,
+                    maxY = -Infinity;
+
+                if (objects.length === 0) {
+                    minX = -10;
+                    minY = -6;
+                    maxX = 10;
+                    maxY = 6;
+                } else {
+                    for (const o of objects) {
+                        const b = boundsOf(o);
+                        minX = Math.min(minX, b.minX);
+                        minY = Math.min(minY, b.minY);
+                        maxX = Math.max(maxX, b.maxX);
+                        maxY = Math.max(maxY, b.maxY);
+                    }
+                }
+
+                const pad = 3;
+                const gridMinX = Math.floor(minX) - pad;
+                const gridMinY = Math.floor(minY) - pad;
+                const gridMaxX = Math.ceil(maxX) + pad;
+                const gridMaxY = Math.ceil(maxY) + pad;
+
+                const spanX = Math.max(10, gridMaxX - gridMinX);
+                const spanY = Math.max(8, gridMaxY - gridMinY);
+
+                const outW = 2400;
+                const outH = 1350;
+                const marginLeft = 75;
+                const marginTop = 45;
+                const marginRight = 40;
+                const marginBottom = 65;
+
+                const drawAreaW = outW - marginLeft - marginRight;
+                const drawAreaH = outH - marginTop - marginBottom;
+
+                const scale = Math.min(drawAreaW / spanX, drawAreaH / spanY);
+                const usedW = spanX * scale;
+                const usedH = spanY * scale;
+                const offsetX = marginLeft + (drawAreaW - usedW) / 2;
+                const offsetY = marginTop + (drawAreaH - usedH) / 2;
+
+                const bpCanvas = document.createElement("canvas");
+                bpCanvas.width = outW;
+                bpCanvas.height = outH;
+                const bCtx = bpCanvas.getContext("2d");
+
+                const toBpScreen = (p) => ({
+                    x: offsetX + (p.x - gridMinX) * scale,
+                    y: offsetY + (p.y - gridMinY) * scale,
+                });
+
+                bCtx.fillStyle = "#ffffff";
+                bCtx.fillRect(0, 0, outW, outH);
+
+                bCtx.fillStyle = "#fafbfc";
+                bCtx.fillRect(offsetX, offsetY, usedW, usedH);
+
+                bCtx.textAlign = "center";
+                bCtx.textBaseline = "middle";
+                bCtx.font = "18px Arial";
+
+                for (let gx = gridMinX; gx <= gridMaxX; gx++) {
+                    const sx = offsetX + (gx - gridMinX) * scale;
+                    const isMajor = gx % 5 === 0;
+                    bCtx.strokeStyle = isMajor ? "#b4bec8" : "#e3e8ed";
+                    bCtx.lineWidth = isMajor ? 1.6 : 0.9;
+                    bCtx.beginPath();
+                    bCtx.moveTo(sx, offsetY);
+                    bCtx.lineTo(sx, offsetY + usedH);
+                    bCtx.stroke();
+
+                    if (isMajor) {
+                        bCtx.fillStyle = "#4d5966";
+                        bCtx.fillText(String(gx), sx, offsetY + usedH + 24);
+                    }
+                }
+
+                bCtx.textAlign = "right";
+                for (let gy = gridMinY; gy <= gridMaxY; gy++) {
+                    const sy = offsetY + (gy - gridMinY) * scale;
+                    const isMajor = gy % 5 === 0;
+                    bCtx.strokeStyle = isMajor ? "#b4bec8" : "#e3e8ed";
+                    bCtx.lineWidth = isMajor ? 1.6 : 0.9;
+                    bCtx.beginPath();
+                    bCtx.moveTo(offsetX, sy);
+                    bCtx.lineTo(offsetX + usedW, sy);
+                    bCtx.stroke();
+
+                    if (isMajor) {
+                        bCtx.fillStyle = "#4d5966";
+                        bCtx.fillText(String(gy), offsetX - 12, sy);
+                    }
+                }
+
+                bCtx.strokeStyle = "#334155";
+                bCtx.lineWidth = 2.2;
+                bCtx.strokeRect(offsetX, offsetY, usedW, usedH);
+
+                for (const o of objects) {
+                    if (o.kind === "track" && o.ballast) {
+                        const ballastWidth = o.width + 2;
+                        drawPathOnContext(bCtx, toBpScreen, o.pts, "#cdd3d9", ballastWidth * scale);
+
+                        const data = lengthPoints(o.pts);
+                        for (let d = 0.15; d < data.total; d += 0.25) {
+                            const p = pointAt(o.pts, data.lengths, d);
+                            const len = Math.hypot(p.dx, p.dy) || 1;
+                            const nx = -p.dy / len;
+                            const ny = p.dx / len;
+                            const hash = Math.sin(p.x * 12.9898 + p.y * 78.233) * 43758.5453;
+                            const frac = hash - Math.floor(hash);
+                            const off = (frac - 0.5) * (ballastWidth - 0.35);
+                            const s = toBpScreen({ x: p.x + nx * off, y: p.y + ny * off });
+                            const dot = Math.max(1.5, 0.11 * scale);
+                            bCtx.fillStyle = frac > 0.5 ? "#9ba3ad" : "#e5e9ed";
+                            bCtx.fillRect(s.x - dot / 2, s.y - dot / 2, dot, dot);
+                        }
+
+                        for (const side of [-1, 1]) {
+                            const edge = offsetPath(o.pts, (ballastWidth / 2) * side);
+                            drawPathOnContext(bCtx, toBpScreen, edge, "#69737d", Math.max(1.2, 0.06 * scale));
+                        }
+                    }
+                }
+
+                for (const o of objects) {
+                    if (o.kind === "platform") {
+                        drawPlatformOnContext(bCtx, toBpScreen, scale, o, false, true);
+                    }
+                }
+
+                for (const o of objects) {
+                    if (o.kind === "track") {
+                        const data = lengthPoints(o.pts);
+                        const spacing = 0.5;
+                        bCtx.strokeStyle = "#8a6042";
+                        bCtx.lineWidth = Math.max(1.5, 0.12 * scale);
+                        bCtx.lineCap = "butt";
+
+                        for (let d = spacing / 2; d < data.total; d += spacing) {
+                            const p = pointAt(o.pts, data.lengths, d);
+                            const len = Math.hypot(p.dx, p.dy) || 1;
+                            const nx = ((-p.dy / len) * o.width) / 2;
+                            const ny = ((p.dx / len) * o.width) / 2;
+                            const s = toBpScreen(p);
+
+                            bCtx.beginPath();
+                            bCtx.moveTo(s.x - nx * scale, s.y - ny * scale);
+                            bCtx.lineTo(s.x + nx * scale, s.y + ny * scale);
+                            bCtx.stroke();
+                        }
+
+                        const railOffset = o.width === 5 ? 2.0 : 1.0;
+                        for (const side of [-1, 1]) {
+                            const rail = offsetPath(o.pts, railOffset * side);
+                            drawPathOnContext(bCtx, toBpScreen, rail, "#1e293b", Math.max(2.2, 0.13 * scale));
+                        }
+                    }
+                }
+
+                for (const o of objects) {
+                    if (o.kind === "buffer") {
+                        drawBufferOnContext(bCtx, toBpScreen, scale, o, false, true);
+                    }
+                }
+
+                return {
+                    dataUrl: bpCanvas.toDataURL("image/png"),
+                    widthBlocks: Math.max(0, Math.round(maxX - minX)),
+                    heightBlocks: Math.max(0, Math.round(maxY - minY)),
+                };
+            }
+
+            document.getElementById("print").onclick = () => {
+                const win = window.open("", "_blank");
+
+                if (!win) {
+                    alert("Bitte Pop-ups erlauben.");
+                    return;
+                }
+
+                const bp = buildBlueprintDataUrl();
+
+                const tracks = objects.filter((o) => o.kind === "track");
+                const normalTracks = tracks.filter((t) => t.width === 3);
+                const broadTracks = tracks.filter((t) => t.width === 5);
+                const ballastTracks = tracks.filter((t) => t.ballast);
+                const buffers = objects.filter((o) => o.kind === "buffer");
+                const platforms = objects.filter((o) => o.kind === "platform");
+
+                const sumLength = (list) =>
+                    Math.round(list.reduce((acc, t) => acc + Math.hypot(t.b.x - t.a.x, t.b.y - t.a.y), 0));
+
+                const normalLen = sumLength(normalTracks);
+                const broadLen = sumLength(broadTracks);
+                const ballastLen = sumLength(ballastTracks);
+                const platformArea = platforms.reduce((acc, p) => acc + p.w * p.h, 0);
+                const dateStr = new Date().toLocaleDateString("de-DE", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                });
+
+                win.document.write(`
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>Create Gleisplan – Technische Bauzeichnung</title>
+<style>
+    @page {
+        size: landscape;
+        margin: 10mm;
+    }
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #1e293b;
+        background: #ffffff;
+    }
+    .sheet {
+        border: 2px solid #1e293b;
+        padding: 10px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        height: 100%;
+    }
+    .header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #1e293b;
+        padding-bottom: 6px;
+    }
+    .header-title h1 {
+        margin: 0;
+        font-size: 18px;
+        letter-spacing: 0.3px;
+    }
+    .header-title p {
+        margin: 2px 0 0 0;
+        font-size: 11px;
+        color: #475569;
+    }
+    .meta-table {
+        border-collapse: collapse;
+        font-size: 11px;
+    }
+    .meta-table td {
+        border: 1px solid #94a3b8;
+        padding: 3px 8px;
+    }
+    .meta-table td.lbl {
+        background: #f1f5f9;
+        font-weight: bold;
+        color: #334155;
+    }
+    .drawing-box {
+        text-align: center;
+        border: 1px solid #cbd5e1;
+        padding: 4px;
+        background: #ffffff;
+    }
+    .drawing-box img {
+        max-width: 100%;
+        max-height: 64vh;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
+    }
+    .footer-grid {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        border-top: 1.5px solid #1e293b;
+        padding-top: 6px;
+        font-size: 11px;
+    }
+    .bom-table {
+        border-collapse: collapse;
+        width: 65%;
+    }
+    .bom-table th, .bom-table td {
+        border: 1px solid #94a3b8;
+        padding: 3px 7px;
+        text-align: left;
+    }
+    .bom-table th {
+        background: #f1f5f9;
+        font-weight: bold;
+    }
+    .legend-box {
+        width: 35%;
+        border: 1px solid #94a3b8;
+        padding: 5px 9px;
+        background: #f8fafc;
+        line-height: 1.55;
+    }
+    .legend-box strong {
+        display: block;
+        margin-bottom: 2px;
+        border-bottom: 1px solid #cbd5e1;
+    }
+</style>
+</head>
+<body>
+<div class="sheet">
+    <div class="header-bar">
+        <div class="header-title">
+            <h1>RailCAD – Bau- &amp; Verlegeplan</h1>
+            <p>DOCTOR INDUSTRIES™ Streckenplanung • Maßstab 1 Rasterfeld = 1 Block (Hauptlinien alle 5 Blöcke)</p>
+        </div>
+        <table class="meta-table">
+            <tr>
+                <td class="lbl">Datum</td>
+                <td>${dateStr}</td>
+                <td class="lbl">Anlagengröße</td>
+                <td>${bp.widthBlocks} × ${bp.heightBlocks} Blöcke</td>
+            </tr>
+            <tr>
+                <td class="lbl">Bauteile gesamt</td>
+                <td>${objects.length}</td>
+                <td class="lbl">Version</td>
+                <td>V1.2</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="drawing-box">
+        <img src="${bp.dataUrl}" alt="Gleisplan Bauzeichnung" />
+    </div>
+
+    <div class="footer-grid">
+        <table class="bom-table">
+            <thead>
+                <tr>
+                    <th>Bauteil / Kategorie</th>
+                    <th>Anzahl</th>
+                    <th>Länge / Fläche</th>
+                    <th>Blockbreite</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Normalspurgleis</td>
+                    <td>${normalTracks.length} Abschnitte</td>
+                    <td>${normalLen} Blöcke</td>
+                    <td>3 Blöcke</td>
+                </tr>
+                <tr>
+                    <td>Breitspurgleis</td>
+                    <td>${broadTracks.length} Abschnitte</td>
+                    <td>${broadLen} Blöcke</td>
+                    <td>5 Blöcke</td>
+                </tr>
+                <tr>
+                    <td>Gleisbett (Schotterunterbau)</td>
+                    <td>${ballastTracks.length} Abschnitte</td>
+                    <td>${ballastLen} Blöcke</td>
+                    <td>5 bzw. 7 Blöcke (+1 je Seite)</td>
+                </tr>
+                <tr>
+                    <td>Prellböcke / Bahnsteige</td>
+                    <td>${buffers.length} Prellböcke, ${platforms.length} Bahnsteige</td>
+                    <td>${platformArea} Blöcke² Bahnsteig</td>
+                    <td>Variabel</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="legend-box">
+            <strong>Legende &amp; Bauhinweise</strong>
+            • <b>Doppellinie dunkel:</b> Schienenstränge (Normal: Abstand 2, Breit: Abstand 4)<br />
+            • <b>Braune Querstriche:</b> Schwellen (3 bzw. 5 Blöcke breit)<br />
+            • <b>Grauer Unterbau:</b> Gleisbett (je 1 Block Überstand links &amp; rechts)<br />
+            • <b>Rot-weißer Balken:</b> Prellbock am Gleisende
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = () => setTimeout(() => window.print(), 150);
+<\/script>
+</body>
+</html>
+                `);
+
+                win.document.close();
+            };
+
+            // --------------------------------------------------
+            // START
+            // --------------------------------------------------
+
+            function init() {
+                resize();
+
+                panX = canvas.clientWidth / 2;
+                panY = canvas.clientHeight / 2;
+
+                updateZoom();
+                updateSelection();
+                render();
+            }
+
+            init();
+        </script>
+    </body>
+</html>
